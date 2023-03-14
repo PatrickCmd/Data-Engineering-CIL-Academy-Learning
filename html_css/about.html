@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="keywords" content="HTML, CSS, Data Engineering" />
+    <meta
+      name="description"
+      content="I am ethuastic about Data Engineering and I am persuing it now."
+    />
+    <title>Document</title>
+    <style>
+      em {
+        color: red;
+        font-style: normal;
+      }
+
+      img.data {
+        width: 1424px;
+        height: 400px;
+        object-fit: cover;
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+        <a href="/index.html" >Home</a>
+        <a href="/about.html" >About Me</a>
+
+        <a href="#section-resume">My Resume</a>
+    </nav>
+
+    <h1>Data Engineering with CIL Academy</h1>
+    <img class="data" src="images/data-engineering.jpg" alt="data engineering image">
+
+    <h2>HTML and CSS Basics Tutorial</h2>
+    <p>
+      <strong>Data Engineering Course Module 1: </strong>
+      <em>HTML and CSS Basics</em>
+    </p>
+    <p>
+      I love to learn more about <em>Data Engineering</em>! and the
+      <em>Cloud</em> in general.
+    </p>
+    <h2>Bash Scripting Tutorial</h2>
+    <p>
+      As a data egineer you get to learn more about scripting and the terminal
+      in more detail.
+    </p>
+
+    <h2 id="section-resume">My Resume</h2>
+    <a href="/documents/Patrick-Walukagga.pdf" target="_blank" >Click here to view</a><br>
+    <a href="/documents/Patrick-Walukagga.pdf" download="">Click here to download</a>
+
+    <h3>HTML Entities</h3>
+    <p>
+      Learning more about html Entities
+      <a href="https://oinam.github.io/entities/">here</a>.
+    </p>
+
+    <h3>Get Free Images</h3>
+    <p>
+        Get free unsplash images from <a href="https://unsplash.com/" target="_blank">here</a>
+    </p>
+
+    <p>
+        <a href="#">Jump to Top</a>
+    </p>
+    <div id="copyrightYear"></div>
+
+    <script>
+      let date = new Date();
+      const copyrightFooter = `
+        <p>
+        Copyright &copy; ${date.getFullYear()} CMDCODE
+        </p>
+        `;
+        document.getElementById('copyrightYear').innerHTML = copyrightFooter;
+    </script>
+  </body>
+</html>
