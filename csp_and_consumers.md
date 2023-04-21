@@ -21,3 +21,8 @@ Cloud service providers and consumers are two essential players in the cloud com
 - [Azure Fundamentals: Describe Azure management and governance](https://learn.microsoft.com/en-gb/training/paths/describe-azure-management-governance/)
 - [What Is Azure? | Microsoft Azure Tutorial For Beginners | Microsoft Azure Training | Simplilearn](https://www.youtube.com/watch?v=3Arj5zlUPG4)
 - [Why Choose Azure Over AWS](https://www.youtube.com/watch?v=XyO2PPf47eY)
+
+## GCP Digital Foundations
+- [Infrastructure and Application Modernization with Google Cloud](https://www.cloudskillsboost.google/course_templates/265)
+- [Understanding Google Cloud Security and Operations](https://www.cloudskillsboost.google/course_templates/271)
+- [Innovating with Data and Google Cloud](https://www.cloudskillsboost.google/course_templates/267)
