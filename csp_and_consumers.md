@@ -23,6 +23,7 @@ Cloud service providers and consumers are two essential players in the cloud com
 - [Why Choose Azure Over AWS](https://www.youtube.com/watch?v=XyO2PPf47eY)
 
 ## GCP Digital Foundations
+- [Digital Transformation with Google Cloud](https://www.cloudskillsboost.google/course_templates/266)
+- [Innovating with Data and Google Cloud](https://www.cloudskillsboost.google/course_templates/267)
 - [Infrastructure and Application Modernization with Google Cloud](https://www.cloudskillsboost.google/course_templates/265)
 - [Understanding Google Cloud Security and Operations](https://www.cloudskillsboost.google/course_templates/271)
-- [Innovating with Data and Google Cloud](https://www.cloudskillsboost.google/course_templates/267)
