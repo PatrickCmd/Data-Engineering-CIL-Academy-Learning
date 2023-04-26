@@ -247,6 +247,53 @@ Core service areas:
     - These checks identify ways to optimize your AWS infrastructure, improve security and performance, reduce costs, and monitor service quotas. You can then follow the recommendations to optimize your services and resources.
     - Trusted Advisor analyzes your environments across five dimensions: cost optimization, performance, security, fault tolerance, and service limits. 
 
+### Pricing
+- AWS pricing concepts
+    - Pay for what you use
+    - Pay less when you reserve.
+    - Pay less with volume-based discounts.
+    - Pay even less as AWS grows.
+
+- [**Cloud financial management with AWS**](https://aws.amazon.com/aws-cost-management/)
+- [AWS Free Tier](https://aws.amazon.com/free/): With the AWS Free Tier, you can gain hands-on experience with the AWS platform, products, and services at no cost
+
+#### [Amazon EC2 Purchasing Options](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-purchasing-options.html): Amazon EC2 provides multiple purchasing options to optimize your costs based on your needs
+- On-Demand Instances
+    - Charged per hour/second
+    - Short-term
+    - Unpredictable workloads
+
+- Reserved Instances/Savings Plans
+    - Discount for 1- to 3-year commitments
+    - Larger upfront payment for a greater discount
+    - When you purchase a Reserved Instance, you can choose between a **Standard Reserved Instance** or a **Convertible Reserved Instance** offering class. Both options are one-year to three-year terms.
+        - **Standard Reserved Instance**: enables you to modify the Availability Zone, scope, networking type, and instance size (within the same instance type) of your Reserved Instance. 
+        - **Convertible Reserved Instance**: Enables you to exchange one or more Convertible Reserved Instances for another Convertible Reserved Instance with a different configuration, including instance family, operating system, and tenancy.           
+    - There are no limits to how often you perform an exchange as long as the target Convertible Reserved Instance is of an equal or higher value than the Convertible Reserved Instances you are exchanging.
+
+- Spot Instances
+    - Up to 90 percent discount
+    - Applications with flexible start and end times
+    - Urgent computing needs for large amounts of capacity
+- Dedicated Hosts – Pay for a physical host that is fully dedicated to running your instances, and bring your existing per-socket, per-core, or per-VM software licenses to reduce costs.
+- Dedicated Instances – Pay, by the hour, for instances that run on single-tenant hardware.
+- Capacity Reservations – Reserve capacity for your EC2 instances in a specific Availability Zone for any duration.
+
+
+## [AWS Training and certification](https://aws.amazon.com/training/)
+## [AWS Certifications](https://aws.amazon.com/certification/)
+
+## AWS Course resources
+- [Cloud Computing](https://aws.amazon.com/what-is-cloud-computing/)
+- [Compute on AWS](https://aws.amazon.com/products/compute/)
+- [Cloud Storage on AWS](https://aws.amazon.com/products/storage/)
+- [AWS Cloud Databases](https://aws.amazon.com/products/databases/)
+- [AWS Networking and Content Delivery](https://aws.amazon.com/products/networking/)
+- [AWS Cloud Security](https://aws.amazon.com/security/)
+- [AWS Auto Scaling](https://aws.amazon.com/autoscaling/)
+- [AWS Well-Architected](https://aws.amazon.com/architecture/well-architected/?wa-lens-whitepapers.sort-by=item.additionalFields.sortDate&wa-lens-whitepapers.sort-order=desc&wa-guidance-whitepapers.sort-by=item.additionalFields.sortDate&wa-guidance-whitepapers.sort-order=desc)
+
+
 ## Cloud/DevOPs practice exercises
 - [All Round Devops exercises](https://github.com/bregman-arie/devops-exercises)
 - [AWS exercises](https://github.com/bregman-arie/devops-exercises/blob/master/topics/aws/README.md)
