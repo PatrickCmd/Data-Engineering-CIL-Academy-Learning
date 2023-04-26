@@ -217,7 +217,35 @@ Core service areas:
     - ELB automatically distributes incoming application traffic across multiple targets and virtual appliances in one or more Availability Zones (AZs).
     - It also serves as a single point of contact with your application. 
     - As a result, your end users do not need to be aware of how many machines your application is running on or all the details, such as the IP addresses of those machines.
-        
+
+### Security
+- [The shared responsibility model](https://aws.amazon.com/compliance/shared-responsibility-model/)
+    - This model describes specifically what the customers and AWS are responsible for maintaining. It is also important to get used to terminology used in the Shared Responsibility Model. Review the customer responsibilities and AWS responsibilities.
+    - **AWS responsibility "Security of the Cloud"**: AWS is responsible for protecting the infrastructure that runs all of the services offered in the AWS Cloud. This infrastructure is composed of the hardware, software, networking, and all of the physical and environmental controls that run AWS Cloud services.
+        - AWS software
+            - Compute, Storage, Databases, Networking
+        - Hardware and AWS Global Infrastructure
+            - Regions, Availability Zones, and Edge Locations
+    - **Customer responsibility "Security in the Cloud"**: Customer responsibility will be determined by the AWS Cloud services that a customer selects.
+        - Platform, applications, and identity and access management
+        - Guest Operating system, network, and firewall configuration
+        - Client-side data encryption and data integrity authentication
+        - Server-side encryption
+            - File system and data
+        - Network traffic protection
+            - Encryption, integrity, and identity
+- [AWS Compliance](https://aws.amazon.com/compliance)
+    - [AWS security, identity, and compliance service category](https://aws.amazon.com/products/security/?nc=sn&loc=2): The following are descriptions of several AWS Security Services.
+        - **IAM**: AWS Identity and Access Management (IAM) is one of the first services you learn about because this service helps you control access to your AWS resources.
+        - **AWS Artifact**: Use the AWS Artifact service to generate on-demand compliance reports.
+        - **AWS KMS**: AWS Key Management Service (AWS KMS) helps you generate, manage, and rotate your encryption keys. You can also control who has access to those keys.
+        - **AWS Shield**: Shield protects you from common distributed denial of service (DDoS) attacks.
+- [AWS Trusted Advisor](https://aws.amazon.com/premiumsupport/technology/trusted-advisor/)
+    - AWS Trusted Advisor guides you on how to reduce cost, increase performance, and improve security.
+    - AWS Trusted Advisor provides recommendations that help you follow AWS best practices. 
+    - Trusted Advisor evaluates your account by using checks. 
+    - These checks identify ways to optimize your AWS infrastructure, improve security and performance, reduce costs, and monitor service quotas. You can then follow the recommendations to optimize your services and resources.
+    - Trusted Advisor analyzes your environments across five dimensions: cost optimization, performance, security, fault tolerance, and service limits. 
 
 ## Cloud/DevOPs practice exercises
 - [All Round Devops exercises](https://github.com/bregman-arie/devops-exercises)
