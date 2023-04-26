@@ -22,6 +22,7 @@ Cloud service providers and consumers are two essential players in the cloud com
 - [What Is Azure? | Microsoft Azure Tutorial For Beginners | Microsoft Azure Training | Simplilearn](https://www.youtube.com/watch?v=3Arj5zlUPG4)
 - [Why Choose Azure Over AWS](https://www.youtube.com/watch?v=XyO2PPf47eY)
 
+
 ## GCP Digital Foundations
 - [Digital Transformation with Google Cloud](https://www.cloudskillsboost.google/course_templates/266)
 - [Innovating with Data and Google Cloud](https://www.cloudskillsboost.google/course_templates/267)
@@ -217,10 +218,6 @@ Core service areas:
     - It also serves as a single point of contact with your application. 
     - As a result, your end users do not need to be aware of how many machines your application is running on or all the details, such as the IP addresses of those machines.
         
-
-
-
-
 
 ## Cloud/DevOPs practice exercises
 - [All Round Devops exercises](https://github.com/bregman-arie/devops-exercises)
