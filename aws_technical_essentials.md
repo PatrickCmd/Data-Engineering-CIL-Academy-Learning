@@ -465,3 +465,63 @@ For more information, see the following resources:
 - AWS user guide: [Access Management for AWS Resources](https://docs.aws.amazon.com/en_us/IAM/latest/UserGuide/access.html)
 - AWS user guide: [Security Best Practices in IAM](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html)
 - AWS blog: [How to Create and Manage Users within AWS IAM Identity Center](https://aws.amazon.com/blogs/security/how-to-create-and-manage-users-within-aws-sso/)
+
+
+## Compute as a Service
+- At a fundamental level, three types of compute options are available: virtual machines (VMs), container services, and serverless.
+
+### Servers
+
+The first building block that you need to host an application is a server. Servers can usually handle HTTP requests and send responses to clients following the client-server model. Although any API-based communication also falls under this model. 
+
+![client-server](https://html.cdn.contentraven.com/crcloud/uploads/aws_partners_11276/encryptedfile/522441/v2.0/assets/0Z2Ge4DWal9Lg4oC_pTtbd7zybSuD-m3K.png)
+
+- A client is a person or computer that sends a request. 
+- A server handling the requests is a computer, or collection of computers, connected to the internet serving websites to internet users. Servers power your application by providing CPU, memory, and networking capacity to process users’ requests and transform them into responses. For context, common HTTP servers include the following:
+
+    - Windows options, such as Internet Information Services (IIS)
+    - Linux options, such as Apache HTTP Server, Nginx, and Apache Tomcat
+
+### Choosing the right compute option
+
+If you’re responsible for setting up servers on AWS to run your infrastructure, you have many compute options. First, you need to know which compute service to use for each use case. At a fundamental level, three types of compute options are available: virtual machines (VMs), container services, and serverless.
+
+![compute options](https://html.cdn.contentraven.com/crcloud/uploads/aws_partners_11276/encryptedfile/522441/v2.0/assets/9bC0T62_VgZWJ5Hv_RnozzfcimAtzGYe6.png)
+
+If you have prior infrastructure knowledge, a virtual machine will often be the easiest compute option to understand. This is because a virtual machine emulates a physical server and allows you to install an HTTP server to run your applications, for example. To run virtual machines, you install a hypervisor on a host machine. In its simplest form, a hypervisor is software or firmware that makes it possible to share physical hardware resources across one or more virtual machines. The hypervisor provisions the resources to create and run your VMs.
+
+In AWS, Amazon Elastic Compute Cloud (Amazon EC2) is a web service that provides secure and resizable compute capacity in the cloud. You can provision virtual servers called EC2 instances. Behind the scenes, AWS operates and manages the host machines and the hypervisor layer. AWS also installs the virtual machine operating system, called the guest operating system.
+
+Beneath the surface, some AWS compute services use Amazon EC2 or use virtualization concepts. You should understand this service before advancing to container services and serverless compute.
+
+#### Resources
+
+For more information, see the following resources:
+
+- AWS whitepaper: Compute Services(https://docs.aws.amazon.com/whitepapers/latest/aws-overview/compute-services.html)
+- AWS website: Compute for Any Workload(https://aws.amazon.com/products/compute/)
+
+### Amazon EC2
+
+Amazon EC2 is a web service that provides secure, resizable compute capacity in the cloud. With this service, you can provision virtual servers called EC2 instances. 
+
+![Amazon EC2](https://html.cdn.contentraven.com/crcloud/uploads/aws_partners_11276/encryptedfile/522441/v2.0/assets/chYg2z1i3WOig7a7_r79kCL5ArAFFb0im.jpg)
+
+With Amazon EC2, you can do the following:
+- Provision and launch one or more EC2 instances in minutes.
+- Stop or shut down EC2 instances when you finish running a workload.
+- Pay by the hour or second for each instance type (minimum of 60 seconds).
+
+You can create and manage EC2 instances through the AWS Management Console, AWS CLI, AWS SDKs, automation tools, and infrastructure orchestration services.
+
+To create an EC2 instance, you must define the following:
+- Hardware specifications: CPU, memory, network, and storage
+- Logical configurations: Networking location, firewall rules, authentication, and the operating system of your choice
+
+### Amazon Machine Image
+
+When launching an EC2 instance, the first setting you configure is which operating system you want by selecting an Amazon Machine Image (AMI).
+
+In the traditional infrastructure world, spinning up a server consists of installing an operating system from installation disks, drives, or wizards over the network. In the AWS Cloud, the operating system installation is not your responsibility. Instead, it's built into the AMI that you choose.
+
+An AMI includes the operating system, storage mapping, architecture type, launch permissions, and any additional preinstalled software applications.
