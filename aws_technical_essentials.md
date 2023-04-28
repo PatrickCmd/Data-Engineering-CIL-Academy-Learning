@@ -525,3 +525,290 @@ When launching an EC2 instance, the first setting you configure is which operati
 In the traditional infrastructure world, spinning up a server consists of installing an operating system from installation disks, drives, or wizards over the network. In the AWS Cloud, the operating system installation is not your responsibility. Instead, it's built into the AMI that you choose.
 
 An AMI includes the operating system, storage mapping, architecture type, launch permissions, and any additional preinstalled software applications.
+
+### Relationship between AMIs and EC2 instances
+
+EC2 instances are live instantiations (or versions) of what is defined in an AMI, as a cake is a live instantiation of a cake recipe. If you are familiar with software development, you can also see this kind of relationship between a class and an object. In this case, the AMI is how you model and define your instance. The EC2 instance is the entity you interact with, where you can install your web server and serve your content to users.
+
+When you launch a new instance, AWS allocates a virtual machine that runs on a hypervisor. Then the AMI that you selected is copied to the root device volume, which contains the image that is used to boot the volume. In the end, you get a server that you can connect to and install packages and additional software on. In the example, you install a web server along with the properly configured source code of your employee directory application.
+
+![AMI](https://html.cdn.contentraven.com/crcloud/uploads/aws_partners_11276/encryptedfile/522441/v2.0/assets/H6rwy-73WJHIzF8T_b1oUsgei4V-I5ioF.png)
+
+One advantage of using AMIs is that they are reusable. You might choose a Linux-based AMI and configure the HTTP server, application packages, and additional software that you need to run your application. If you want to create another EC2 instance with the same configurations, you could create and configure a new EC2 instance to match the first instance. Or you could create an AMI from your running instance and use the AMI to start a new instance. That way, your new instance would have the same configurations as your current instance because the configurations set in the AMIs are the same.
+
+
+![AMI](https://html.cdn.contentraven.com/crcloud/uploads/aws_partners_11276/encryptedfile/522441/v2.0/assets/XQZZ5lTxRTtBYTB0_jKOXSf3jjyOMxyyo.png)
+
+### Finding AMIs
+
+There are multiple ways to select an AMI. To learn more, expand each of the following five categories.
+
+- Quick Start AMIs
+    - Quick Start AMIs are commonly used AMIs created by AWS that you can select to get started quickly. 
+
+- AWS Marketplace AMIs
+    - AWS Marketplace AMIs provide popular open-source and commercial software from third-party vendors.
+
+- My AMIs
+    - My AMIs are created from your EC2 instances.
+
+- Community AMIs
+    - Community AMIs are provided by the AWS user community.
+
+- Custom image
+    - Build your own custom image with EC2 Image Builder.
+
+Each AMI in the AWS Management Console has an AMI ID, which is prefixed by ami-, followed by a random hash of numbers and letters. The IDs are unique to each AWS Region.
+
+![AMIs](https://html.cdn.contentraven.com/crcloud/uploads/aws_partners_11276/encryptedfile/522441/v2.0/assets/OHe7BHzYomOG7z49_wStnc1Mz27U8c_r2.png)
+
+An AMI includes the operating system, storage mapping, architecture type, launch permissions, and any additional preinstalled software applications.
+
+### Amazon EC2 instance types
+
+EC2 instances are a combination of virtual processors (vCPUs), memory, network, and, in some cases, instance storage and graphics processing units (GPUs). When you create an EC2 instance, you need to choose how much you need of each of these components.
+
+![EC2 instance types](https://html.cdn.contentraven.com/crcloud/uploads/aws_partners_11276/encryptedfile/522441/v2.0/assets/KLtuC4QMp7CGJvX6_z8A9aBSkVQf0MwmJ.png)
+
+AWS offers a variety of instances that differ based on performance. Some instances provide more capacity than others. To get an overview of the capacity details for a particular instance, you should look at the instance type. Instance types consist of a prefix identifying the type of workloads they’re optimized for, followed by a size. For example, the instance type c5n.xlarge can be broken down as follows:
+
+- **First position** – The first position, **c**, indicates the instance family. This indicates that this instance belongs to the compute optimized family.
+- **Second position** – The second position, **5**, indicates the generation of the instance. This instance belongs to the fifth generation of instances.
+- **Remaining letters before the period** – In this case, **n** indicates additional attributes, such as local NVMe storage.
+- **After the period** – After the period, **xlarge** indicates the instance size. In this example, it's xlarge.
+
+![c5n.xlarge](https://html.cdn.contentraven.com/crcloud/uploads/aws_partners_11276/encryptedfile/522441/v2.0/assets/Gs9fkNp49iZLvDvJ_TOY_r5g2WQYpD6O5.jpg)
+
+### Instance families
+
+Each instance family is optimized to fit different use cases. The following table describes instance families and some typical workloads.
+
+|Instance |family Description |Use Cases|
+|:-------:|:------------------|:--------|
+|General purpose|General purpose instances provide a balance of compute, memory, and networking resources, and can be used for a variety of workloads.|Ideal for applications that use these resources in equal proportions, such as web servers and code repositories|
+|Compute optimized|Compute optimized instances are ideal for compute-bound applications that benefit from high-performance processors.|Well-suited for batch processing workloads, media transcoding, high performance web servers, high performance computing (HPC), scientific modeling, dedicated gaming servers and ad server engines, machine learning inference, and other compute intensive applications|
+|Memory optimized|Memory optimized instances are designed to deliver fast performance for workloads that process large datasets in memory.|Memory-intensive applications, such as high-performance databases, distributed web-scale in-memory caches, mid-size in-memory databases, real-time big-data analytics, and other enterprise applications|
+|Accelerated computing|Accelerated computing instances use hardware accelerators or co-processors to perform functions such as floating-point number calculations, graphics processing, or data pattern matching more efficiently than is possible in software running on CPUs|Machine learning, HPC, computational fluid dynamics, computational finance, seismic analysis, speech recognition, autonomous vehicles, and drug discovery|
+|Storage optimized|Storage optimized instances are designed for workloads that require high sequential read and write access to large datasets on local storage. They are optimized to deliver tens of thousands of low-latency random I/O operations per second (IOPS) to applications that replicate their data across different instances.|NoSQL databases (Cassandra, MongoDB and Redis), in-memory databases, scale-out transactional databases, data warehousing, Elasticsearch, and analytics|
+|HPC optimized|High performance computing (HPC) instances are purpose built to offer the best price performance for running HPC workloads at scale on AWS.|Ideal for applications that benefit from high-performance processors, such as large, complex simulations and deep learning workloads|
+
+### EC2 instance locations
+
+Unless otherwise specified, when you launch EC2 instances, they are placed in a default virtual private cloud (VPC). The default VPC is suitable for getting started quickly and launching public EC2 instances without having to create and configure your own VPC.
+
+Any resource that you put inside the default VPC will be public and accessible by the internet, so you shouldn’t place any customer data or private information in it.
+
+When you get more comfortable with networking on AWS, you should change this default setting to choose your own custom VPCs and restrict access with additional routing and connectivity mechanisms.
+
+### Architecting for high availability
+
+In the network, your instance resides in an Availability Zone of your choice. As you learned previously, AWS services that are scoped at the Availability Zone level must be architected with high availability in mind.
+
+Although EC2 instances are typically reliable, two are better than one, and three are better than two. Specifying the instance size gives you an advantage when designing your architecture because you can use more smaller instances rather than a few larger ones.
+
+If your frontend only has a single instance and the instance fails, your application goes down. Alternatively, if your workload is distributed across 10 instances and one fails, you lose only 10 percent of your fleet, and your application availability is hardly affected.
+
+When architecting any application for high availability, consider using at least two EC2 instances in two separate Availability Zones. ­­
+
+![AWS Cloud](https://html.cdn.contentraven.com/crcloud/uploads/aws_partners_11276/encryptedfile/522441/v2.0/assets/reOZnQD2aJ-1wN1J_bwzBuePADmVCRRJI.png)
+
+
+#### Resources
+
+For more information, see the following resources:
+
+- AWS website: [Amazon EC2](https://aws.amazon.com/ec2/)
+- AWS user guide: [Amazon Machine Images (AMI)](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AMIs.html)
+- AWS user guide: [Creatie an Amazon EBS-Backed Linux AMI](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/creating-an-ami-ebs.html)
+- AWS user guide: [What Is EC2 Image Builder?](https://docs.aws.amazon.com/imagebuilder/latest/userguide/what-is-image-builder.html)
+- AWS user guide: [Default VPCs](https://docs.aws.amazon.com/vpc/latest/userguide/default-vpc.html)
+- AWS whitepaper: [Reliability Pillar - AWS Well-Architected Framework](https://docs.aws.amazon.com/wellarchitected/latest/reliability-pillar/welcome.html?ref=wellarchitected-wp)
+
+### Amazon EC2 Instance Lifecycle
+
+An EC2 instance transitions between different states from the moment you create it until its termination.
+
+![Instance Lifecycle](https://html.cdn.contentraven.com/crcloud/uploads/aws_partners_11276/encryptedfile/522441/v2.0/assets/RzRBaSlJf6NvgSPx_W-vfLyAzzrKyOEwn.png)
+
+1. When you launch an instance, it enters the pending state. When an instance is pending, billing has not started. At this stage, the instance is preparing to enter the running state. Pending is where AWS performs all actions needed to set up an instance, such as copying the AMI content to the root device and allocating the necessary networking components.
+
+2. When your instance is running, it's ready to use. This is also the stage where billing begins. As soon as an instance is running, you can take other actions on the instance, such as reboot, terminate, stop, and stop-hibernate.
+
+3. When you reboot an instance, it’s different than performing a stop action and then a start action. Rebooting an instance is equivalent to rebooting an operating system. The instance keeps its public DNS name (IPv4) and private and public IPv4 addresses. An IPv6 address (if applicable) remains on the same host computer and maintains its public and private IP address, in addition to any data on its instance store volumes.
+
+4. When you stop your instance, it enters the stopping and then stopped state. This is similar to when you shut down your laptop. You can stop and start an instance if it has an Amazon Elastic Block Store (Amazon EBS) volume as its root device. When you stop and start an instance, your instance can be placed on a new underlying physical server. Your instance retains its private IPv4 addresses and if your instance has an IPv6 address, it retains its IPv6 address. When you put the instance into stop-hibernate, the instance enters the stopped state, but saves the last information or content into memory, so that the start process is faster.
+
+5. When you terminate an instance, the instance stores are erased, and you lose both the public IP address and private IP address of the machine. Termination of an instance means that you can no longer access the machine. As soon as the status of an instance changes to shutting down or terminated, you stop incurring charges for that instance.
+
+### Difference between stop and stop-hibernate
+
+When you stop an instance, it enters the stopping state until it reaches the stopped state. AWS does not charge usage or data transfer fees for your instance after you stop it. But storage for any Amazon EBS volumes is still charged. While your instance is in the stopped state, you can modify some attributes, like the instance type. When you stop your instance, the data from the instance memory (RAM) is lost.
+
+When you stop-hibernate an instance, Amazon EC2 signals the operating system to perform hibernation (suspend-to-disk), which saves the contents from the instance memory (RAM) to the EBS root volume. You can hibernate an instance only if hibernation is turned on and the instance meets the hibernation prerequisites.
+
+### Pricing
+
+One of the ways to reduce costs with Amazon EC2 is to choose the right pricing option for the way that your applications run. AWS offers a variety of pricing options to address different workload scenarios. 
+
+#### On-Demand Instances
+
+With On-Demand Instances, you pay for compute capacity per hour or per second, depending on which instances that you run. There are no long-term commitments or upfront payments required. Billing begins whenever the instance is running, and billing stops when the instance is in a stopped or terminated state. You can increase or decrease your compute capacity to meet the demands of your application and only pay the specified hourly rates for the instance that you use.
+
+On-Demand Instances are recommended for the following use cases:
+- Users who prefer the low cost and flexibility of Amazon EC2 without upfront payment or long-term commitments            
+- Applications with short-term, spiky, or unpredictable workloads that cannot be interrupted
+- Applications being developed or tested on Amazon EC2 for the first time
+
+### Spot Instances
+
+For applications that have flexible start and end times, Amazon EC2 offers the Spot Instances option. With Amazon EC2 Spot Instances, you can request spare Amazon EC2 computing capacity for up to 90 percent off the On-Demand price. Spot Instances are recommended for the following use cases:
+
+- Applications that have flexible start and end times            
+- Applications that are only feasible at very low compute prices            
+- Users with fault-tolerant or stateless workloads 
+
+With Spot Instances, you set a limit on how much you want to pay for the instance hour. This is compared against the current Spot price that AWS determines. Spot Instance prices adjust gradually based on long-term trends in supply and demand for Spot Instance capacity. If the amount that you pay is more than the current Spot price and there is capacity, you will receive an instance.   
+
+#### Savings Plans
+
+Savings Plans are a flexible pricing model that offers low usage prices for a 1-year or 3-year term commitment to a consistent amount of usage. Savings Plans apply to Amazon EC2, AWS Lambda, and AWS Fargate usage and provide up to 72 percent savings on AWS compute usage.
+
+For workloads that have predictable and consistent usage, Savings Plans can provide significant savings compared to On-Demand Instances. Savings Plans are recommended for the following use cases:
+
+- Workloads with a consistent and steady-state usage 
+- Customers who want to use different instance types and compute solutions across different locations
+- Customers who can make monetary commitment to use Amazon EC2 over a 1-year or 3-year term
+
+#### Reserved Instances
+
+For applications with steady state usage that might require reserved capacity, Amazon EC2 offers the Reserved Instances option. With this option, you save up to 75 percent compared to On-Demand Instance pricing. You can choose between three payment options: All Upfront, Partial Upfront, or No Upfront. You can select either a 1-year or 3-year term for each of these options.
+
+With Reserved Instances, you can choose the type that best fits your applications needs.  
+- Standard Reserved Instances: These provide the most significant discount (up to 72 percent off On-Demand pricing) and are best suited for steady-state usage. 
+- Convertible Reserved Instances: These provide a discount (up to 54 percent off On-Demand pricing) and the capability to change the attributes of the Reserved Instance if the exchange results in the creation of Reserved Instances of equal or greater value. Like Standard Reserved Instances, Convertible Reserved Instances are best suited for steady-state usage.    
+- Scheduled Reserved Instances: These are available to launch within the time windows that you reserve. With this option, you can match your capacity reservation to a predictable recurring schedule that only requires a fraction of a day, a week, or a month.
+
+#### Dedicated Hosts
+
+A Dedicated Host is a physical Amazon EC2 server that is dedicated for your use. Dedicated Hosts can help you reduce costs because you can use your existing server-bound software licenses, such as Windows Server, SQL Server, and Oracle licenses. And they can also help you meet compliance requirements. Amazon EC2 Dedicated Host is also integrated with AWS License Manager, a service that helps you manage your software licenses, including Microsoft Windows Server and Microsoft SQL Server licenses.
+
+- Dedicated Hosts can be purchased on demand (hourly).
+- Dedicated Hosts can be purchased as a Reservation for up to 70 percent off the On-Demand price.
+
+#### Resources
+
+For more information, see the following resources:
+
+- AWS user guide: [Amazon EC2: Instance Lifecycle](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-lifecycle.html)
+- AWS user guide: [Hibernation Prerequisites](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/hibernating-prerequisites.html)
+- AWS website: [Amazon EC2 Pricing]https://aws.amazon.com/ec2/pricing/)
+- AWS website: [Amazon EC2 On-Demand Pricing](https://aws.amazon.com/ec2/pricing/on-demand/)
+- AWS website: [Amazon EC2 Spot Instances Pricing](https://aws.amazon.com/ec2/spot/pricing/)
+- AWS website: [Amazon EC2 Reserved Instances Pricing](https://aws.amazon.com/ec2/pricing/reserved-instances/pricing/)
+
+## Container Services
+
+Although containers are often referred to as a new technology, the idea started in the 1970s with certain UNIX kernels (the central core of the operating system) having the ability to separate their processes through isolation. At the time, this was configured manually, making operations complex.
+
+With the evolution of the open-source software community, containers evolved. Today, containers are used as a solution to problems of traditional compute, including the issue of getting software to run reliably when it moves from one compute environment to another.
+
+- A container is a standardized unit that packages your code and its dependencies. This package is designed to run reliably on any platform, because the container creates its own independent environment. With containers, workloads can be carried from one place to another, such as from development to production or from on-premises environments to the cloud.
+
+- An example of a containerization platform is Docker. Docker is a popular container runtime that simplifies the management of the entire operating system stack required for container isolation, including networking and storage. Docker helps customers create, package, deploy, and run containers.
+
+### Difference between VMs and containers
+
+![VMs and Containers](https://html.cdn.contentraven.com/crcloud/uploads/aws_partners_11276/encryptedfile/522441/v2.0/assets/WGQMKCw2hQe2Rr1v_aLZuLt2uEP1sRZeR.png)
+
+Containers share the same operating system and kernel as the host that they exist on. But virtual machines contain their own operating system. Each virtual machine must maintain a copy of an operating system, which results in a degree of wasted resources.
+
+A container is more lightweight. Containers spin up quicker, almost instantly. This difference in startup time becomes instrumental when designing applications that must scale quickly during I/O bursts.
+
+Containers can provide speed, but virtual machines offer the full strength of an operating system and more resources, like package installation, dedicated kernel, and more.
+
+### Orchestrating containers
+
+In AWS, containers can run on EC2 instances. For example, you might have a large instance and run a few containers on that instance. Although running one instance is uncomplicated to manage, it lacks high availability and scalability. Most companies and organizations run many containers on many EC2 instances across several Availability Zones.
+
+If you’re trying to manage your compute at a large scale, you should consider the following:
+
+- How to place your containers on your instances
+- What happens if your container fails
+- What happens if your instance fails
+- How to monitor deployments of your containers
+
+This coordination is handled by a container orchestration service. AWS offers two container orchestration services: Amazon Elastic Container Service (Amazon ECS) and Amazon Elastic Kubernetes Service (Amazon EKS).
+
+### Managing containers with Amazon ECS
+
+![AMazon ECS](https://html.cdn.contentraven.com/crcloud/uploads/aws_partners_11276/encryptedfile/522441/v2.0/assets/MzO5qIuSFHGROPvr_wwBHSRxv2tRUlN9K.jpg)
+
+Amazon ECS is an end-to-end container orchestration service that helps you spin up new containers. With Amazon ECS, your containers are defined in a task definition that you use to run an individual task or a task within a service. You have the option to run your tasks and services on a serverless infrastructure that's managed by another AWS service called AWS Fargate. Alternatively, for more control over your infrastructure, you can run your tasks and services on a cluster of EC2 instances that you manage.
+
+![Amazon ECS](https://html.cdn.contentraven.com/crcloud/uploads/aws_partners_11276/encryptedfile/522441/v2.0/assets/Gxcc_QBrhHWZB9lz_fBTShP26hpLTwZKE.png)
+
+If you choose to have more control by running and managing your containers on a cluster of Amazon EC2 instances, you will also need to install the Amazon ECS container agent on your EC2 instances. Note that an EC2 instance with the container agent installed is often called a container instance. This container agent is open source and responsible for communicating to the Amazon ECS service about cluster management details. You can run the agent on both Linux and Windows AMIs. 
+
+![EC2 Container instance](https://html.cdn.contentraven.com/crcloud/uploads/aws_partners_11276/encryptedfile/522441/v2.0/assets/ySRLtnrIYPZIu3eZ_YiX8p1udFI_1rzlu.jpg)
+
+When the Amazon ECS container instances are up and running, you can perform actions that include, but are not limited to, the following:
+
+- Launching and stopping containers
+- Getting cluster state
+- Scaling in and out
+- Scheduling the placement of containers across your cluster
+- Assigning permissions
+- Meeting availability requirements
+
+To prepare your application to run on Amazon ECS, you create a task definition. The task definition is a text file, in JSON format, that describes one or more containers. A task definition is similar to a blueprint that describes the resources that you need to run a container, such as CPU, memory, ports, images, storage, and networking information.
+
+Here is a simple task definition that you can use for your corporate directory application. In this example, this runs on the Nginx web server.
+
+```json
+{
+  "family": "webserver",
+  "containerDefinitions": [
+    {
+      "name": "web",
+      "image": "nginx",
+      "memory": "100",
+      "cpu": "99"
+    }
+  ],
+  "requiresCompatibilities": [
+    "FARGATE"
+  ],
+  "networkMode": "awsvpc",
+  "memory": "512",
+  "cpu": "256"
+}
+```
+
+### Using Kubernetes with Amazon EKS
+
+![Amazon EKS](https://html.cdn.contentraven.com/crcloud/uploads/aws_partners_11276/encryptedfile/522441/v2.0/assets/Tha86Y0rmyO6Etwh_VA27xMpMCpEGYGSs.jpg)
+
+Kubernetes is a portable, extensible, open-source platform for managing containerized workloads and services. By bringing software development and operations together by design, Kubernetes created a rapidly growing ecosystem that is very popular and well established in the market.
+
+If you already use Kubernetes, you can use Amazon EKS to orchestrate the workloads in the AWS Cloud. Amazon EKS is a managed service that you can use to run Kubernetes on AWS without needing to install, operate, and maintain your own Kubernetes control plane or nodes. Amazon EKS is conceptually similar to Amazon ECS, but with the following differences:
+
+- In Amazon ECS, the machine that runs the containers is an EC2 instance that has an ECS agent installed and configured to run and manage your containers. This instance is called a container instance. In Amazon EKS, the machine that runs the containers is called a worker node or Kubernetes node. 
+- An ECS container is called a task. An EKS container is called a pod.
+- Amazon ECS runs on AWS native technology. Amazon EKS runs on Kubernetes. 
+
+If you have containers running on Kubernetes and want an advanced orchestration solution that can provide simplicity, high availability, and fine-grained control over your infrastructure, Amazon EKS could be the tool for you.
+
+Resources
+
+For more information, see the following resources:
+
+- AWS website: [Containers on AWS](https://aws.amazon.com/containers/services/)
+- External website: [Docker: Use Containers to Build, Share and Run Your Applications](https://www.docker.com/resources/what-container)
+- AWS website: [Amazon Elastic Container Service (Amazon ECS)](https://aws.amazon.com/ecs/)
+- External website: [Github: Amazon ECS Agent](https://github.com/aws/amazon-ecs-agent)
+- AWS developer guide: [Amazon ECS Container Instances](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_instances.html)
+- External website: Coursera course: [Building Containerized Applications on AWS](https://www.coursera.org/learn/containerized-apps-on-aws)
+- AWS website: [Amazon Elastic Kubernetes Service (EKS)](https://aws.amazon.com/eks/)
+- AWS user guide: [Amazon EKS User Guide](https://docs.aws.amazon.com/eks/latest/userguide/what-is-eks.html)
+
+
