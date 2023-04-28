@@ -701,7 +701,7 @@ For more information, see the following resources:
 
 - AWS user guide: [Amazon EC2: Instance Lifecycle](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-lifecycle.html)
 - AWS user guide: [Hibernation Prerequisites](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/hibernating-prerequisites.html)
-- AWS website: [Amazon EC2 Pricing]https://aws.amazon.com/ec2/pricing/)
+- AWS website: [Amazon EC2 Pricing](https://aws.amazon.com/ec2/pricing/)
 - AWS website: [Amazon EC2 On-Demand Pricing](https://aws.amazon.com/ec2/pricing/on-demand/)
 - AWS website: [Amazon EC2 Spot Instances Pricing](https://aws.amazon.com/ec2/spot/pricing/)
 - AWS website: [Amazon EC2 Reserved Instances Pricing](https://aws.amazon.com/ec2/pricing/reserved-instances/pricing/)
@@ -811,4 +811,114 @@ For more information, see the following resources:
 - AWS website: [Amazon Elastic Kubernetes Service (EKS)](https://aws.amazon.com/eks/)
 - AWS user guide: [Amazon EKS User Guide](https://docs.aws.amazon.com/eks/latest/userguide/what-is-eks.html)
 
+### Introduction to Serverless
 
+#### Removing the undifferentiated heavy lifting
+
+If you run your code on Amazon EC2, AWS is responsible for the physical hardware. You are still responsible for the logical controls, such as the guest operating system, security and patching, networking, security, and scaling.
+
+As covered in the previous Container Services lesson, you choose to have more control by running and managing your containers on Amazon ECS and Amazon EKS. By doing so, AWS is still responsible for more of the container management, such as deploying containers across EC2 instances and managing the container cluster. However, when running Amazon ECS and Amazon EKS on Amazon EC2, you are still responsible for maintaining the underlying EC2 instances.
+
+Is there a way to remove some of this undifferentiated heavy lifting? Yes! If you want to deploy your workloads and applications without having to manage any EC2 instances, you can do that on AWS with serverless compute.
+
+#### Go serverless
+With serverless compute, you can spend time on the things that differentiate your application, rather than spending time on ensuring availability, scaling, and managing servers. Every definition of serverless mentions the following four aspects:
+- There are no servers to provision or manage.
+- It scales with usage.
+- You never pay for idle resources.
+- Availability and fault tolerance are built in.
+
+#### Resources
+
+For more information, see the following resources:
+
+- AWS website: [Serverless on AWS](https://aws.amazon.com/serverless/#:~:text=Serverless%20is%20the%20native%20architecture,services%20without%20thinking%20about%20servers.) 
+- AWS website: [AWS Serverless Resources](https://aws.amazon.com/serverless/getting-started/?serverless.sort-by=item.additionalFields.createdDate&serverless.sort-order=desc)
+
+### Serverless with AWS Fargate
+#### Exploring serverless containers with AWS Fargate
+Fargate abstracts the EC2 instance so that you’re not required to manage the underlying compute infrastructure. However, with Fargate, you can use all the same Amazon ECS concepts, APIs, and AWS integrations. It natively integrates with IAM and Amazon Virtual Private Cloud (Amazon VPC). With native integration with Amazon VPC, you can launch Fargate containers inside your network and control connectivity to your applications.
+
+![AWS Fargate](https://html.cdn.contentraven.com/crcloud/uploads/aws_partners_11276/encryptedfile/522441/v2.0/assets/7vdNvo_iM88pRiA2__waFpJh3C3F9hik_.jpg)
+
+AWS Fargate is a purpose-built serverless compute engine for containers. AWS Fargate scales and manages the infrastructure, so developers can work on what they do best, application development. It achieves this by allocating the right amount of compute. This eliminates the need to choose and manage EC2 instances, cluster capacity, and scaling. Fargate supports both Amazon ECS and Amazon EKS architecture and provides workload isolation and improved security by design.
+
+![AWS Fargate](https://html.cdn.contentraven.com/crcloud/uploads/aws_partners_11276/encryptedfile/522441/v2.0/assets/XAKsYbsn84fWQzHq_sged-PS8V6WKvnHk.jpg)
+
+Resources
+
+For more information, see the following resources:
+
+- AWS website: [AWS Fargate](https://aws.amazon.com/fargate/?c=ser&sec=srv)
+- AWS website: [Getting Started with Serverless Computing](https://aws.amazon.com/serverless/getting-started/?serverless.sort-by=item.additionalFields.createdDate&serverless.sort-order=desc)
+- Exeternal site: [Coursera course: Building Modern Python Applications on AWS](https://www.coursera.org/learn/building-modern-python-applications-on-aws)
+
+### Serverless with AWS Lambda
+#### Running code on AWS Lambda
+If you want to deploy your workloads and applications without having to manage any EC2 instances or containers, you can use Lambda.
+
+![AWS Lambda](https://html.cdn.contentraven.com/crcloud/uploads/aws_partners_11276/encryptedfile/522441/v2.0/assets/mWSKFB91QCUCr3HB_VusQVGrKB5zsTQJt.jpg)
+
+With Lambda, you can run code without provisioning or managing servers. You can run code for virtually any type of application or backend service. This includes data processing, real-time stream processing, machine learning, WebSockets, IoT backends, mobile backends, and web applications like your employee directory application!
+
+Lambda runs your code on a high availability compute infrastructure and requires no administration from the user. You upload your source code in one of the languages that Lambda supports, and Lambda takes care of everything required to run and scale your code with high availability. There are no servers to manage. You get continuous scaling with subsecond metering and consistent performance.
+
+#### How Lambda works
+
+The Lambda function is the foundational principle of AWS Lambda. You have the option of configuring your Lambda functions using the Lambda console, Lambda API, AWS CloudFormation, or AWS Serverless Application Model (AWS SAM). You can invoke your function directly by using the Lambda API, or you can configure an AWS service or resource to invoke your function in response to an event.
+
+- Function
+    A function is a resource that you can invoke to run your code in Lambda. Lambda runs instances of your function to process events. When you create the Lambda function, it can be authored in several ways:
+    - You can create the function from scratch.
+    - You can use a blueprint that AWS provides.
+    - You can select a container image to deploy for your function.
+    - You can browse the AWS Serverless Application Repository. 
+
+    ![Create Function](https://html.cdn.contentraven.com/crcloud/uploads/aws_partners_11276/encryptedfile/522441/v2.0/assets/Ri48UzHPB2wpGaPV_d-1XLCQ7H3feWvVe.png)
+
+- Trigger
+Triggers describe when a Lambda function should run. A trigger integrates your Lambda function with other AWS services and event source mappings. So you can run your Lambda function in response to certain API calls or by reading items from a stream or queue. This increases your ability to respond to events in your console without having to perform manual actions. 
+
+- Event
+An event is a JSON-formatted document that contains data for a Lambda function to process. The runtime converts the event to an object and passes it to your function code. When you invoke a function, you determine the structure and contents of the event.
+
+- Application Environment
+An application environment provides a secure and isolated runtime environment for your Lambda function. An application environment manages the processes and resources that are required to run the function. 
+
+- Deployment package
+    You deploy your Lambda function code using a deployment package. Lambda supports two types of deployment packages:
+    - A .zip file archive – This contains your function code and its dependencies. Lambda provides the operating system and runtime for your function.
+    - A container image – This is compatible with the Open Container Initiative (OCI) specification. You add your function code and dependencies to the image. You must also include the operating system and a Lambda runtime.
+
+- Runtime
+The runtime provides a language-specific environment that runs in an application environment. When you create your Lambda function, you specify the runtime that you want your code to run in. You can use built-in runtimes, such as Python, Node.js, Ruby, Go, Java, or .NET Core. Or you can implement your Lambda functions to run on a custom runtime.
+
+- Lambda function handler
+–
+The AWS Lambda function handler is the method in your function code that processes events. When your function is invoked, Lambda runs the handler method. When the handler exits or returns a response, it becomes available to handle another event. 
+
+You can use the following general syntax when creating a function handler in Python.
+
+```python
+def handler_name (event, context):
+...
+return some_value
+```
+
+### Billing granularity
+
+With Lambda, you can run code without provisioning or managing servers, and you pay only for what you use. You are charged for the number of times that your code is invoked (requests) and for the time that your code runs, rounded up to the nearest 1 millisecond (ms) of duration.
+
+AWS rounds up duration to the nearest ms with no minimum run time. With this pricing, it can be cost effective to run functions whose execution time is very low, such as functions with durations under 100 ms or low latency APIs.
+
+#### Resources
+
+For more information, see the following resources:
+
+- AWS website: [Building Applications with Serverless Architectures](https://aws.amazon.com/lambda/serverless-architectures-learn-more/)
+AWS blog: [Best Practices for Organizing Larger Serverless Applications](https://aws.amazon.com/blogs/compute/best-practices-for-organizing-larger-serverless-applications/)
+AWS developer guide: [Configuring AWS Lambda Functions](https://docs.aws.amazon.com/lambda/latest/dg/lambda-functions.html)
+AWS blog: [10 Things Serverless Architects Should Know](https://aws.amazon.com/blogs/architecture/ten-things-serverless-architects-should-know/)
+AWS workshop: [AWS Alien Attack: A Serverless Adventure](https://alienattack.workshop.aws/)
+AWS blog: [Resize Images on the Fly with Amazon S3, AWS Lambda, and Amazon API Gateway](https://aws.amazon.com/blogs/compute/resize-images-on-the-fly-with-amazon-s3-aws-lambda-and-amazon-api-gateway/)
+AWS blog: [New for AWS Lambda – 1ms Billing Granularity Adds Cost Savings](https://aws.amazon.com/blogs/aws/new-for-aws-lambda-1ms-billing-granularity-adds-cost-savings/)
