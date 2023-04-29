@@ -362,4 +362,30 @@ To create a VPC in the US-East-1 region with a CIDR block of 10.1.0.0/16 and fou
    - Click on the "Routes" tab and then click on "Edit routes".
    - Add a new route with the following details:
      - Destination: 0.0.0.0/0
+
+### Amazon VPC Routing
+The steps to create a route table through the internet gateway and associate it with the two public subnets:
+
+1. Log in to the AWS Management Console and navigate to the VPC dashboard.
+
+2. Click on the "Route Tables" section in the left navigation pane.
+
+3. Click on the "Create Route Table" button and enter the following details:
+   - Name tag: Give a name tag to the route table (e.g., public-route-table)
+   - VPC: Select the VPC you created in the previous steps.
+   - Click on "Create" to create the route table.
+
+4. Next, select the route table you just created and click on the "Routes" tab.
+
+5. Click on the "Edit routes" button and add a new route with the following details:
+   - Destination: 0.0.0.0/0
+   - Target: Select the Internet Gateway you attached in the previous steps.
+   - Click on "Save routes" to save the route.
+
+6. Next, associate the route table with the two public subnets you created earlier:
+   - Select the route table you just created and click on the "Subnet associations" tab.
+   - Click on the "Edit subnet associations" button and select the two public subnets.
+   - Click on "Save" to associate the route table with the subnets.
+
+That's it! The two public subnets are now associated with the new route table, and any traffic that needs to be routed to the Internet will be directed through the Internet Gateway you attached to the VPC.
     
