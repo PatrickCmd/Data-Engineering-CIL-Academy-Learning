@@ -313,3 +313,53 @@ export AWS_DEFAULT_REGION=<INSERT REGION HERE>
 export DYNAMO_MODE=on
 FLASK_APP=application.py /usr/local/bin/flask run --host=0.0.0.0 --port=80
 ```
+
+## Creating VPC with subnets
+
+
+To create a VPC in the US-East-1 region with a CIDR block of 10.1.0.0/16 and four subnets in two availability zones, two public and two private, and attach an internet gateway, you can follow these steps:
+
+1. Log in to the AWS Management Console and navigate to the VPC dashboard.
+
+2. Click on the "Create VPC" button and enter the following details:
+   - Name tag: Give a name tag to the VPC (e.g., my-vpc)
+   - IPv4 CIDR block: 10.1.0.0/16
+
+3. Click on "Create" to create the VPC.
+
+4. Next, create two subnets in each availability zone:
+   - Navigate to the "Subnets" section in the VPC dashboard.
+   - Click on "Create subnet" button.
+   - For the first subnet:
+     - Name tag: Give a name tag to the subnet (e.g., public-subnet-1a)
+     - VPC: Select the VPC you just created.
+     - Availability Zone: Select the first availability zone (e.g., us-east-1a).
+     - IPv4 CIDR block: 10.1.1.0/24
+     - Select "Yes" for "Auto-assign IPv4 address"
+     - Click on "Create" to create the subnet.
+   - Repeat the above steps to create the second subnet in the same availability zone with the name tag of (e.g., private-subnet-1a) and CIDR block 10.1.2.0/24.
+   - Repeat the above steps for the second availability zone (e.g., us-east-1b) to create two subnets with the name tags of public-subnet-1b and private-subnet-1b, and CIDR blocks of 10.1.3.0/24 and 10.1.4.0/24, respectively.
+
+5. Next, create an Internet Gateway and attach it to the VPC:
+   - Navigate to the "Internet Gateways" section in the VPC dashboard.
+   - Click on "Create Internet Gateway" button.
+   - Give a name tag to the Internet Gateway (e.g., my-igw)
+   - Click on "Create" to create the Internet Gateway.
+   - Select the Internet Gateway that you just created and click on "Attach to VPC" button.
+   - Select the VPC you created in step 2 and click on "Attach" to attach the Internet Gateway to the VPC.
+
+6. Finally, configure the route tables for the subnets:
+   - Navigate to the "Route Tables" section in the VPC dashboard.
+   - Select the route table for the public subnets in the first availability zone (e.g., public-subnet-1a).
+   - Click on the "Routes" tab and then click on "Edit routes".
+   - Add a new route with the following details:
+     - Destination: 0.0.0.0/0
+     - Target: Select the Internet Gateway you attached in step 5.
+     - Click on "Save routes" to save the route.
+   - Repeat the above steps for the public subnets in the second availability zone (e.g., public-subnet-1b).
+
+   - For the private subnets, select the route table for the private subnets in the first availability zone (e.g., private-subnet-1a).
+   - Click on the "Routes" tab and then click on "Edit routes".
+   - Add a new route with the following details:
+     - Destination: 0.0.0.0/0
+    
