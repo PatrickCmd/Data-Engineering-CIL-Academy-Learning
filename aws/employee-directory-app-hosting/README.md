@@ -436,4 +436,6 @@ The steps to add Network ACLs and create a Security Group to allow HTTPS on both
 5. Repeat step 4 to add a new rule for HTTPS inbound traffic.
 
 That's it! You have now added Network ACLs to allow HTTPS on both inbound and outbound rules and created a Security Group to allow both HTTP and HTTPS requests.
+
+### Relaunch employee directory app in the newly created vpc.
     
