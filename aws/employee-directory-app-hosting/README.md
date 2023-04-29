@@ -388,4 +388,54 @@ The steps to create a route table through the internet gateway and associate it 
    - Click on "Save" to associate the route table with the subnets.
 
 That's it! The two public subnets are now associated with the new route table, and any traffic that needs to be routed to the Internet will be directed through the Internet Gateway you attached to the VPC.
+
+### AWS VPC Security
+
+The steps to add Network ACLs and create a Security Group to allow HTTPS on both inbound and outbound rules:
+
+#### Adding Network ACLs:
+
+1. Log in to the AWS Management Console and navigate to the VPC dashboard.
+
+2. Click on the "Network ACLs" section in the left navigation pane.
+
+3. Click on the "Create Network ACL" button and enter the following details:
+   - Name tag: Give a name tag to the network ACL (e.g., my-acl)
+   - VPC: Select the VPC you created in the previous steps.
+   - Click on "Create" to create the network ACL.
+
+4. Next, select the network ACL you just created and click on the "Inbound Rules" tab.
+
+5. Click on the "Edit" button and add a new rule with the following details:
+   - Rule number: Enter a number to identify the rule (e.g., 100)
+   - Type: Select "HTTPS (443)"
+   - Source: Enter the IP address range that should be allowed to access HTTPS (e.g., 0.0.0.0/0)
+   - Allow/Deny: Select "Allow"
+   - Click on "Save" to add the rule.
+
+6. Next, click on the "Outbound Rules" tab and repeat step 5 to add a new rule for HTTPS outbound traffic.
+
+#### Creating a Security Group:
+
+1. Navigate to the "Security Groups" section in the left navigation pane.
+
+2. Click on the "Create Security Group" button and enter the following details:
+   - Name tag: Give a name tag to the security group (e.g., web-server-sg)
+   - Description: Enter a description for the security group.
+   - VPC: Select the VPC you created in the previous steps.
+   - Click on "Create" to create the security group.
+
+3. Next, select the security group you just created and click on the "Inbound Rules" tab.
+
+4. Click on the "Edit" button and add a new rule with the following details:
+   - Type: Select "HTTP (80)"
+   - Source: Enter the IP address range that should be allowed to access HTTP (e.g., 0.0.0.0/0)
+   - Allow/Deny: Select "Allow"
+   - Click on "Add Rule" to add the rule.
+
+5. Repeat step 4 to add a new rule for HTTPS inbound traffic.
+
+That's it! You have now added Network ACLs to allow HTTPS on both inbound and outbound rules and created a Security Group to allow both HTTP and HTTPS requests.
+
+### Relaunch employee directory app in the newly created vpc.
     
