@@ -1082,3 +1082,29 @@ If you associate a subnet with a custom route table, the subnet will use it inst
 For more information, see the following resource:
 
 - AWS user guide: [Configure Route Tables](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Route_Tables.html)
+
+### AWS VPC Security
+- Cloud security at AWS is the highest priority. You benefit from a data center and network architecture that is built to meet the requirements of the most security-sensitive organizations.
+
+#### Secure subnets with network access control lists
+
+![AWS Network ACLs](https://html.cdn.contentraven.com/crcloud/uploads/aws_partners_11276/encryptedfile/522441/v2.0/assets/UhwAcYcG11fm7Ver_mc0ohrPRO6iK9bfX.png)
+
+Think of a network access control list (network ACL) as a virtual firewall at the subnet level. A network ACL lets you control what kind of traffic is allowed to enter or leave your subnet. You can configure this by setting up rules that define what you want to filter. Here is an example of a default ACL for a VPC that supports IPv4.
+
+#### Dfault network ACL
+
+|Inbound|
+|:------|
+|Rule#|Type|Protocol|Port Range|Source|Allow or Deny|
+|:---:|:--:|:------:|:--------:|:----:|:-----------:|
+|100|All IPV4 trafic|All|All|0.0.0.0/0|Allow|
+|*|All APV4 |All |All|0.0.0.0/0|DENY|
+
+
+|Outbound|
+|:------|
+|Rule#|Type|Protocol|Port Range|Source|Allow or Deny|
+|:---:|:--:|:------:|:--------:|:----:|:-----------:|
+|100|All IPV4 trafic|All|All|0.0.0.0/0|Allow|
+|*|All APV4 |All |All|0.0.0.0/0|DENY|
