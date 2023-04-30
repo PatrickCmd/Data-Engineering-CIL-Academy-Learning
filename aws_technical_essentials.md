@@ -1561,3 +1561,74 @@ For more information, see the following resources:
 - AWS user guide: [Bucket Policy Examples](https://docs.aws.amazon.com/en_us/AmazonS3/latest/userguide/example-bucket-policies.html)
 
 
+## Introduction to Databases on AWS
+- A high-performing database is crucial to any organization. Databases support the internal operations of companies and store interactions with customers and suppliers.
+
+### History behind enterprise databases
+
+Choosing a database used to be a straightforward decision. Customers had only a few options to choose from. Typically, they would consider a few vendors and then, inevitably, choose one for all their applications. Businesses often selected a database technology before they fully understood their use case. Since the 1970s, the database type most commonly selected by businesses was a relational database.
+
+### Relational databases
+
+A relational database organizes data into tables. Data in one table can link to data in other tables to create relationships—hence, the relational part of the name.
+
+A table stores data in rows and columns. A row, often called a record, contains all information about a specific entry. Columns describe attributes of an entry. The following image is an example of three tables in a relational database.
+
+![Relational Database](https://html.cdn.contentraven.com/crcloud/uploads/aws_partners_11276/encryptedfile/522441/v2.0/assets/4EtG6mT8Np-kjCWm_2LDugnFFKSyS9mOy.png)
+
+The preceding image shows a table for books, a table for sales, and a table for authors. In the books table, each row includes the International Standard Book Number (ISBN), title, author, and format. Each of these attributes is stored in its own column. The books table has something in common with the other two tables—the author attribute. That common column creates a relationship between the tables.
+
+The tables, rows, columns, and relationships between them is called a logical schema. With relational databases, a schema is fixed. After the database is operational, it becomes difficult to change the schema. Because of this, most of the data modeling is done up front before the database is active.
+
+### Relational database management system
+
+With a relational database management system (RDBMS), you can create, update, and administer a relational database. Some common examples of RDBMSs include the following:
+
+- MySQL
+- PostgresQL
+- Oracle
+- Microsoft SQL Server
+- Amazon Aurora
+
+### Relational database use cases
+
+Much of the world runs on relational databases. In fact, they’re at the core of many mission-critical applications, some of which you might use in your day-to-day life.
+
+1. Applications that have a fixed schema
+**These are applications that have a fixed schema** and don't change often. An example is a lift-and-shift application that lifts an app from on-premises and shifts it to the cloud, with little or no modifications.
+
+2. Applications that need persistent storage
+**These are applications that need persistent storage** and follow the ACID principle, such as:
+
+- Enterprise resource planning (ERP) applications
+- Customer relationship management (CRM) applications
+- Commerce and financial applications
+
+### Choose between unmanaged and managed databases
+
+If you want to trade your on-premises database for a relational database on AWS, you first need to select how you want to run it—managed or unmanaged. Managed services and unmanaged services are handled similar to the shared responsibility model. The shared responsibility model distinguishes between AWS security responsibilities and the customer’s security responsibilities. Likewise, managed compared to unmanaged can be understood as a trade-off between convenience and control.
+
+### Unmanaged databases
+
+If you operate a relational database on premises, you are responsible for all aspects of operation. This includes data center security and electricity, host machines management, database management, query optimization, and customer data management. You are responsible for absolutely everything, which means you have control over absolutely everything.
+
+Now, suppose you want to shift some of the work to AWS by running your relational database on Amazon Elastic Compute Cloud (Amazon EC2). If you host a database on Amazon EC2, AWS implements and maintains the physical infrastructure and hardware and installs the EC2 instance operating system (OS). However, you are still responsible for managing the EC2 instance, managing the database on that host, optimizing queries, and managing customer data.
+
+This is called an unmanaged database option. In this option, AWS is responsible for and has control over the hardware and underlying infrastructure. You are responsible for and have control over management of the host and database.
+
+![Shared Responsibility](https://html.cdn.contentraven.com/crcloud/uploads/aws_partners_11276/encryptedfile/522441/v2.0/assets/uCmFA3cGvGhVrDs3_qnA3DCLuIj69t7zG.png)
+
+You are responsible for everything in a database hosted on-premises. AWS takes on more of that responsibility in databases hosted in Amazon EC2.
+
+### Managed databases
+
+To shift more of the work to AWS, you can use a managed database service. These services provide the setup of both the EC2 instance and the database, and they provide systems for high availability, scalability, patching, and backups. However, in this model, you’re still responsible for database tuning, query optimization, and ensuring that your customer data is secure. This option provides the ultimate convenience but the least amount of control compared to the two previous options.
+
+![Shared Responsibility](https://html.cdn.contentraven.com/crcloud/uploads/aws_partners_11276/encryptedfile/522441/v2.0/assets/I4Jv2LIrmyw-EbeF_AOuKIausIFuSmauW.png)
+
+#### Resources 
+
+For more information, see the following resources:
+
+- AWS website: [What Is a Relational Database?](https://aws.amazon.com/relational-database/)
+- AWS website: [AWS Cloud Databases](https://aws.amazon.com/products/databases/)
