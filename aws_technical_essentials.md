@@ -97,7 +97,7 @@ Amazon CloudFront delivers your content through a worldwide network of edge loca
 For more information, see the following resources:
 
 - AWS website: [Global Infrastructure](https://aws.amazon.com/about-aws/global-infrastructure/)
-AWS whitepaper: [AWS Global Infrastructure Documentation](https://docs.aws.amazon.com/whitepapers/latest/aws-overview/global-infrastructure.html)
+- AWS whitepaper: [AWS Global Infrastructure Documentation](https://docs.aws.amazon.com/whitepapers/latest/aws-overview/global-infrastructure.html)
 - AWS website: [AWS Regions and Availability Zones](https://aws.amazon.com/about-aws/global-infrastructure/regions_az/)
 - AWS reference guide: [AWS Service Endpoints](https://docs.aws.amazon.com/general/latest/gr/rande.html)
 - AWS website: [AWS Regional Services](https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services/)

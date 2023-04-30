@@ -438,4 +438,68 @@ The steps to add Network ACLs and create a Security Group to allow HTTPS on both
 That's it! You have now added Network ACLs to allow HTTPS on both inbound and outbound rules and created a Security Group to allow both HTTP and HTTPS requests.
 
 ### Relaunch employee directory app in the newly created vpc.
+
+### Create S3 bucket to be used by the app and relaunch instance updating instance data
+
+The example bucket policy to use for the S3 bucket is as follows below;
+
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "AllowS3Access",
+            "Effect": "Allow",
+            "Action": [
+                "s3:*"
+            ],
+            "Resource": [
+                "arn:aws:s3:::your-bucket-name/*"
+            ],
+            "Principal": {
+                "AWS": [
+                    "arn:aws:iam::123456789012:role/your-iam-role-name"
+                ]
+            }
+        }
+    ]
+}
+```
+
+**Explanation**
+In this policy:
+
+- "**Version**" specifies the version of the policy language being used.
+- "**Statement**" contains a single statement to allow S3 access.
+- "**Sid**" is a descriptive name for the statement.
+- "**Effect**" specifies whether the policy allows or denies the specified actions.
+- "**Action**" lists the AWS actions that the policy allows (in this case, all S3 actions).
+- "**Resource**" is the ARN of the S3 bucket resource that the policy applies to, including all objects within the bucket.
+- "**Principal**" specifies the IAM role that is allowed to access the S3 bucket resource.
+
+Make sure to replace "your-bucket-name" and "your-iam-role-name" with the actual values of your S3 bucket name and IAM role name, respectively. Also, make sure that the IAM role has the necessary permissions to access the S3 bucket resource.
+
+The steps to create an S3 bucket named "employee-photo-bucket" with the policy attached:
+
+1. Open the Amazon S3 console at https://console.aws.amazon.com/s3/.
+2. Click "Create bucket".
+3. In the "Create a bucket" dialog box, enter "employee-photo-bucket" as the bucket name.
+4. Select the region you want to create the bucket in.
+5. Click "Next".
+6. Configure the following settings:
+   - Set the "Versioning" option to "Disabled" (unless you need versioning for your use case).
+   - Set the "Server access logging" option to "Disabled" (unless you need server access logging for your use case).
+   - Set the "Tags" option to "None" (unless you need tags for your use case).
+   - Set the "Default encryption" option to "None" (unless you need default encryption for your use case).
+   - Set the "Public access" option to "Off" to ensure that the bucket is not publicly accessible.
+7. Click "Next".
+8. On the "Set permissions" page, select "Use this bucket to host a website" to configure static website hosting (unless you need a website for your use case).
+9. Click "Next".
+10. Review the settings and click "Create bucket".
+11. After the bucket is created, click on the "Permissions" tab.
+12. Click "Bucket Policy".
+13. Copy and paste the policy that you created earlier into the policy editor.
+14. Click "Save".
+
+Your S3 bucket is now created and the policy is attached. Make sure that the IAM role that you want to grant access to this S3 bucket has the necessary permissions to access the bucket.
     
