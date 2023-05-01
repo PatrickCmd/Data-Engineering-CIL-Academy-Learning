@@ -1964,3 +1964,50 @@ For more information, see the following resources:
 - AWS user guide: [AWS services that publish CloudWatch metrics](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/aws-services-cloudwatch-metrics.html)
 - AWS user guide: [View available metrics](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/viewing_metrics_with_cloudwatch.html)
 - AWS website: [Amazon SNS](https://aws.amazon.com/sns/)
+
+### Availability
+
+The availability of a system is typically expressed as a percentage of uptime in a given year or as a number of nines. In the following table is a list of availability percentages based on the downtime per year and its notation in nines. 
+
+|Availability (%)	|Downtime (per year) |
+|:------------------|:-------------------|
+|90% (one nine of availability) |36.53 days |
+|99% (two nines of availability) |3.65 days |
+|99.9% (three nines of availability) |8.77 hours |
+|99.95% (three and a half nines of availability) |4.38 hours |
+|99.99% (four nines of availability) |52.60 minutes |
+|99.995% (four and a half nines of availability) |26.30 minutes |
+|99.999% (five nines of availability) |5.26 minutes |
+
+To increase availability, you need redundancy. This typically means more infrastructure—more data centers, more servers, more databases, and more replication of data. You can imagine that adding more of this infrastructure means a higher cost. Customers want the application to always be available, but you need to draw a line where adding redundancy is no longer viable in terms of revenue.
+
+### Why improve application availability?
+
+In the current application, one EC2 instance hosts the application. The photos are served from Amazon S3, and the structured data is stored in Amazon DynamoDB. That single EC2 instance is a single point of failure for the application.
+
+Even if the database and Amazon S3 are highly available, customers have no way to connect if the single instance becomes unavailable. One way to solve this single point of failure issue is to add one more server in a second Availability Zone.
+
+### Adding a second Availability Zone
+
+The physical location of a server is important. In addition to potential software issues at the operating system (OS) or application level, you must also consider hardware issues. They might be in the physical server, the rack, the data center, or even the Availability Zone hosting the virtual machine. To remedy the physical location issue, you can deploy a second EC2 instance in a second Availability Zone. This second instance might also solve issues with the OS and the application.
+
+![Zone redundancy](images/aws/zone-redunancy.png)
+
+However, when there is more than one instance, it brings new challenges, such as the following:
+
+- **Replication process** – The first challenge with multiple EC2 instances is that you need to create a process to replicate the configuration files, software patches, and application across instances. The best method is to automate where you can.
+
+- **Customer redirection** – The second challenge is how to notify the clients—the computers sending requests to your server—about the different servers. You can use various tools here. The most common is using a Domain Name System (DNS) where the client uses one record that points to the IP address of all available servers.
+However, this method isn't always used because of propagation — the time frame it takes for DNS changes to be updated across the Internet.
+
+Another option is to use a load balancer, which takes care of health checks and distributing the load across each server. Situated between the client and the server, a load balancer avoids propagation time issues. You will learn more about load balancers in the next section.
+
+- **Types of high availability** – The last challenge to address when there is more than one server is the type of availability you need: active-passive or active-active.
+
+### Resources
+
+For more information, see the following resources:
+
+- AWS whitepaper: [High availability and scalability on AWS](https://docs.aws.amazon.com/whitepapers/latest/real-time-communication-on-aws/high-availability-and-scalability-on-aws.html)
+- AWS documentation: [Reliability Pillar – AWS Well-Architected Framework](https://docs.aws.amazon.com/wellarchitected/latest/reliability-pillar/welcome.html)
+- AWS website: [Amazon EC2 Auto Scaling](https://aws.amazon.com/ec2/autoscaling/)
