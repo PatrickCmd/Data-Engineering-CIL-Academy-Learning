@@ -128,3 +128,33 @@ The following example deletes all objects from `s3://bucket-name/example` using 
 ```sh
 aws s3 rm s3://bucket-name/example --recursive
 ```
+
+### Move objects
+
+Use the [s3 mv](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/s3/mv.html) command to move objects from a bucket or a local directory.
+
+**Syntax**
+
+```sh
+aws s3 mv <source> <target> [--options]
+```
+
+**s3 mv examples**
+
+The following example moves all objects from `s3://bucket-name/example` to `s3://my-bucket/`.
+
+```sh
+aws s3 mv s3://bucket-name/example s3://my-bucket/
+```
+
+The following example moves a local file from your current working directory to the Amazon S3 bucket with the `s3 mv` command.
+
+```sh
+aws s3 mv filename.txt s3://bucket-name
+```
+
+The following example moves a file from your Amazon S3 bucket to your current working directory, where `./` specifies your current working directory.
+
+```sh
+aws s3 mv s3://bucket-name/filename.txt ./
+```
