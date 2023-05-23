@@ -208,3 +208,283 @@ Here are key points to understand about NAT gateways in the context of AWS:
    In addition to NAT gateways, AWS also provides the option to use a NAT instance. A NAT instance is an EC2 instance that you configure and manage yourself to perform NAT functionality. While it offers more flexibility, it requires manual configuration and management compared to the fully managed NAT gateway service.
 
 NAT gateways play a critical role in enabling outbound internet connectivity for resources in private subnets within an AWS VPC. By leveraging NAT gateways, you can ensure that your private subnet instances have secure and controlled access to the internet while keeping their IP addresses hidden.
+
+## What are network access control lists?
+
+**Network Access Control Lists (NACLs)** are an essential component of the networking infrastructure in Amazon Web Services (AWS). NACLs act as a stateless firewall for controlling inbound and outbound traffic at the subnet level within a Virtual Private Cloud (VPC).
+
+Here are some key points to understand about NACLs:
+
+1. Subnet-level Security: 
+   NACLs operate at the subnet level, meaning they are associated with and control traffic for specific subnets within a VPC. Each subnet can be associated with only one NACL at a time.
+
+2. Statelessness: 
+   NACLs are stateless, which means that they do not keep track of the state of the network connections. Each network request is evaluated independently, and responses are not automatically allowed based on previous traffic.
+
+3. Rule Evaluation Order: 
+   NACLs have numbered rules that are evaluated in ascending order. The evaluation stops at the first matching rule, either allowing or denying the traffic. It is important to plan the rule order carefully to avoid unintended consequences.
+
+4. Inbound and Outbound Rules: 
+   NACLs have separate sets of rules for inbound and outbound traffic. Inbound rules control traffic coming into the subnet, while outbound rules govern traffic leaving the subnet.
+
+5. Allow and Deny Actions: 
+   Each rule in an NACL specifies an action: either "allow" or "deny." If a rule denies a packet, it is immediately blocked, and no further rules are evaluated. Rules that allow packets allow the traffic to proceed to the next rule or to its destination.
+
+6. Rule Definitions: 
+   NACL rules are defined using IP address ranges (CIDR blocks) and protocol/port combinations. You can specify source and destination IP addresses, port ranges, and protocol types (e.g., TCP, UDP) to control traffic flow.
+
+7. Implicit Deny: 
+   By default, an NACL denies all inbound and outbound traffic unless explicitly allowed by the rules. This "implicit deny" ensures that any traffic not explicitly permitted is automatically blocked.
+
+8. Association with Subnets: 
+   Each subnet must be associated with an NACL. If no NACL is explicitly associated with a subnet, AWS applies a default NACL that allows all inbound and outbound traffic.
+
+9. Logging: 
+   NACLs have an option to enable logging, which allows you to capture information about the traffic that matches the rules. The logs can be stored in an Amazon S3 bucket for analysis and monitoring purposes.
+
+NACLs provide an additional layer of security and control at the subnet level within AWS VPCs. By configuring the appropriate rules in NACLs, you can define granular inbound and outbound traffic policies for your subnets, enhancing the overall security of your network infrastructure.
+
+
+# Launch A VPC, Subnets, EC2 Instances, Internet Gateway, Route Tables, Security Groups and NAT Gateway
+
+**Resources**
+- [Amazon VPC User guide](https://docs.aws.amazon.com/vpc/latest/userguide/what-is-amazon-vpc.html)
+- [AWS Networking Basics for Programmers | Hands On - Travis Media](https://www.youtube.com/watch?v=2doSoMN2xvI)
+
+
+![AWS Networking](images/AWS%20Networking%20Basics.png)
+
+See AWS Architecture diagram [here](https://lucid.app/lucidchart/4cb01ec3-ebd9-475f-8343-f05b213d1c8a/edit?viewport_loc=-11%2C-8%2C2219%2C1040%2C0_0&invitationId=inv_1b753718-8561-47c6-8f6d-ebbe109b3be3)
+
+**Launch a vpc in the us-east-1 with cidr range 10.0.0.0/16 having one public subnet cidr range 10.0.0.0/24 and private subnet cidr range 10.0.1.0/24 in the same az us-east-1a**
+
+To launch a VPC in the us-east-1 region with a CIDR range of 10.0.0.0/16, a public subnet with a CIDR range of 10.0.0.0/24, and a private subnet with a CIDR range of 10.0.1.0/24 in the same availability zone (us-east-1a) using the AWS Management Console, follow these steps:
+
+1. Sign in to the AWS Management Console:
+   Go to the AWS Management Console (https://console.aws.amazon.com) and sign in with your AWS account credentials.
+
+2. Open the VPC Dashboard:
+   From the AWS Management Console, navigate to the VPC service by searching for "VPC" or locating it under the "Networking & Content Delivery" category.
+
+3. Create a VPC:
+   In the VPC Dashboard, click on "Create VPC" to start the VPC creation wizard.
+
+   ![AWS VPC](images/vpc-1.png)
+
+4. Configure VPC settings:
+   Fill in the following details:
+   - VPC name: Provide a name for your VPC (optional).
+   - IPv4 CIDR block: Enter "10.0.0.0/16" as the CIDR block.
+
+5. Enable DNS hostnames:
+   Select the option to enable DNS hostnames for the VPC. This allows instances in the VPC to have DNS hostnames automatically assigned.
+
+6. Create the VPC:
+   Click on the "Create" button to create the VPC with the specified settings.
+
+   ![AWS VPC](images/vpc-1.png)
+
+7. Create a public subnet:
+   In the VPC Dashboard, click on "Subnets" in the left-hand menu, then click on "Create subnet".
+
+8. Configure public subnet settings:
+   Fill in the following details:
+   - Name tag: Provide a name for the subnet (optional).
+   - VPC: Select the VPC you created in step 4.
+   - Availability Zone: Choose "us-east-1a" from the available options.
+   - IPv4 CIDR block: Enter "10.0.0.0/24" as the CIDR block.
+
+   ![AWS VPC](images/vpc-3-public-subnet.png)
+
+9. Create the public subnet:
+   Click on the "Create" button to create the public subnet with the specified settings.
+
+10. Create a private subnet:
+    Repeat steps 7 and 8 to create the private subnet with the following settings:
+    - Name tag: Provide a name for the subnet (optional).
+    - VPC: Select the VPC you created in step 4.
+    - Availability Zone: Choose "us-east-1a" from the available options.
+    - IPv4 CIDR block: Enter "10.0.1.0/24" as the CIDR block.
+
+    ![AWS VPC](images/vpc-4-private-subnet.png)
+
+11. Create the private subnet:
+    Click on the "Create" button to create the private subnet with the specified settings.
+
+    ![AWS VPC](images/vpc-5-subnets.png)
+
+    ![AWS VPC](images/vpc-6-subnets.PNG)
+
+Now you have successfully launched a VPC in the us-east-1 region with the desired CIDR range and two subnets (one public and one private) in the same availability zone (us-east-1a). You can proceed to configure other resources like route tables, internet gateways, and NAT gateways as needed to enable connectivity and control traffic between the subnets.
+
+**AWS CLI command to automate the steps above**
+
+1. Create the VPC returning vpc id
+
+```sh
+VPC_NAME=NetworkVPC
+VPC_CIDR=10.0.0.0/16
+VPC_ID=$(aws ec2 create-vpc \
+    --cidr-block $VPC_CIDR \
+    --tag-specification "ResourceType=vpc,Tags=[{Key=Name,Value=$VPC_NAME}]" \
+	--query 'Vpc.VpcId' --output text)
+echo $VPC_ID
+```
+
+2. Enable DNS hostnames for the VPC:
+
+```sh
+aws ec2 modify-vpc-attribute --vpc-id $VPC_ID \
+	--enable-dns-hostnames "{\"Value\": true}" \
+	--region us-east-1
+```
+
+3. Create the public subnet:
+
+```sh
+PUBLIC_SUBNET_CIDR=10.0.0.0/24
+PUBLIC_SUBNET_NAME=PublicSubnet
+REGION=us-east-1
+ZONE=${REGION}a
+PUBLIC_SUBNET_ID=$(aws ec2 create-subnet \
+    --vpc-id $VPC_ID \
+    --cidr-block $PUBLIC_SUBNET_CIDR \
+	--availability-zone $ZONE \
+	--region $REGION \
+    --tag-specifications "ResourceType=subnet,Tags=[{Key=Name,Value=$PUBLIC_SUBNET_NAME}]" \
+	--query 'Subnet.SubnetId' --output text)
+echo $PUBLIC_SUBNET_ID
+```
+
+4. Create the private subnet:
+
+```sh
+PRIVATE_SUBNET_CIDR=10.0.1.0/24
+PRIVATE_SUBNET_NAME=PrivateSubnet
+REGION=us-east-1
+ZONE=${REGION}a
+PRIVATE_SUBNET_ID=$(aws ec2 create-subnet \
+    --vpc-id $VPC_ID \
+    --cidr-block $PRIVATE_SUBNET_CIDR \
+	--availability-zone $ZONE \
+	--region $REGION \
+    --tag-specifications "ResourceType=subnet,Tags=[{Key=Name,Value=$PRIVATE_SUBNET_NAME}]" \
+	--query 'Subnet.SubnetId' --output text)
+echo $PRIVATE_SUBNET_ID
+```
+
+These commands will automate the process of creating a VPC, enabling DNS hostnames, and creating the public and private subnets in the specified configuration within the us-east-1 region.
+
+
+**Launch an ec2 instance named `vpc-public-network-instance` with a key pair in the public subnet of the vpc. Add a security group which allows inbound traffic on port 22**.
+
+To launch an EC2 instance named `vpc-public-network-instance` with a key pair in the public subnet of your VPC and add a security group that allows inbound traffic on port 22, follow these steps using the AWS Management Console:
+
+1. Sign in to the AWS Management Console:
+   Go to the AWS Management Console (https://console.aws.amazon.com) and sign in with your AWS account credentials.
+
+2. Open the EC2 Dashboard:
+   From the AWS Management Console, navigate to the EC2 service by searching for "EC2" or locating it under the "Compute" category.
+
+3. Launch an EC2 instance:
+   Click on the "Instances" link in the left-hand menu, then click on the "Launch Instance" button.
+
+4. Choose an Amazon Machine Image (AMI):
+   Select an appropriate AMI based on your requirements. Choose the desired AMI and click on the "Select" button.
+
+5. Choose an Instance Type:
+   Select the desired instance type for your EC2 instance, then click on the "Next: Configure Instance Details" button.
+
+6. Configure Instance Details:
+   In the "Configure Instance Details" section:
+   - Network: Select the VPC you created earlier.
+   - Subnet: Choose the public subnet you created in the desired availability zone.
+   - Auto-assign Public IP: Select "Enable" to assign a public IP address to the instance.
+   - Advanced Details: You can optionally specify additional settings here.
+
+   ![EC2 instance](images/vpc-7-launch-ec2-instance.png)
+
+
+   ![EC2 instance](images/vpc-8-launch-ec2-instance.png)
+
+   Once configured, click on the "Next: Add Storage" button.
+
+7. Add Storage:
+   Configure the storage options for your instance as per your requirements. Set the desired storage size, type, and other settings. Click on the "Next: Add Tags" button to proceed.
+
+8. Add Tags:
+   Add any desired tags to help identify and manage your instance (e.g., Name = vpc-network-instance). Click on the "Next: Configure Security Group" button.
+
+9. Configure Security Group:
+   In the "Configure Security Group" section:
+   - Select "Create a new security group."
+   - Security group name: Provide a name for the security group.
+   - Description: Add an optional description.
+
+   ![EC2 instance](images/vpc-9-launch-ec2-instance.png)
+
+   Add an inbound rule to allow SSH traffic (port 22) by clicking on "Add Rule" and selecting "SSH" from the dropdown. This will allow SSH access to the instance.
+
+   Once the security group is configured, click on the "Review and Launch" button.
+
+10. Review Instance Launch:
+    Review the configuration details of your EC2 instance. If everything looks correct, click on the "Launch" button.
+
+11. Select a Key Pair:
+    Choose an existing key pair or create a new one to securely access your EC2 instance. Select the desired option and proceed.
+
+12. Launch Status:
+    A confirmation screen will appear. Click on the "View Instances" button to see the status of your launched EC2 instance.
+
+    ![EC2 instance](images/vpc-10-launch-ec2-instance.png)
+
+Congratulations! You have launched an EC2 instance named `vpc-public-network-instance` in the public subnet of your VPC, with a key pair and a security group allowing inbound SSH traffic on port 22. You can now access the instance using SSH with the associated key pair.
+
+
+**AWS CLI Commands to automate launch EC2 instance**
+
+To automate the process of launching an EC2 instance named `vpc-public-network-instance` with a key pair in the public subnet of your VPC and adding a security group that allows inbound traffic on port `22` using the AWS CLI, you can use the following commands:
+
+1. Create the security group:
+
+```sh
+PUB_SECURITY_GROUP_NAME=PublicSG
+PUBLIC_SG_ID=$(aws ec2 create-security-group \
+  --group-name $PUB_SECURITY_GROUP_NAME \
+  --description "Allow SSH access" \
+  --vpc-id $VPC_ID \
+  --query 'GroupId' --output text)
+echo $PUBLIC_SG_ID
+```
+
+2. Authorize inbound SSH traffic on port 22 for the security group:
+
+```sh
+aws ec2 authorize-security-group-ingress \
+  --group-id $PUBLIC_SG_ID \
+  --protocol tcp \
+  --port 22 \
+  --cidr 0.0.0.0/0
+```
+
+3. Create the EC2 instance:
+
+```sh
+INSTANCE_NAME=vpc-public-network-instance
+INSTANCE_TYPE=t2.micro
+KEY_PAIR_NAME=employee-web-app
+AMI_ID=ami-053b0d53c279acc90
+INSTANCE_ID=$(aws ec2 run-instances \
+    --image-id $AMI_ID \
+    --count 1 \
+    --instance-type $INSTANCE_TYPE \
+    --key-name $KEY_PAIR_NAME \
+    --security-group-ids $PUBLIC_SG_ID \
+    --subnet-id $PUBLIC_SUBNET_ID \
+    --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=$INSTANCE_NAME}]" \
+    --output text --query 'Instances[0].InstanceId'
+)
+echo $INSTANCE_ID
+```
+
+
