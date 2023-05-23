@@ -158,3 +158,260 @@ The following example moves a file from your Amazon S3 bucket to your current wo
 ```sh
 aws s3 mv s3://bucket-name/filename.txt ./
 ```
+
+### Copy objects
+
+Use the [s3 cp](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/s3/cp.html) command to copy objects from a bucket or a local directory.
+
+**Syntax**
+
+```sh
+aws s3 cp <source> <target> [--options]
+```
+
+You can use the dash parameter for file streaming to standard input (`stdin`) or standard output (`stdout`).
+
+The `s3 cp` command uses the following syntax to upload a file stream from stdin to a specified bucket.
+
+**Syntax**
+
+```sh
+aws s3 cp - <target> [--options]
+```
+
+The `s3 cp` command uses the following syntax to download an Amazon S3 file stream for stdout.
+
+**Syntax**
+
+```sh
+aws s3 cp <target> [--options] -
+```
+
+**s3 cp examples**
+
+The following example copies all objects from `s3://bucket-name/example` to `s3://my-bucket/`.
+
+```sh
+aws s3 cp s3://bucket-name/example s3://my-bucket/
+```
+
+The following example copies a local file from your current working directory to the Amazon S3 bucket with the `s3 cp` command.
+
+```sh
+aws s3 cp filename.txt s3://bucket-name
+```
+
+```sh
+aws s3 cp aws-overview.pdf s3://$BUCKETNAME
+```
+
+The following example copies a file from your Amazon S3 bucket to your current working directory, where `./` specifies your current working directory.
+
+```sh
+aws s3 cp s3://bucket-name/filename.txt ./
+```
+
+The following example uses echo to stream the text "hello world" to the `s3://bucket-name/filename.txt` file.
+
+```sh
+echo "hello world" | aws s3 cp - s3://bucket-name/filename.txt
+```
+
+```sh
+echo "hello world" | aws s3 cp - s3://${BUCKETNAME}/filename.txt
+```
+
+The following example streams the `s3://bucket-name/filename.txt` file to `stdout` and prints the contents to the console.
+
+```sh
+aws s3 cp s3://bucket-name/filename.txt -
+```
+
+```sh
+aws s3 cp s3://${BUCKETNAME}/filename.txt -
+```
+
+The following example streams the contents of `s3://bucket-name/pre` to `stdout`, uses the `bzip2` command to compress the files, and uploads the new compressed file named `key.bz2` to `s3://bucket-name`.
+
+```sh
+aws s3 cp s3://bucket-name/pre - | bzip2 --best | aws s3 cp - s3://bucket-name/key.bz2
+```
+
+### Sync objects
+
+The [s3 sync](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/s3/sync.html) command synchronizes the contents of a bucket and a directory, or the contents of two buckets. Typically, `s3 sync` copies missing or outdated files or objects between the source and target. However, you can also supply the `--delete` option to remove files or objects from the target that are not present in the source.
+
+**Syntax**
+
+```sh
+aws s3 sync <source> <target> [--options]
+```
+
+**s3 sync examples**
+
+The following example synchronizes the contents of an Amazon S3 prefix named path in the bucket named my-bucket with the current working directory.
+
+`s3 sync` updates any files that have a size or modified time that are different from files with the same name at the destination. The output displays specific operations performed during the sync. Notice that the operation recursively synchronizes the subdirectory `MySubdirectory` and its contents with `s3://my-bucket/path/MySubdirectory`.
+
+```sh
+aws s3 sync . s3://my-bucket/path
+upload: MySubdirectory\MyFile3.txt to s3://my-bucket/path/MySubdirectory/MyFile3.txt
+upload: MyFile2.txt to s3://my-bucket/path/MyFile2.txt
+upload: MyFile1.txt to s3://my-bucket/path/MyFile1.txt
+```
+
+```sh
+LOCALPATH='aws/employee-directory-app-hosting/images/'
+aws s3 sync $LOCALPATH s3://${BUCKETNAME}/aws_images
+```
+
+The following example, which extends the previous one, shows how to use the `--delete` option.
+
+```sh
+// Delete local file
+rm ./MyFile1.txt
+
+// Attempt sync without --delete option - nothing happens
+aws s3 sync . s3://my-bucket/path
+
+// Sync with deletion - object is deleted from bucket
+aws s3 sync . s3://my-bucket/path --delete
+delete: s3://my-bucket/path/MyFile1.txt
+
+// Delete object from bucket
+aws s3 rm s3://my-bucket/path/MySubdirectory/MyFile3.txt
+delete: s3://my-bucket/path/MySubdirectory/MyFile3.txt
+
+// Sync with deletion - local file is deleted
+aws s3 sync s3://my-bucket/path . --delete
+delete: MySubdirectory\MyFile3.txt
+
+// Sync with Infrequent Access storage class
+$ aws s3 sync . s3://my-bucket/path --storage-class STANDARD_IA
+```
+
+When using the `--delete` option, the `--exclude` and `--include` options can filter files or objects to delete during an `s3 sync` operation. In this case, the parameter string must specify files to exclude from, or include for, deletion in the context of the target directory or bucket. The following shows an example.
+
+```sh
+Assume local directory and s3://my-bucket/path currently in sync and each contains 3 files:
+MyFile1.txt
+MyFile2.rtf
+MyFile88.txt
+'''
+
+// Sync with delete, excluding files that match a pattern. MyFile88.txt is deleted, while remote MyFile1.txt is not.
+aws s3 sync . s3://my-bucket/path --delete --exclude "path/MyFile?.txt"
+delete: s3://my-bucket/path/MyFile88.txt
+'''
+
+// Sync with delete, excluding MyFile2.rtf - local file is NOT deleted
+aws s3 sync s3://my-bucket/path . --delete --exclude "./MyFile2.rtf"
+download: s3://my-bucket/path/MyFile1.txt to MyFile1.txt
+'''
+
+// Sync with delete, local copy of MyFile2.rtf is deleted
+aws s3 sync s3://my-bucket/path . --delete
+delete: MyFile2.rtf
+```
+
+## Frequently used options for s3 commands
+
+The following options are frequently used for the commands described in this topic. For a complete list of options you can use on a command, see the specific command in the [AWS CLI version 2 reference guide](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html).
+
+### acl
+`s3 sync` and `s3 cp` can use the `--acl` option. This enables you to set the access permissions for files copied to Amazon S3. The `--acl` option accepts `private`, `public-read`, and `public-read-write` values. For more information, see [Canned ACL](https://docs.aws.amazon.com/AmazonS3/latest/dev/acl-overview.html#canned-acl) in the Amazon Simple Storage Service User Guide.
+
+```sh
+aws s3 sync . s3://my-bucket/path --acl public-read
+```
+
+### exclude
+When you use the `s3 cp`, `s3 mv`, `s3 sync`, or `s3 rm` command, you can filter the results by using the `--exclude` or `--include` option. The `--exclude` option sets rules to only exclude objects from the command, and the options apply in the order specified. This is shown in the following example.
+
+```sh
+Local directory contains 3 files:
+MyFile1.txt
+MyFile2.rtf
+MyFile88.txt
+
+// Exclude all .txt files, resulting in only MyFile2.rtf being copied
+aws s3 cp . s3://my-bucket/path --exclude "*.txt"
+
+// Exclude all .txt files but include all files with the "MyFile*.txt" format, resulting in, MyFile1.txt, MyFile2.rtf, MyFile88.txt being copied
+aws s3 cp . s3://my-bucket/path --exclude "*.txt" --include "MyFile*.txt"
+
+// Exclude all .txt files, but include all files with the "MyFile*.txt" format, but exclude all files with the "MyFile?.txt" format resulting in, MyFile2.rtf and MyFile88.txt being copied
+aws s3 cp . s3://my-bucket/path --exclude "*.txt" --include "MyFile*.txt" --exclude "MyFile?.txt"
+```
+
+### include
+When you use the `s3 cp`, `s3 mv`, `s3 sync`, or `s3 rm` command, you can filter the results using the `--exclude` or `--include` option. The `--include` option sets rules to only include objects specified for the command, and the options apply in the order specified. This is shown in the following example.
+
+```sh
+Local directory contains 3 files:
+MyFile1.txt
+MyFile2.rtf
+MyFile88.txt
+
+// Include all .txt files, resulting in MyFile1.txt and MyFile88.txt being copied
+aws s3 cp . s3://my-bucket/path --include "*.txt"
+
+// Include all .txt files but exclude all files with the "MyFile*.txt" format, resulting in no files being copied
+aws s3 cp . s3://my-bucket/path --include "*.txt" --exclude "MyFile*.txt"
+
+// Include all .txt files, but exclude all files with the "MyFile*.txt" format, but include all files with the "MyFile?.txt" format resulting in MyFile1.txt being copied
+
+aws s3 cp . s3://my-bucket/path --include "*.txt" --exclude "MyFile*.txt" --include "MyFile?.txt"
+```
+
+### grant
+The `s3 cp`, `s3 mv`, and `s3 sync` commands include a `--grants` option that you can use to grant permissions on the object to specified users or groups. Set the `--grants` option to a list of permissions using the following syntax. Replace Permission, `Grantee_Type`, and `Grantee_ID` with your own values.
+
+**Syntax**
+
+```sh
+--grants Permission=Grantee_Type=Grantee_ID
+         [Permission=Grantee_Type=Grantee_ID ...]
+```
+
+Each value contains the following elements:
+
+- `Permission` – Specifies the granted permissions. Can be set to `read`, `readacl`, `writeacl`, or `full`.
+
+- `Grantee_Type` – Specifies how to identify the grantee. Can be set to `uri`, `emailaddress`, or `id`.
+
+- `Grantee_ID` – Specifies the grantee based on `Grantee_Type`.
+
+    - `uri` – The group's URI. For more information, see [Who is a grantee](https://docs.aws.amazon.com/AmazonS3/latest/dev/ACLOverview.html#SpecifyingGrantee)?
+
+    - `emailaddress` – The account's email address.
+
+    - `id` – The account's canonical ID.
+
+For more information about Amazon S3 access control, see [Access control](https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingAuthAccess.html).
+
+
+The following example copies an object into a bucket. It grants `read` permissions on the object to everyone, and `full` permissions (`read`, `readacl`, and `writeacl`) 
+to the account associated with `user@example.com`.
+
+```sh
+aws s3 cp file.txt s3://my-bucket/ --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers full=emailaddress=user@example.com
+```
+
+You can also specify a nondefault storage class (`REDUCED_REDUNDANCY` or `STANDARD_IA`) for objects that you upload to Amazon S3. To do this, use the `--storage-class` option.
+
+```sh
+aws s3 cp file.txt s3://my-bucket/ --storage-class REDUCED_REDUNDANCY
+```
+
+### recursive
+When you use this option, the command is performed on all files or objects under the specified directory or prefix. 
+The following example deletes `s3://my-bucket/path` and all of its contents.
+
+```sh
+aws s3 rm s3://my-bucket/path --recursive
+```
+
+```sh
+aws s3 rm s3://${BUCKETNAME}/aws_images --recursive
+```
