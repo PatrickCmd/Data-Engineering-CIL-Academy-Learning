@@ -564,3 +564,51 @@ Now, the Internet Gateway is created, attached to your VPC, and the route table 
 Also now connectiong to our instance goes through and  we can do some updates to the instance packages.
 
 ![EC2 instance connect](images/vpc-23-ec2-instant-connect.png)
+
+**AWS CLI to automate create an internet gateway, attaching to vpc and route tables**
+
+To automate the process of creating an `Internet Gateway`, attaching it to an existing `VPC`, and associating the `public subnet` with the Internet Gateway using the AWS CLI, you can use the following commands:
+
+1. Create an Internet Gateway:
+
+```sh
+IGW_NAME=vpc-network-igw
+IGW_ID=$(aws ec2 create-internet-gateway \
+    --tag-specifications "ResourceType=internet-gateway,Tags=[{Key=Name,Value=$IGW_NAME}]" \
+	--query 'InternetGateway.InternetGatewayId' --output text)
+echo $IGW_ID
+```
+
+2. Attach the Internet Gateway to the VPC:
+
+```sh
+aws ec2 attach-internet-gateway \
+	--internet-gateway-id $IGW_ID \
+	--vpc-id $VPC_ID
+```
+
+3. Create a Route Table for the VPC:
+
+```sh
+PUB_RT_ID=$(aws ec2 create-route-table \
+	--vpc-id $VPC_ID \
+	--query 'RouteTable.RouteTableId' --output text)
+echo $PUB_RT_ID
+```
+
+4. Create a route in the Route Table to route traffic to the Internet Gateway:
+
+```sh
+aws ec2 create-route \
+	--route-table-id  $PUB_RT_ID \
+	--destination-cidr-block 0.0.0.0/0 \
+	--gateway-id $IGW_ID
+```
+
+5. Associate the Route Table with the public subnet:
+
+```sh
+aws ec2 associate-route-table \
+	--subnet-id $PUBLIC_SUBNET_ID \
+	--route-table-id $PUB_RT_ID
+```
