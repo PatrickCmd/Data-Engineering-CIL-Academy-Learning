@@ -487,4 +487,80 @@ INSTANCE_ID=$(aws ec2 run-instances \
 echo $INSTANCE_ID
 ```
 
+Trying to connect to the created instance through `EC2 instance connect`. This because our instance has no way to reach out to internet.
 
+![EC2 instance](images/vpc-11-launch-ec2-instance-connect.png)
+
+![EC2 instance](images/vpc-12-launch-ec2-instance-connect.png)
+
+To resolve this, we need an internet gateway with proper route table configurations.
+
+**Create an internet gateway attaching it to the already created vpc with a route table associating the public subnet to the internet gateway**
+
+To create an Internet Gateway, attach it to an existing VPC, and associate the public subnet with the Internet Gateway using the AWS Management Console, follow these steps:
+
+1. Sign in to the AWS Management Console:
+   Go to the AWS Management Console (https://console.aws.amazon.com) and sign in with your AWS account credentials.
+
+2. Open the VPC Dashboard:
+   From the AWS Management Console, navigate to the VPC service by searching for "VPC" or locating it under the "Networking & Content Delivery" category.
+
+3. Create an Internet Gateway:
+   In the VPC Dashboard, click on "Internet Gateways" in the left-hand menu, then click on the "Create internet gateway" button.
+
+4. Provide a name for the Internet Gateway (optional):
+   You can provide a name for the Internet Gateway to help identify it.
+
+5. Create the Internet Gateway:
+   Click on the "Create" button to create the Internet Gateway.
+
+   ![Internet Gateway](images/vpc-13-internet-gateway.png)
+
+6. Attach the Internet Gateway to the VPC:
+   Select the newly created Internet Gateway from the list, then click on the "Actions" button and choose "Attach to VPC".
+
+   ![Internet Gateway](images/vpc-14-internet-gateway-attach-vpc.png)
+
+7. Select the VPC to attach:
+   In the "Attach to VPC" window, select the VPC that you want to associate with the Internet Gateway, then click on the "Attach" button.
+
+   ![Internet Gateway](images/vpc-15-internet-gateway-attach-vpc.png)
+
+8. Open the Route Tables section:
+   In the VPC Dashboard, click on "Route Tables" in the left-hand menu.
+
+   ![Route Table](images/vpc-16-route-table.png)
+
+9. Select the route table associated with the public subnet:
+   Identify the route table associated with the public subnet you created earlier. Click on the route table ID to open its details.
+
+   ![Route Table](images/vpc-17-route-table.png)
+
+   ![Route Table](images/vpc-18-route-table-subnet-associations.png)
+
+   ![Route Table](images/vpc-19-route-table-subnet-associations.png)
+
+10. Edit the route table:
+    In the "Routes" tab of the route table details, click on the "Edit routes" button.
+
+11. Add a new route:
+    Click on the "Add route" button and provide the following information:
+    - Destination: Enter `0.0.0.0/0` to represent all traffic.
+    - Target: Choose the Internet Gateway you created and associated with the VPC.
+   
+   ![Route Table](images/vpc-20-route-table-route-igw.png)
+
+   ![Route Table](images/vpc-21-route-table-route-igw.png)
+
+12. Save the route:
+    Click on the "Save routes" button to save the new route in the route table.
+   
+   ![Route Table](images/vpc-22-route-table-route-igw.PNG)
+
+   ![Route Table](images/vpc-22-route-table-private.PNG)
+
+Now, the Internet Gateway is created, attached to your VPC, and the route table associated with the public subnet is configured to direct internet-bound traffic through the Internet Gateway. The public subnet is now able to communicate with the internet.
+
+Also now connectiong to our instance goes through and  we can do some updates to the instance packages.
+
+![EC2 instance connect](images/vpc-23-ec2-instant-connect.png)
