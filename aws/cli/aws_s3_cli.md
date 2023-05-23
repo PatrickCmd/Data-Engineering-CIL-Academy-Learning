@@ -471,3 +471,42 @@ The `logging.json` file in the previous command has the following content.
   }
 }
 ```
+
+### Amazon S3 bucket lifecycle operations scripting example
+
+This topic uses a bash scripting example for Amazon S3 bucket lifecycle operations using the AWS Command Line Interface (AWS CLI). 
+This scripting example uses the [aws s3api](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/s3api/index.html) set of commands. Shell scripts are programs designed to run in a command line interface.
+
+**About this example**
+
+This example demonstrates how to interact with some of the basic Amazon S3 operations using a set of functions in shell script files. The functions are located in the shell script file named `bucket-operations.sh`. You can call these functions in another file. Each script file contains comments describing each of the functions.
+
+To see the intermediate results of each step, run the script with a `-i` parameter. You can view the current status of the bucket or its contents using the Amazon S3 console. The script only proceeds to the next step when you press enter at the prompt.
+
+For the full example and downloadable script files, see [Amazon S3 Bucket Lifecycle Operations](https://github.com/awsdocs/aws-doc-sdk-examples/tree/main/aws-cli/bash-linux/s3/bucket-lifecycle-operations) in the AWS Code Examples Repository on GitHub.
+
+### Files
+The example contains the following files:
+
+**bucket-operations.sh**
+This main script file can be sourced from another file. It includes functions that perform the following tasks:
+
+- Creating a bucket and verifying that it exists
+
+- Copying a file from the local computer to a bucket
+
+- Copying a file from one bucket location to a different bucket location
+
+- Listing the contents of a bucket
+
+- Deleting a file from a bucket
+
+- Deleting a bucket
+
+**test-bucket-operations.sh**
+
+The shell script file `test-bucket-operations.sh` demonstrates how to call the functions by sourcing the `bucket-operations.sh` file and calling each of the functions. After calling functions, the test script removes all resources that it created.
+
+**awsdocs-general.sh**
+
+The script file `awsdocs-general.sh` holds general purpose functions used across advanced code examples for the AWS CLI.
