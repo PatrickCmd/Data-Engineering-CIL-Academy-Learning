@@ -5,9 +5,11 @@ from PIL import Image
 
 EXIF_ORIENTATION = 274  # Magic numbers from http://www.exiv2.org/tags.html
 
+
 def random_hex_bytes(n_bytes):
     """Create a hex encoded string of random bytes"""
     return os.urandom(n_bytes).hex()
+
 
 def resize_image(file_p, size):
     """Resize an image to fit within the size, and save to the path directory"""
@@ -36,17 +38,19 @@ def resize_image(file_p, size):
     if image.size < size:
         new_width, new_height = image.size
     elif dest_ratio > source_ratio:
-        new_width = int(image.size[0] * size[1]/float(image.size[1]))
+        new_width = int(image.size[0] * size[1] / float(image.size[1]))
         new_height = size[1]
     else:
         new_width = size[0]
-        new_height = int(image.size[1] * size[0]/float(image.size[0]))
+        new_height = int(image.size[1] * size[0] / float(image.size[0]))
     image = image.resize((new_width, new_height), resample=Image.LANCZOS)
 
     final_image = Image.new("RGBA", size)
-    topleft = (int((size[0]-new_width) / float(2)),
-               int((size[1]-new_height) / float(2)))
+    topleft = (
+        int((size[0] - new_width) / float(2)),
+        int((size[1] - new_height) / float(2)),
+    )
     final_image.paste(image, topleft)
     bytes_stream = BytesIO()
-    final_image.save(bytes_stream, 'PNG')
+    final_image.save(bytes_stream, "PNG")
     return bytes_stream.getvalue()

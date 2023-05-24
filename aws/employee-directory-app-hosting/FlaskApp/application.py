@@ -4,7 +4,15 @@ import os
 import subprocess
 import urllib.request
 
-from flask import Flask, render_template, render_template_string, url_for, redirect, flash, g
+from flask import (
+    Flask,
+    render_template,
+    render_template_string,
+    url_for,
+    redirect,
+    flash,
+    g,
+)
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField
 from wtforms import StringField, HiddenField, validators
@@ -34,29 +42,32 @@ availablity_zone = json.loads(doc)["availabilityZone"]
 instance_id = json.loads(doc)["instanceId"]
 
 badges = {
-    "apple" : "Mac User",
-    "windows" : "Windows User",
-    "linux" : "Linux User",
-    "video-camera" : "Digital Content Star",
-    "trophy" : "Employee of the Month",
-    "camera" : "Photographer",
-    "plane" : "Frequent Flier",
-    "paperclip" : "Paperclip Afficionado",
-    "coffee" : "Coffee Snob",
-    "gamepad" : "Gamer",
-    "bug" : "Bugfixer",
-    "umbrella" : "Seattle Fan",
+    "apple": "Mac User",
+    "windows": "Windows User",
+    "linux": "Linux User",
+    "video-camera": "Digital Content Star",
+    "trophy": "Employee of the Month",
+    "camera": "Photographer",
+    "plane": "Frequent Flier",
+    "paperclip": "Paperclip Afficionado",
+    "coffee": "Coffee Snob",
+    "gamepad": "Gamer",
+    "bug": "Bugfixer",
+    "umbrella": "Seattle Fan",
 }
+
 
 ### FlaskForm set up
 class EmployeeForm(FlaskForm):
     """flask_wtf form class"""
+
     employee_id = HiddenField()
-    photo = FileField('image')
-    full_name = StringField(u'Full Name', [validators.InputRequired()])
-    location = StringField(u'Location', [validators.InputRequired()])
-    job_title = StringField(u'Job Title', [validators.InputRequired()])
-    badges = HiddenField(u'Badges')
+    photo = FileField("image")
+    full_name = StringField("Full Name", [validators.InputRequired()])
+    location = StringField("Location", [validators.InputRequired()])
+    job_title = StringField("Job Title", [validators.InputRequired()])
+    badges = HiddenField("Badges")
+
 
 @application.before_request
 def before_request():
@@ -64,31 +75,38 @@ def before_request():
     g.availablity_zone = availablity_zone
     g.instance_id = instance_id
 
+
 @application.route("/")
 def home():
     "Home screen"
-    s3_client = boto3.client('s3')
+    s3_client = boto3.client("s3")
     employees = database.list_employees()
     if employees == 0:
-        return render_template_string("""        
+        return render_template_string(
+            """        
         {% extends "main.html" %}
         {% block head %}
         Employee Directory - Home
         <a class="btn btn-primary float-right" href="{{ url_for('add') }}">Add</a>
         {% endblock %}
-        """)
+        """
+        )
     else:
         for employee in employees:
             try:
                 if "object_key" in employee and employee["object_key"]:
                     employee["signed_url"] = s3_client.generate_presigned_url(
-                        'get_object',
-                        Params={'Bucket': config.PHOTOS_BUCKET, 'Key': employee["object_key"]}
+                        "get_object",
+                        Params={
+                            "Bucket": config.PHOTOS_BUCKET,
+                            "Key": employee["object_key"],
+                        },
                     )
-            except: 
+            except:
                 pass
 
-    return render_template_string("""
+    return render_template_string(
+        """
         {% extends "main.html" %}
         {% block head %}
         Employee Directory - Home
@@ -122,7 +140,11 @@ def home():
             </table>
 
         {% endblock %}
-    """, employees=employees, badges=badges)
+    """,
+        employees=employees,
+        badges=badges,
+    )
+
 
 @application.route("/add")
 def add():
@@ -130,33 +152,37 @@ def add():
     form = EmployeeForm()
     return render_template("view-edit.html", form=form, badges=badges)
 
+
 @application.route("/edit/<employee_id>")
 def edit(employee_id):
     "Edit an employee"
-    s3_client = boto3.client('s3')
+    s3_client = boto3.client("s3")
     employee = database.load_employee(employee_id)
     signed_url = None
     if "object_key" in employee and employee["object_key"]:
         signed_url = s3_client.generate_presigned_url(
-            'get_object',
-            Params={'Bucket': config.PHOTOS_BUCKET, 'Key': employee["object_key"]}
+            "get_object",
+            Params={"Bucket": config.PHOTOS_BUCKET, "Key": employee["object_key"]},
         )
 
     form = EmployeeForm()
-    form.employee_id.data = employee['id']
-    form.full_name.data = employee['full_name']
-    form.location.data = employee['location']
-    form.job_title.data = employee['job_title']
-    if 'badges' in employee:
-        form.badges.data = employee['badges']
+    form.employee_id.data = employee["id"]
+    form.full_name.data = employee["full_name"]
+    form.location.data = employee["location"]
+    form.job_title.data = employee["job_title"]
+    if "badges" in employee:
+        form.badges.data = employee["badges"]
 
-    return render_template("view-edit.html", form=form, badges=badges, signed_url=signed_url)
+    return render_template(
+        "view-edit.html", form=form, badges=badges, signed_url=signed_url
+    )
 
-@application.route("/save", methods=['POST'])
+
+@application.route("/save", methods=["POST"])
 def save():
     "Save an employee"
     form = EmployeeForm()
-    s3_client = boto3.client('s3')
+    s3_client = boto3.client("s3")
     key = None
     if form.validate_on_submit():
         if form.photo.data:
@@ -165,16 +191,16 @@ def save():
                 try:
                     # save the image to s3
                     prefix = "employee_pic/"
-                    key = prefix + util.random_hex_bytes(8) + '.png'
+                    key = prefix + util.random_hex_bytes(8) + ".png"
                     s3_client.put_object(
                         Bucket=config.PHOTOS_BUCKET,
                         Key=key,
                         Body=image_bytes,
-                        ContentType='image/png'
+                        ContentType="image/png",
                     )
                 except:
                     pass
-        
+
         if form.employee_id.data:
             database.update_employee(
                 form.employee_id.data,
@@ -182,35 +208,39 @@ def save():
                 form.full_name.data,
                 form.location.data,
                 form.job_title.data,
-                form.badges.data)
+                form.badges.data,
+            )
         else:
             database.add_employee(
                 key,
                 form.full_name.data,
                 form.location.data,
                 form.job_title.data,
-                form.badges.data)
+                form.badges.data,
+            )
         flash("Saved!")
         return redirect(url_for("home"))
     else:
         return "Form failed validate"
 
+
 @application.route("/employee/<employee_id>")
 def view(employee_id):
     "View an employee"
-    s3_client = boto3.client('s3')
+    s3_client = boto3.client("s3")
     employee = database.load_employee(employee_id)
     if "object_key" in employee and employee["object_key"]:
         try:
             employee["signed_url"] = s3_client.generate_presigned_url(
-                'get_object',
-                Params={'Bucket': config.PHOTOS_BUCKET, 'Key': employee["object_key"]}
+                "get_object",
+                Params={"Bucket": config.PHOTOS_BUCKET, "Key": employee["object_key"]},
             )
         except:
             pass
     form = EmployeeForm()
 
-    return render_template_string("""
+    return render_template_string(
+        """
         {% extends "main.html" %}
         {% block head %}
             {{employee.full_name}}
@@ -251,7 +281,12 @@ def view(employee_id):
   </div>
 </form>
         {% endblock %}
-    """, form=form, employee=employee, badges=badges)
+    """,
+        form=form,
+        employee=employee,
+        badges=badges,
+    )
+
 
 @application.route("/delete/<employee_id>")
 def delete(employee_id):
@@ -260,10 +295,12 @@ def delete(employee_id):
     flash("Deleted!")
     return redirect(url_for("home"))
 
+
 @application.route("/info")
 def info():
     "Webserver info route"
-    return render_template_string("""
+    return render_template_string(
+        """
             {% extends "main.html" %}
             {% block head %}
                 Instance Info
@@ -277,7 +314,9 @@ def info():
             <a href="{{ url_for('stress', seconds=300) }}">5 min</a>,
             <a href="{{ url_for('stress', seconds=600) }}">10 min</a>
             </small>
-            {% endblock %}""")
+            {% endblock %}"""
+    )
+
 
 @application.route("/info/stress_cpu/<seconds>")
 def stress(seconds):
@@ -285,6 +324,7 @@ def stress(seconds):
     flash("Stressing CPU")
     subprocess.Popen(["stress", "--cpu", "8", "--timeout", seconds])
     return redirect(url_for("info"))
+
 
 if __name__ == "__main__":
     application.run(debug=True)
