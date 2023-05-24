@@ -295,7 +295,7 @@ To launch a VPC in the us-east-1 region with a CIDR range of 10.0.0.0/16, a publ
 6. Create the VPC:
    Click on the "Create" button to create the VPC with the specified settings.
 
-   ![AWS VPC](images/vpc-1.png)
+   ![AWS VPC](images/vpc-2.png)
 
 7. Create a public subnet:
    In the VPC Dashboard, click on "Subnets" in the left-hand menu, then click on "Create subnet".
