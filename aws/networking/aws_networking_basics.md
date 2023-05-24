@@ -256,6 +256,19 @@ NACLs provide an additional layer of security and control at the subnet level wi
 
 See AWS Architecture diagram [here](https://lucid.app/lucidchart/4cb01ec3-ebd9-475f-8343-f05b213d1c8a/edit?viewport_loc=-11%2C-8%2C2219%2C1040%2C0_0&invitationId=inv_1b753718-8561-47c6-8f6d-ebbe109b3be3)
 
+### Prerequisites
+To run the `ec2 commands` in this topic, you need to:
+
+- Install and configure the AWS CLI. For more information, see [Installing or updating the latest version of the AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) and [Authentication and access credentials](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-authentication.html).
+
+- Set your IAM permissions to allow for Amazon EC2 access. For more information about IAM permissions for Amazon EC2, see [IAM policies for Amazon EC2](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/iam-policies-for-amazon-ec2.html) in the Amazon EC2 User Guide for Linux Instances.
+
+- Create a [key pair](https://docs.aws.amazon.com/cli/latest/userguide/cli-services-ec2-keypairs.html) and a [security group](https://docs.aws.amazon.com/cli/latest/userguide/cli-services-ec2-sg.html).
+
+- Select an Amazon Machine Image (AMI) and note the AMI ID. For more information, see Finding a Suitable [AMI in the Amazon EC2 User Guide](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/finding-an-ami.html) for Linux Instances.
+
+Launch your instance
+
 **Launch a vpc in the us-east-1 with cidr range 10.0.0.0/16 having one public subnet cidr range 10.0.0.0/24 and private subnet cidr range 10.0.1.0/24 in the same az us-east-1a**
 
 To launch a VPC in the us-east-1 region with a CIDR range of 10.0.0.0/16, a public subnet with a CIDR range of 10.0.0.0/24, and a private subnet with a CIDR range of 10.0.1.0/24 in the same availability zone (us-east-1a) using the AWS Management Console, follow these steps:
@@ -574,7 +587,7 @@ To automate the process of creating an `Internet Gateway`, attaching it to an ex
 ```sh
 IGW_NAME=vpc-network-igw
 IGW_ID=$(aws ec2 create-internet-gateway \
-    --tag-specifications "ResourceType=internet-gateway,Tags=[{Key=Name,Value=$IGW_NAME}]" \
+   --tag-specifications "ResourceType=internet-gateway,Tags=[{Key=Name,Value=$IGW_NAME}]" \
 	--query 'InternetGateway.InternetGatewayId' --output text)
 echo $IGW_ID
 ```
@@ -611,4 +624,308 @@ aws ec2 create-route \
 aws ec2 associate-route-table \
 	--subnet-id $PUBLIC_SUBNET_ID \
 	--route-table-id $PUB_RT_ID
+```
+
+By running these commands, you automate the process of creating an Internet Gateway, attaching it to an existing VPC, and associating the public subnet with the Internet Gateway.
+
+
+**Create a NAT gateway in the public subnet with a route table associating with the private subnet and launch another ec2 instance in the private subnet**.
+
+To create a NAT Gateway in the public subnet, associate it with a route table that routes traffic from the private subnet, and launch an EC2 instance in the private subnet using the AWS Management Console, follow these steps:
+
+1. Sign in to the AWS Management Console:
+   Go to the AWS Management Console (https://console.aws.amazon.com) and sign in with your AWS account credentials.
+
+2. Open the VPC Dashboard:
+   From the AWS Management Console, navigate to the VPC service by searching for "VPC" or locating it under the "Networking & Content Delivery" category.
+
+3. Create a NAT Gateway:
+   In the VPC Dashboard, click on "NAT Gateways" in the left-hand menu, then click on the "Create NAT Gateway" button.
+
+4. Select the public subnet and Elastic IP:
+   - Choose the public subnet where you want to create the NAT Gateway.
+   - Select an existing Elastic IP or create a new one to associate with the NAT Gateway.
+   - Click on the "Create NAT Gateway" button.
+
+   ![NAT GATEWAY](images/vpc-28-nat-gateway.png)
+
+   ![NAT GATEWAY](images/vpc-29-nat-gateway.png)
+
+5. Wait for the NAT Gateway to be available:
+   It may take a few moments for the NAT Gateway to be created and become available. Wait for the status to be "available" before proceeding to the next step.
+
+6. Open the Route Tables section:
+   In the VPC Dashboard, click on "Route Tables" in the left-hand menu.
+
+7. Select the route table associated with the private subnet:
+   Identify the route table associated with the private subnet where you want to route traffic through the NAT Gateway. Click on the route table ID to open its details.
+
+8. Edit the route table:
+   In the "Routes" tab of the route table details, click on the "Edit routes" button.
+
+9. Add a new route:
+   Click on the "Add route" button and provide the following information:
+   - Destination: Enter `0.0.0.0/0` to represent all traffic.
+   - Target: Choose the NAT Gateway you created.
+
+   ![NAT GATEWAY Route](images/vpc-30-nat-gateway-route.png)
+
+   ![NAT GATEWAY Route](images/vpc-31-nat-gateway-route.png)
+
+10. Save the route:
+    Click on the "Save routes" button to save the new route in the route table.
+
+    ![NAT GATEWAY Route](images/vpc-33-private-route-table-natgw.png)
+
+11. Launch an EC2 instance in the private subnet:
+    - Go to the EC2 Dashboard.
+    - Click on "Launch Instances" to start the instance launch wizard.
+    - Choose an appropriate AMI, instance type, and other configuration settings.
+    - In the "Configure Instance Details" step, select the private subnet as the subnet for the instance.
+    - Continue with the instance launch process, providing any necessary configuration details and completing the wizard.
+
+   ![EC2 Private Instance](images/vpc-24-private-ec2-instance.png)
+
+   ![EC2 Private Instance](images/vpc-25-private-ec2-instance.png)
+
+   ![EC2 Private Instance](images/vpc-26-private-ec2-instance.png)
+
+Now, you have created a NAT Gateway in the public subnet, associated it with a route table to route traffic from the private subnet, and launched an EC2 instance in the private subnet. The EC2 instance in the private subnet can now access the internet through the NAT Gateway in the public subnet.
+
+Also now we can `ssh` our private EC2 instance from the public instance through the `NAT Gateway` and do some patch updates.
+
+![NAT GATEWAY SSH](images/vpc-32-private-ec2-instance-ssh-update.png)
+
+
+**AWS CLI Automation to create NAT Gateway**
+
+To automate the process of creating a NAT Gateway in the public subnet, associating it with a route table that routes traffic from the private subnet, and launching an EC2 instance in the private subnet using the AWS CLI, you can use the following commands:
+
+1. Create an Elastic IP allocation for a NAT Gateway
+
+```sh
+ALLOCATION_ID=$(aws ec2 allocate-address --domain vpc --query 'AllocationId' --output text)
+echo $ALLOCATION_ID
+```
+
+2. Create a NAT Gateway:
+
+```sh
+NAT_GW_NAME=vpc-network-nat-gw	
+NAT_GW_ID=$(aws ec2 create-nat-gateway \
+  --subnet-id $PRIVATE_SUBNET_ID \
+  --allocation-id $ALLOCATION_ID \
+  --tag-specifications "ResourceType=natgateway,Tags=[{Key=Name,Value=$NAT_GW_NAME}]" \
+  --query 'NatGateway.NatGatewayId' --output text)
+
+echo $NAT_GW_ID
+```
+
+3. Wait for the NAT Gateway to be available:
+
+```sh
+aws ec2 wait nat-gateway-available --nat-gateway-ids $NAT_GW_ID
+```
+
+4. Create a route in the route table to route traffic through the NAT Gateway:
+
+```sh
+PRI_RT_ID=$(aws ec2 create-route-table \
+	--vpc-id $VPC_ID \
+	--query 'RouteTable.RouteTableId' --output text)
+echo $PRI_RT_ID
+
+aws ec2 create-route \
+  --route-table-id $PRI_RT_ID \
+  --destination-cidr-block 0.0.0.0/0 \
+  --nat-gateway-id $NAT_GW_ID
+ 
+aws ec2 associate-route-table \
+	--subnet-id $PRIVATE_SUBNET_ID \
+	--route-table-id $PRI_RT_ID
+```
+
+4. Launch an EC2 instance in the private subnet:
+
+```sh
+PRIV_SECURITY_GROUP_NAME=PrivateSG
+PRIVATE_SG_ID=$(aws ec2 create-security-group \
+  --group-name $PRIV_SECURITY_GROUP_NAME \
+  --description "Allow SSH access" \
+  --vpc-id $VPC_ID \
+  --query 'GroupId' --output text)
+echo $PRIVATE_SG_ID
+
+PRIVATE_INSTANCE_NAME=vpc-public-network-instance
+PRIVATE_INSTANCE_ID=$(aws ec2 run-instances \
+    --image-id $AMI_ID \
+    --count 1 \
+    --instance-type $INSTANCE_TYPE \
+    --key-name $KEY_PAIR_NAME \
+    --security-group-ids $PRIVATE_SG_ID \
+    --subnet-id $PRIVATE_SUBNET_ID \
+    --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=$PRIVATE_INSTANCE_NAME}]" \
+    --output text --query 'Instances[0].InstanceId'
+)
+echo $PRIVATE_INSTANCE_ID
+```
+
+By running these commands, you automate the process of creating a NAT Gateway in the public subnet, associating it with a route table to route traffic from the private subnet, and launching an EC2 instance in the private subnet.
+
+
+**Whole Automation Script**
+
+```sh
+VPC_NAME=NetworkVPC
+VPC_CIDR=10.0.0.0/16
+VPC_ID=$(aws ec2 create-vpc \
+    --cidr-block $VPC_CIDR \
+    --tag-specification "ResourceType=vpc,Tags=[{Key=Name,Value=$VPC_NAME}]" \
+	--query 'Vpc.VpcId' --output text)
+echo $VPC_ID
+
+aws ec2 modify-vpc-attribute --vpc-id $VPC_ID \
+	--enable-dns-hostnames "{\"Value\": true}" \
+	--region us-east-1
+
+aws ec2 create-subnet --vpc-id <vpc-id> --cidr-block 10.0.0.0/24 --availability-zone us-east-1a --region us-east-1
+
+PUBLIC_SUBNET_CIDR=10.0.0.0/24
+PUBLIC_SUBNET_NAME=PublicSubnet
+REGION=us-east-1
+ZONE=${REGION}a
+PUBLIC_SUBNET_ID=$(aws ec2 create-subnet \
+    --vpc-id $VPC_ID \
+    --cidr-block $PUBLIC_SUBNET_CIDR \
+	--availability-zone $ZONE \
+	--region $REGION \
+    --tag-specifications "ResourceType=subnet,Tags=[{Key=Name,Value=$PUBLIC_SUBNET_NAME}]" \
+	--query 'Subnet.SubnetId' --output text)
+echo $PUBLIC_SUBNET_ID
+
+PRIVATE_SUBNET_CIDR=10.0.1.0/24
+PRIVATE_SUBNET_NAME=PrivateSubnet
+REGION=us-east-1
+ZONE=${REGION}a
+PRIVATE_SUBNET_ID=$(aws ec2 create-subnet \
+    --vpc-id $VPC_ID \
+    --cidr-block $PRIVATE_SUBNET_CIDR \
+	--availability-zone $ZONE \
+	--region $REGION \
+    --tag-specifications "ResourceType=subnet,Tags=[{Key=Name,Value=$PRIVATE_SUBNET_NAME}]" \
+	--query 'Subnet.SubnetId' --output text)
+echo $PRIVATE_SUBNET_ID
+
+
+PUB_SECURITY_GROUP_NAME=PublicSG
+PUBLIC_SG_ID=$(aws ec2 create-security-group \
+  --group-name $PUB_SECURITY_GROUP_NAME \
+  --description "Allow SSH access" \
+  --vpc-id $VPC_ID \
+  --query 'GroupId' --output text)
+echo $PUBLIC_SG_ID
+
+
+aws ec2 authorize-security-group-ingress \
+  --group-id $PUBLIC_SG_ID \
+  --protocol tcp \
+  --port 22 \
+  --cidr 0.0.0.0/0
+
+
+INSTANCE_NAME=vpc-public-network-instance
+INSTANCE_TYPE=t2.micro
+KEY_PAIR_NAME=employee-web-app
+AMI_ID=ami-053b0d53c279acc90
+INSTANCE_ID=$(aws ec2 run-instances \
+    --image-id $AMI_ID \
+    --count 1 \
+    --instance-type $INSTANCE_TYPE \
+    --key-name $KEY_PAIR_NAME \
+    --security-group-ids $PUBLIC_SG_ID \
+    --subnet-id $PUBLIC_SUBNET_ID \
+    --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=$INSTANCE_NAME}]" \
+    --output text --query 'Instances[0].InstanceId'
+)
+echo $INSTANCE_ID
+
+IGW_NAME=vpc-network-igw
+IGW_ID=$(aws ec2 create-internet-gateway \
+    --tag-specifications "ResourceType=internet-gateway,Tags=[{Key=Name,Value=$IGW_NAME}]" \
+	--query 'InternetGateway.InternetGatewayId' --output text)
+echo $IGW_ID
+
+
+aws ec2 attach-internet-gateway \
+	--internet-gateway-id $IGW_ID \
+	--vpc-id $VPC_ID
+
+
+PUB_RT_ID=$(aws ec2 create-route-table \
+	--vpc-id $VPC_ID \
+	--query 'RouteTable.RouteTableId' --output text)
+echo $PUB_RT_ID
+
+aws ec2 create-route \
+	--route-table-id  $PUB_RT_ID \
+	--destination-cidr-block 0.0.0.0/0 \
+	--gateway-id $IGW_ID
+
+	
+aws ec2 associate-route-table \
+	--subnet-id $PUBLIC_SUBNET_ID \
+	--route-table-id $PUB_RT_ID
+
+
+ALLOCATION_ID=$(aws ec2 allocate-address --domain vpc --query 'AllocationId' --output text)
+echo $ALLOCATION_ID
+
+
+NAT_GW_NAME=vpc-network-nat-gw	
+NAT_GW_ID=$(aws ec2 create-nat-gateway \
+  --subnet-id $PRIVATE_SUBNET_ID \
+  --allocation-id $ALLOCATION_ID \
+  --tag-specifications "ResourceType=natgateway,Tags=[{Key=Name,Value=$NAT_GW_NAME}]" \
+  --query 'NatGateway.NatGatewayId' --output text)
+
+echo $NAT_GW_ID
+
+aws ec2 wait nat-gateway-available --nat-gateway-ids $NAT_GW_ID
+
+
+PRI_RT_ID=$(aws ec2 create-route-table \
+	--vpc-id $VPC_ID \
+	--query 'RouteTable.RouteTableId' --output text)
+echo $PRI_RT_ID
+
+aws ec2 create-route \
+  --route-table-id $PRI_RT_ID \
+  --destination-cidr-block 0.0.0.0/0 \
+  --nat-gateway-id $NAT_GW_ID
+ 
+aws ec2 associate-route-table \
+	--subnet-id $PRIVATE_SUBNET_ID \
+	--route-table-id $PRI_RT_ID
+
+
+PRIV_SECURITY_GROUP_NAME=PrivateSG
+PRIVATE_SG_ID=$(aws ec2 create-security-group \
+  --group-name $PRIV_SECURITY_GROUP_NAME \
+  --description "Allow SSH access" \
+  --vpc-id $VPC_ID \
+  --query 'GroupId' --output text)
+echo $PRIVATE_SG_ID
+
+PRIVATE_INSTANCE_NAME=vpc-public-network-instance
+PRIVATE_INSTANCE_ID=$(aws ec2 run-instances \
+    --image-id $AMI_ID \
+    --count 1 \
+    --instance-type $INSTANCE_TYPE \
+    --key-name $KEY_PAIR_NAME \
+    --security-group-ids $PRIVATE_SG_ID \
+    --subnet-id $PRIVATE_SUBNET_ID \
+    --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=$PRIVATE_INSTANCE_NAME}]" \
+    --output text --query 'Instances[0].InstanceId'
+)
+echo $PRIVATE_INSTANCE_ID
 ```
