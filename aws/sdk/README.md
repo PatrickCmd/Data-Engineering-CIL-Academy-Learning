@@ -36,3 +36,4 @@ s3.Bucket('my-bucket').put_object(Key='test.jpg', Body=data)
 
 ### Code Examples
 - [AWS SDK Code Examples](https://boto3.amazonaws.com/v1/documentation/api/latest/guide/examples.html)
+- [AWS SDK for Python code examples](https://github.com/awsdocs/aws-doc-sdk-examples/tree/main/python)
