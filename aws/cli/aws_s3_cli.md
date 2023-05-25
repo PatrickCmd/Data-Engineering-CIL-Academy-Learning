@@ -472,6 +472,9 @@ The `logging.json` file in the previous command has the following content.
 }
 ```
 
+### More Resources
+- https://www.learnaws.org/2022/07/07/aws-s3-s3api/
+
 ### Amazon S3 bucket lifecycle operations scripting example
 
 This topic uses a bash scripting example for Amazon S3 bucket lifecycle operations using the AWS Command Line Interface (AWS CLI). 
