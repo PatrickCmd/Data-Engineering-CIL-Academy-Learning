@@ -1,5 +1,7 @@
 # What is the Azure portal
 - https://learn.microsoft.com/en-us/azure/azure-portal/azure-portal-overview
+- [Azure portal documentation](https://learn.microsoft.com/en-us/azure/azure-portal/)
+- [All You Need To Know About The Azure Console](https://www.edureka.co/blog/azure-portal/)
 
 ## What is Azure?
 
