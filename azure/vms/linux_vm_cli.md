@@ -25,6 +25,8 @@ export VM_IMAGE="Canonical:0001-com-ubuntu-server-focal:20_04-lts-gen2:latest"
 export ADMIN_USERNAME=azureuser
 ```
 
+For `Ubuntu 20.04 LTS` we can also set the virtual image name to `Ubuntu2204`.
+
 ![vm launch instance](images/linux_vm_cli/linux_vm_cli-1.png)
 
 ## Create a resource group
@@ -51,6 +53,18 @@ az vm create \
   --admin-username $ADMIN_USERNAME \
   --generate-ssh-keys \
   --public-ip-sku Standard
+```
+
+OR 
+
+```sh
+az vm create --resource-group TutorialResources \
+  --name TutorialVM1 \
+  --image Ubuntu2204 \
+  --generate-ssh-keys \
+  --output json \
+  --public-ip-sku Standard
+  --verbose
 ```
 
 It takes a few minutes to create the VM and supporting resources. The following example output shows the VM create operation was successful.
@@ -80,6 +94,25 @@ export IP_ADDRESS=$(az vm show --show-details --resource-group $RESOURCE_GROUP_N
 ```
 
 ![vm launch instance](images/linux_vm_cli/linux_vm_cli-4.png)
+
+### Creating a new VM on the existing subnet
+
+```sh
+VM2_IP_ADDR=$(az vm create -g TutorialResources \
+  -n TutorialVM2 \
+  --image Ubuntu2204 \
+  --generate-ssh-keys \
+  --subnet $SUBNET_ID \
+  --query publicIPAddress \
+  --public-ip-sku Standard
+  -o tsv)
+```
+
+Using the stored IP address, SSH into the newly created VM.
+
+```sh
+ssh $VM2_IP_ADDR
+```
 
 ## Install web server
 To see your VM in action, install the NGINX web server. Update your package sources and then install the latest `NGINX package`. 
