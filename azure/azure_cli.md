@@ -11,5 +11,6 @@
 
 ## Azure Command Reference
 - [Azure Commands](https://learn.microsoft.com/en-us/cli/azure/reference-index?view=azure-cli-latest)
+- [Azure Command-Line Interface (CLI) documentation](https://learn.microsoft.com/en-us/cli/azure/?view=azure-cli-latest)
 - [Azure CLI Tutorial](https://www.youtube.com/watch?v=GqpwiyYsNIw)
 - [AZ CLI Overview and Demo Super Show](https://www.youtube.com/watch?v=DOywwse_j8I)
