@@ -60,6 +60,7 @@ gcloud components update
 - [gcloud auth login | Cloud SDK Documentation - the command to authenticate a user](https://cloud.google.com/sdk/gcloud/reference/auth/login)
 - [gcloud auth activate-service-account | Cloud SDK Documentation - authenticate service account](https://cloud.google.com/sdk/gcloud/reference/auth/activate-service-account)
 
+
 ## Tutorials
 - [Google Cloud Shell Tutorial for Beginners](https://www.youtube.com/watch?v=RdDyF3jVbbE)
 - [Google Cloud Command Line for Beginners, or "How to gcloud" | 9.13.18 | Linux Academy](https://www.youtube.com/watch?v=j274vq9a2Rs)
