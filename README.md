@@ -19,6 +19,7 @@
 
 - [Azure - Getting Started with Azure demo series](https://azure.microsoft.com/en-us/get-started/webinar/on-demand/)
 - [Azure Blog](https://azure.microsoft.com/en-us/blog/)
+- [Learn Azure in a Month of Lunches, Second Edition](https://azure.microsoft.com/en-us/resources/learn-azure-in-a-month-of-lunches/)
 
 - [GCP - Learn with the Google Cloud community](https://cloud.google.com/docs/open-tutorials)
 - [Google Cloud blog](https://cloud.google.com/blog/)
