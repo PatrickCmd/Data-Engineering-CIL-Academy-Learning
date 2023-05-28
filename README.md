@@ -52,6 +52,11 @@
 - [Google Cloud documentation](https://cloud.google.com/docs)
 - [Terraform on Google Cloud documentation](https://cloud.google.com/docs/terraform)
 - [Google Cloud Deployment Manager documentation](https://cloud.google.com/deployment-manager/docs)
+- [GCP Developer Cheat Sheet](https://googlecloudcheatsheet.withgoogle.com/)
+- [The Google Cloud Developer's Cheat Sheet - Github](https://github.com/priyankavergadia/google-cloud-4-words#the-google-cloud-developers-cheat-sheet)
+
+
+[**cloudping.info**](https://www.cloudping.info/) - Use this page to measure latency from your browser to various cloud provider datacenters.
 
 ## FAQs
 - [AWS FAQs](https://aws.amazon.com/faqs/)
@@ -60,6 +65,22 @@
 - [Azure - FAQs](https://support.azure.cn/en-us/support/faq/)
 
 - [GCP FAQs](https://cloud.google.com/storage/docs/faq?cloudshell=false)
+
+## CSPs Free Tier Accounts (AWS, GCP and Azure)
+- [Cloud Service Providers Free Tier Overview](https://github.com/cloudcommunity/Cloud-Free-Tier-Comparison)
+- [AWS vs Azure vs Google Free Tier Comparison](https://jaychapel.medium.com/aws-vs-azure-vs-google-free-tier-comparison-19b68578e7f)
+- [How to sign up for the AWS free tier in 2023](https://www.youtube.com/watch?v=SFaSB6vgp8k)
+- [AWS Free Tier](https://aws.amazon.com/free/?all-free-tier.sort-by=item.additionalFields.SortRank&all-free-tier.sort-order=asc&awsf.Free%20Tier%20Types=*all&awsf.Free%20Tier%20Categories=*all)
+- [Manage Your Cost with AWS Budget | Setup AWS Budget & Budget Alerts | AWS Free Tier Account | NJD](https://www.youtube.com/watch?v=UB1dlP_7arA)
+
+- [GCP Free Tier Guide](https://cloud.google.com/free)
+- [The Google Cloud Platform Free Trial and Free Tier](https://www.youtube.com/watch?v=P2ADJdk5mYo)
+- [Google Cloud Beginner Tutorial (2023) - Host & Setup A Free Website](https://www.youtube.com/watch?v=1Hyxdg1ZYho)
+
+- [How To Create FREE Microsoft Azure Cloud Account](https://www.youtube.com/watch?v=ugm4vrMMuxQ)
+- [Azure Free Trial Account After 30 Days are Over](https://www.youtube.com/watch?v=szfjEwF-FKQ)
+- [Azure free account FAQ](https://azure.microsoft.com/en-gb/free/free-account-faq/)
+- [Build your first Web App with Microsoft Azure](https://www.youtube.com/watch?v=0QO2jdinCoQ)
 
 
 ## Cloud/DevOPs practice exercises
