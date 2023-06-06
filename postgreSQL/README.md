@@ -52,3 +52,65 @@ PostgreSQL was designed in academia:
 ![Terminology](images/postgres_teminology.jpg)
 
 
+## SQL Command Line
+
+### Introduction to psql
+
+**psql**
+
+psql is the default command-line program that communicates with PostgreSQL. There is widespread GUI and database client program support for PostgreSQL, but it's still a good idea to be familiar with psql in order to understand documentation and code samples.
+
+**Four main parameters (Connection parameters)**
+- **-h**    Hostname
+- **-p**    Port, defaults to 5342
+- **-U**    Username (notice uppercase "U")
+- **-d**    Database name
+
+**SQL commands**
+
+- Type commands in several lines.
+- End SQL commands in ";" to be executed.
+
+**Exit**
+
+- **\q** or **Ctrl+D**    Exit
+
+**Executing**
+
+- **-f**    Execute file and exit.
+- **-c**    Execute one command and exit.
+
+#### Help
+
+**Outside psql**
+
+- **psql**  --help
+
+**Inside psql**
+
+- **\h**   Help on SQL commands
+- **\?**   Help on psql commands
+
+#### Other Commands
+
+**Describing**
+
+- `\d`    Describes things, + for extra info.
+- `\d followed by a name`    Describes that specific object.
+- `\d followed by certain letters`    Lists kinds of objects, such as:
+- `\dt`    Lists tables.
+- `\dv`    Lists views.
+
+**Miscellaneous**
+
+- `\timing`    Toggles reporting time spent on each query executed.
+- `\a`    Toggles aligned output.
+- `\x`    Toggles expanded output.
+- `\o`    Saves query output to external file, instead of showing on screen.
+- `\i`    Executes one file.
+- `\!`    Executes a shell command.
+
+
+### Resources
+- [Official psql documentation](https://www.postgresql.org/docs/11/app-psql.html)
+- [Transition from Legacy Databases to a Modern Data Architecture](https://www.devprojournal.com/technology-trends/open-source/transition-from-legacy-databases-to-a-modern-data-architecture/)
