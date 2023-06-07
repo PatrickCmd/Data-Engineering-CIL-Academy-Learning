@@ -430,3 +430,323 @@ The `Sort` operation indicates that the database will sort the results based on 
 
 The nested `Seq Scan` operation scans the `pgbench_accounts` table sequentially. The estimated startup cost is 0.00 units, and the total cost is 32920.00 units. The `Plan Rows` indicates the estimated number of rows in the plan, and the `Plan
 
+## Architecture
+
+### Client architecture
+
+Libraries help communicate with the database server and are available for almost any language. The libpq library is the C interface to PostgreSQL and the underlying engine for many PostgreSQL application interfaces. A few independent implementations of the protocol exist, most notably the Java Database Connectivity (JDBC) driver.
+
+Libraries are available for languages such as Java, Perl, Python, and PHP. A database is accessed via a client that speaks to it. Some clients reuse the provided C API, while others such as JDBC implement the protocol natively.
+
+### Client Side
+- Connectivity
+  - Connect to PostgreSQL via standard TCP/IP networks. Its wire-level protocol is commonly referred to as `libpq`.
+  - Note that `libpq` is also the name of the client-side library that implements the protocol.
+- Language
+  - Once connected, you interface with PostgreSQL by sending commands to it.
+  - The language combines SQL:2008-compliant statements and PostgreSQL maintenance commands.
+
+### Client Components
+- libpq
+  - Native (C-based), client-side API
+  - Implements wire-level protocol for server communication
+- JDBC
+  - Java, client-side API
+  - Does not reuse libpq library, implements protocol directly
+  - Simple use for Java users, no need to install native libpq library
+
+### Server processes
+PostgreSQL uses a multi-process architecture, similar to the Oracle dedicated server connection. PostgreSQL uses the following types of processes:
+
+- Primary (postmaster)
+- Per-connection backend process
+- Utility (maintenance processes)
+
+#### Postmaster
+- Master database control process
+- Responsible for startup and shutdown
+- Handling of connection requests
+- Spawning of other necessary backend processes
+
+#### Session Processes
+- Dedicated, per-connection server process
+- Known as a worker process
+- Responsible for fetching data from disk and communicating with client
+
+#### Utility and Maintenance
+- Autovacuum
+  - Dedicated backend for providing vacuum services
+  - Essentially, a garbage collect of data files
+  - Covered later in maintenance section
+- Writer
+  - Background writer
+  - Writing of pages from memory cache to disk (does not flush)
+- WAL writer
+  - Responsible for maintaining transaction log (journal)
+  - Only used for asynchronous commits
+- Checkpointer
+  - A process that performs checkpoints
+  - Flushing of all dirty buffers to disk storage
+- Archiver
+  - WAL files saved to a specified location for backup
+  - Can also be used to achieve replication
+- Logger
+  - Responsible for writing information logs
+  - Errors, warnings, slow running queries, etc.
+  - Not used if writing to syslog
+- Stats collector
+  - Support for collection and reporting of information about server activity
+  - Can count accesses to tables and indexes
+  - Information about vacuum and action analysis
+- bgworkers
+  - Support for external extensions
+  - Logical replication
+
+### Memory (RAM) structures
+
+Although databases eventually store data in persistent storage, like a hard drive, all data needs to be stored in RAM first. RAM is much faster than persistent storage, so the more a database can keep data in memory and avoid reading or writing to the hard drive, the better.
+
+PostgreSQL, like most other databases, uses buffers, or chunks of memory that correspond to pages on disk. Read or write requests are directed to these buffers instead of the hard drive to serve them faster. Eventually, the buffers get written to the corresponding pages on disk.
+
+#### Shared Buffers
+- Shared buffers are the primary cache component for the server, storing disk blocks from database files.
+- All data sets accessed from the disk are placed in shared buffers, which allow subsequent reads to be memory reads.
+- All writes are performed in shared buffers, creating "dirty" pages. The bgwriter and checkpoint processes will write this out to disk.
+- Shared buffers contain free buffers, which are never used or freed after using, and dirty buffers, which result from DML.
+
+#### WAL Buffers
+- Stores intermediate write-ahead log records.
+- Written on commit by wal_writer process (or when full).
+
+#### Per-Session Memory
+- work_mem
+  - Used for pe-barckend sort/hash memory.
+  - Used during certain types of JOINs and for ORDER BY operations.
+  - Set globally, but can be modified per session.
+- maintenance_work_mem
+  - Used for certain types of maintenance operations (vacuum, index creation, re-index).
+  - Allocated per session that uses it, such as multiple autovacuum workers.
+
+### Data storage structures
+One of the most important functions of a database is to persist the data, so it is available in the future. PostgreSQL uses operating system files for persisting all its data.
+
+#### Data Files
+The actual data is stored in files, typically in the `PGDATA` directory, with one operating system file per page.
+
+Although PostgreSQL provides some visibility into which files correspond to which tables, you normally don't deal with these files directly.
+
+#### Write-Ahead Log(WAL)
+One transaction may involve writing to several different tables, and thus writing many pages to disk. Rather than doing this, PostgreSQL uses a write-ahead log (WAL), which is a sequential file where transactions are stored. If the server goes down, it can restore the state of its data by replaying these transactions.
+
+Only one page needs to be written to the WAL for each transaction, which improves performance. Eventually, the transactions get executed in the background, and data pages are saved by utility processes.
+
+#### Archived logs
+After WAL entries get executed, the WAL segment eventually gets archived. These archival logs can be used to replay the transactions on a different server, and keep remote servers almost in sync.
+
+### Configuration files
+PostgreSQL uses several text-based configuration files. While you can change where you store these files when compiling PostgreSQL using symbolic links on your file system, these configuration files are usually stored in the same folder. This folder is always called `PGDATA`, even though the actual folder may change.
+
+#### PG_HBA
+The pg_hba.conf file contains information about who can connect to local databases, through which mechanism (local connection or over the network) from which addresses, and using which authentication method.
+
+[pg_hba_conf documentation](https://www.postgresql.org/docs/11/auth-pg-hba-conf.html)
+
+![PG_HBA Conf](images/pg_hba_conf.png)
+
+#### PG_IDENT
+The `pg_ident.conf` file maps operating system users to PostgreSQL users.
+
+![PG_IDENT](images/pg_ident.png)
+
+#### POSTGRESQL
+- `postgresql.conf` contains most of the configuration parameters for PostgreSQL.
+- `postgresql.auto.conf` overrides values in postgresql.conf, and allows you to easily track parameters that are different for your local installation.
+  - The `ALTER SYSTEM` command writes to this file if you persist its changes.
+
+![postgresql.conf](images/postgresql.conf.png)
+
+
+### Main data directory (PGDATA)
+- All on-disk components of a database instance are stored in a data directory, which contains multiple subdirectories.
+- Some subdirectories can be moved by configuration and others by symlink (Unix/Linux only).
+- Very few files are user readable or modifiable.
+- Commonly referred to as `PGDATA`
+
+#### Stored file examples
+
+- PG_VERSION
+  - Version string of the database instance
+- postmaster.opts
+  - What options were used to start the instance
+- postmaster.pid
+  - Process ID of the instance
+- server.crt
+  - Server certificate for SSL
+- server.key
+  - Server private key
+- root.crt
+  - Trusted certificate authorities
+
+### Data files (base directory)
+Data files are stored in subdirectories of the base directory. Within these subdirectories, there will be one or more files per table or index. Data is stored in blocks of 8K bytes, which directly correspond with pages in memory.
+
+#### Data Files
+- Also referred to as relations or base files.
+- Stored in subdirectories of the base directory.
+- Contain table or index data:
+  - Tables have a set of segments.
+  - Indexes have a set of segments.
+- Stored on disk as 1 GB segments:
+  - A 5 GB table will be five 1 GB files.
+  - Segments are automatically added, no intervention required.
+- Filled with data in 8 KB blocks (on disk) or pages (in-memory):
+  - Blocks and pages are identical, with the name changing based on where data currently resides. When in-memory, they are referred to as pages.
+
+#### Base Directory
+- Contains data files for your relations.
+- Under base, a subdirectory identifies each database in the instance.
+- Under each database subdirectory, files correspond to your relations.
+- These filenames map to a table’s relfilenode.
+  - queryable via `pg_class`
+- `_fsm` and `_vm` refer to per-table maintenance structures.
+
+#### Page and Block Structure
+- Each 1 GB data file is made up of 8 KB blocks.
+  - 8 KB is changeable at compile time.
+- Blocks (disk) and pages (memory) are identical.
+  - Page header (20 bytes)
+  - Item pointers
+    - An array of pointers to the actual data in the page.
+    - Filled from front to back.
+- Data
+  - Filled from rear of page towards front.
+- Free space
+  - Between item pointers and data.
+- Reserved section (primarily for index pages)
+
+#### Large Objects/Toast Table
+- PostgreSQL uses TOAST (The Oversized Attribute Storage Technique) tables to store large values.
+- Fixed length types are not TOASTable.
+- Compression using `zlib` is possible.
+
+### Write-ahead log (pg_wal directory)
+
+The write-ahead log in PostgreSQL simply records each transaction as it is entered into the database, so it can be replayed later if the database goes down. This can greatly increase throughput, with only one change required for each transaction instead of several potential pages for all tables and indexes affected.
+
+#### WAL LOG
+- This is the transaction journal.
+- Also known as: `WAL`, `xlog`, `pg_xlog`, `transaction log`, `journal`, `REDO`.
+- These files contain a persistent record of commits.
+- Success is not returned to the client until this is safely persisted to disk.
+- During crash recovery, this journal can be used to reconstruct all transactions.
+- These files are written by the `WAL writer` process.
+
+#### PG_WAL FOLDER
+- Contains active WAL segments.
+- Segments are recycled after time.
+- Segments are fixed at 16 MB.
+- Can be changed at instance init time.
+- Variable number of files
+  - checkpoint_segments (< 9.5)
+  - max_wal_size ( 9.5+)
+- Move pg_wal (symlink) to dedicated disk.
+- Was referred to as `pg_xlog` (< 10).
+
+#### ARCHIVED LOGS
+- Archived versions of the WAL.
+- An archived log has the same format as a non-archived log, it is just kept in a user-defined directory other than `pg_wal`.
+- After a WAL file is closed, the archiver process will perform the archive operation on it.
+  - Essentially, this is just copying the file to a different folder.
+  - Command is user definable in `postgresql.conf`.
+- Archiving can be enabled or disabled.
+
+### Global area
+
+The global area stores shared catalog tables in the base/global folder, similar to other PostgreSQL databases. Typically, you do not need to look at these files, but in special circumstances you do review the catalog tables.
+
+![Global area](images/global_area.png)
+
+- Shared catalogs
+- System views
+- Control file
+- Can be accessed across databases
+- Cannot be modified except under special circumstances
+
+### Connect request processing
+
+When your client connects to a PostgreSQL database, it connects to the postmaster, which is listening on a known port. The postmaster then authenticates the connection and creates a new session process to continue communication with the client.
+
+![Connect Request](images/connect_request.png)
+
+1. A client connection is sent to the postmaster.
+2. Authentication is performed.
+3. The postmaster spawns a user backend process.
+4. The user backend connects with the client to continue operation.
+
+### Reading data
+
+When your client sends a read request to PostgreSQL, it is already connected to a session process. This user or session process reads from the database, although it checks buffers first to improve performance. If the page is in the buffer, it does not need to read from disk.
+
+![Reading Data](images/reading_data.png)
+
+1. The client issues a query, and the user backend performs the read.
+2. If the data is in cache shared_buffers, it is a memory read.
+3. If not, the user backend reads from the data files.
+4. The user backend copies the data to shared_buffers.
+5. The data is returned to the client.
+
+### Writing data 
+
+Your client requests PostgreSQL to write data after inserting, updating, or deleting a row on a table. PostgreSQL needs to bring the page into memory (if not there), dirty it, and eventually write the page to disk. To improve performance, it usually writes the transaction first to the WAL log, and the page gets written to disk by a separate process.
+
+Transactions also complicate the equation, since PostgreSQL might need to keep several different versions of the data in memory. This is done using multi-version concurrency control (MVCC), described later.
+
+![Writing Data](images/writing_data.png)
+
+1. Client issues write request.
+2. User backend checks for data in shared_buffers.
+3. If not, reads into shared_buffers.
+4. User backend dirties data in shared_buffers.
+5. User backend records transaction in WAL.
+6. On commit, walwriter commits wal_buffers to pg_xlog.
+7. bgwriter (clock sweep) or checkpoint (forced) writes dirtied buffers to disk.
+
+### Multi-version concurrency control
+
+Given that several clients may access the same data simultaneously, database systems need to enable concurrency control. Relational database systems provide the concept of transactions, or units of work that are executed atomically. This can change several rows in different tables, which makes concurrency control even harder.
+
+Many database systems use locks to implement concurrency control, which is feasible, but can result in decreased concurrency as early transactions block newer ones. PostgreSQL uses multi-version concurrency control (MVCC), keeping several versions of the same data in memory when needed, and providing the appropriate version to each transaction. This provides for concurrent access, but leads to problems if you mix long-lived transactions with lots of short ones.
+
+#### Why MVCC?
+
+- Maintains data consistency internally.
+- Enables each transaction to see a snapshot of data (a database version) as it was some time ago while querying a database.
+- Prevents transactions from viewing inconsistent data.
+- Provides transaction isolation in concurrent transactions.
+- Ensures that readers do not block writers, and writers do not block readers.
+
+### Logical and physical layouts
+
+PostgreSQL lays out many of its structures like a file system. Here we will cover the most important logical structures, and how they might map to physical structures. Some logical items, like tablespaces and users, do not map to a particular physical structure.
+
+#### instance
+- Ties to a directory (data directory)
+- Corresponds to one TCP/IP port (for postmaster)
+- One postmaster
+- One set of shared_buffer
+
+#### database
+- Multiple databases per instance
+- Each database maps to a directory under base in the instance’s data directory (named by its oid, which you can find on the pg_database table)
+
+#### Schema/namespace
+- Purely logical grouping of relations
+- A schema only exists in catalogs, with no real physical structure
+
+#### tablespace
+- A directory on disk where PostgreSQL can store relations
+- Used for tiering storage
+
+#### User
+- Can be assigned across databases
+- Does not have physical structure (other than in catalogs)
