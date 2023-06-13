@@ -48,6 +48,7 @@
 - [**AWS Compute Blog**](https://aws.amazon.com/blogs/compute/): Numerous technical blog posts on topics covering all areas of AWS compute
 - [**AWS Twitch video channel**](https://www.twitch.tv/aws/videos?filter=clips&range=7d)
 - [**Amazon EC2**](https://aws.amazon.com/ec2/): Homepage for the Amazon EC2 service, providing links to documentation, use cases, pricing and much more
+- [**AmazonEC2 - Instance Types**](https://aws.amazon.com/ec2/instance-types/)
 - [**Amazon Elastic Container Service (Amazon ECS)**](https://aws.amazon.com/ecs/): Homepage for all things Amazon ECS. This link provides additional links to documentation, use cases, pricing and much more
 - [**Amazon Elastic Kubernetes Service (EKS)**](https://aws.amazon.com/eks/): Homepage for the Amazon EKS service, providing links to documentation, use cases, pricing and much more
 - [**AWS Lambda**](https://aws.amazon.com/lambda/): Homepage for all things Lambda. This link provides additional links to documentation, use cases, pricing and much more.
