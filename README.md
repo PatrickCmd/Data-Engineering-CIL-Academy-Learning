@@ -43,6 +43,16 @@
 - [AWS CloudFormation Documentation](https://docs.aws.amazon.com/cloudformation/index.html)
 - [AWS SDKs](https://aws.amazon.com/developer/tools/)
 
+## AWS Compute Resources
+- [**AWS Skill Builder**](https://explore.skillbuilder.aws/learn): A link to the AWS Training and Certification website, offering hundreds of hours of free AWS courses and training
+- [**AWS Compute Blog**](https://aws.amazon.com/blogs/compute/): Numerous technical blog posts on topics covering all areas of AWS compute
+- [**AWS Twitch video channel**](https://www.twitch.tv/aws/videos?filter=clips&range=7d)
+- [**Amazon EC2**](https://aws.amazon.com/ec2/): Homepage for the Amazon EC2 service, providing links to documentation, use cases, pricing and much more
+- [**Amazon Elastic Container Service (Amazon ECS)**](https://aws.amazon.com/ecs/): Homepage for all things Amazon ECS. This link provides additional links to documentation, use cases, pricing and much more
+- [**Amazon Elastic Kubernetes Service (EKS)**](https://aws.amazon.com/eks/): Homepage for the Amazon EKS service, providing links to documentation, use cases, pricing and much more
+- [**AWS Lambda**](https://aws.amazon.com/lambda/): Homepage for all things Lambda. This link provides additional links to documentation, use cases, pricing and much more.
+- [**Amazon Lightsail or Amazon EC2 (Compare Free Cloud Servers)**](https://aws.amazon.com/free/compute/lightsail-vs-ec2/): A comparison of AWS Lightsail and Amazon EC2
+
 ## Azure Developer Resources
 - [Azure documentation](https://learn.microsoft.com/en-gb/azure/?product=popular)
 - [Get started guide for Azure developers](https://learn.microsoft.com/en-gb/azure/guides/developer/azure-developer-guide)
