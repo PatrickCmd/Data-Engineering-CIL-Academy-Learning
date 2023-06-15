@@ -58,6 +58,10 @@
 - [**Easy Amazon EC2 Instance Comparison**](https://instances.vantage.sh/): A third-party website, formerly known as EC2Instances.info, which provides a comparison of EC2 instances and costs. There is no charge for viewing the comparison information. The website is now owned and operated by Vantage. For more information about using this site see [**Vantage acquires EC2instances.info**](https://www.vantage.sh/blog/vantage-has-acquired-ec2instances-info).
 - [**Amazon EC2 Pricing**](https://aws.amazon.com/ec2/pricing/): Shows various ways to pay for Amazon EC2
 
+## AWS Serverless Architectures
+- [**Serverless on AWS**](https://aws.amazon.com/serverless/)
+- [**Getting Started with AWS Serverless**](https://aws.amazon.com/serverless/getting-started/?serverless.sort-by=item.additionalFields.createdDate&serverless.sort-order=desc)
+
 ## Azure Developer Resources
 - [Azure documentation](https://learn.microsoft.com/en-gb/azure/?product=popular)
 - [Get started guide for Azure developers](https://learn.microsoft.com/en-gb/azure/guides/developer/azure-developer-guide)
