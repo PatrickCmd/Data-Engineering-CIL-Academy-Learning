@@ -198,3 +198,108 @@ Amazon EFS Standard and Amazon EFS Standard–Infrequent Access (EFS Standard–
 #### One Zone
 
 Amazon EFS One Zone and Amazon EFS One Zone–Infrequent Access (EFS One Zone–IA) offer customers the choice of additional savings by choosing to save their data in a single Availability Zone. Amazon EFS One Zone not only offers lower cost, but also provides lower latencies because data replication occurs within a single Availability Zone.
+
+### Amazon EFS and other AWS services
+
+Amazon EFS is closely integrated with many other AWS services, including IAM for access control, Amazon CloudWatch for monitoring, AWS Backup for data protection, and all AWS modern compute services.
+
+![EFS and other services](images/efs_services.png)
+
+## AWS modern compute services and Amazon EFS
+
+Many customers are migrating existing applications from on-premises or EC2 instances into containers and serverless. They do this to simplify their operations, lower their compute costs, and scale more elastically. 
+
+As shown in the following diagram, Amazon EFS offers integrations with Amazon ECS, Amazon EKS, Fargate, and Lambda. This means that applications that need shared persistent storage can be migrated to modern compute platforms and benefit from the elastic and serverless storage that Amazon EFS provides.
+
+This is a path that many customers go down, getting rid of their self-managed storage infrastructure, adopting containers and serverless for infrastructure modernization.
+
+![Containers and EFS](images/efs-ecs-eks.png)
+
+> With Amazon EFS and Lambda, you can write code to parse large files quickly without worrying about managing any underlying infrastructure.
+
+### Amazon EFS and Lambda
+
+![EFS and Lambda](images/efs_lambda.png)
+
+**Without Amazon EFS**: Lambda could not operate on persistent data sets larger than the 512 MB of temporary disk space allocated to each function. Additionally, file data sets could not be shared across multiple Lambda functions, but instead had to be isolated and accessed as individual objects.
+
+**With Amazon EFS**: You can load any library from Amazon EFS during the very first invocation of your Lambda function. Unzipping and accessing a 1 GB file becomes trivial with a few lines of code. You can set an Amazon EFS file system as the local mount path directly within the Lambda service console.
+
+> Amazon EFS is integrated with AWS Backup. You can use the Amazon EFS console, the API, or the AWS Command Line Interface (AWS CLI) to turn on automatic backups for your file system. 
+
+### Amazon EFS and AWS Backup
+
+AWS Backup is a simple and cost-effective way to back up your Amazon EFS file systems. The systems need to be in an AWS Region where the AWS Backup service is available. AWS Backup is a unified backup service designed to simplify the creation, migration, restoration, and deletion of backups, while providing improved reporting and auditing. 
+
+Amazon EFS is natively integrated with AWS Backup. You can use the Amazon EFS console, API, or AWS CLI to turn on automatic backups for your file system. The backups will use a default backup vault and plan with the AWS Backup recommended settings for backup automation.
+
+> Monitoring is an important part of maintaining the reliability, availability, and     performance of Amazon EFS and your AWS solutions. 
+
+### Amazon EFS and monitoring: CloudWatch integration
+
+How can I determine my throughput? How can I track the number of EC2 instances that are connected to a file system? 
+
+The answers are in CloudWatch. You can monitor your file systems using CloudWatch, which collects and processes the data from the Amazon EFS service into readable, near-real-time metrics, at no additional cost. 
+
+These statistics are then stored for a period of 15 months so that you can access historical information and gain insights on how to optimize costs and performance.    
+- You can view, retrieve, and process Amazon EFS metrics from CloudWatch in several ways, including:   
+- Viewing the metrics in the Amazon EFS service console      
+- Creating alerts in the CloudWatch service console
+- Retrieving data through the CloudWatch command line interface (CLI)        
+- Integrating with the CloudWatch API   
+
+## Amazon EFS use cases
+
+Amazon EFS provides a convenient, serverless, set-and-forget elastic file system that makes a good storage option for many workloads and use cases.
+
+![EFS use cases](images/efs-usecases.png)
+
+### Big data analytics
+
+Handy to use and scale, Amazon EFS offers the performance and consistency required for machine learning (ML) and big data analytics workloads.
+
+### Web serving and content management
+
+Amazon EFS file systems are scalable across an unconstrained quantity of file servers to generate the required scalability to support spikes in user demand.
+
+Amazon EFS provides the ability to serve files to web applications quickly and in a scalable way to meet the demands of business. As website traffic increases, you can scale the number of web servers to support user demand and provide consistent access to the files stored in Amazon EFS with no need to modify or reconfigure the file system. Amazon EFS is designed for 11 nines of durability, so web content is stored in highly available, highly durable storage. And because Amazon EFS uses standard file system semantics, web developers can use naming and permissions that they are familiar with.
+
+### Application testing and development
+
+Amazon EFS provides development environments a common storage repository that gives you the ability to share code and other files in a secure and organized way.
+
+### Media and entertainment
+
+Media companies are heavy users of file storage throughout the media post production pipeline. This includes everything from ingesting data after it is captured on a recording device to distribution of the end product to consumers of the produced content.
+
+At ingest, Amazon EFS provides high throughput and high durability, which helps companies generating content upload it to the cloud quickly and store it durably. There are also many compute-intensive process steps where having the data in a shared file system and providing access to on-demand compute resources helps to process jobs efficiently. Amazon EFS provides an NFS interface and access to thousands of EC2 instances that can be employed as needed to reduce cycle times, reduce idle time in the creative process, and keep creative professionals occupied.
+
+Common use cases on Amazon EFS include rendering, encoding, and transcoding operations.
+
+### Database backups
+
+Database backup is another use case for Amazon EFS that works particularly well. Amazon EFS provides an NFS file system, which is the preferred backup repository for many of the common database backup applications.
+
+Customers are backing up Oracle, SAP HANA, IBM Db2, and others onto Amazon EFS using the management tools offered by those database vendors. The tools offer a lifecycle policy that allows for backups to remain on Amazon EFS for a defined period and then expired per the policy. With high levels of aggregate throughput, Amazon EFS allows database volumes to be quickly restored, providing low recovery time objective (RTO) for the applications using these databases.
+
+### Container storage
+
+Amazon EFS is ideal for container storage, providing persistent shared access to a common file repository.
+
+
+## Additional Amazon EFS resources
+
+### Amazon EFS documentation
+- [Amazon EFS User Guide](https://docs.aws.amazon.com/efs/index.html) 
+- [Amazon EFS quotas and limits](https://docs.aws.amazon.com/efs/latest/ug/limits.html)
+
+### Amazon EBS webpages
+- [Amazon EFS overview](https://aws.amazon.com/efs/)
+- [Amazon EFS features](https://aws.amazon.com/efs/features/)
+- [Amazon EFS pricing](https://aws.amazon.com/efs/pricing/)
+- [Amazon EFS FAQs](https://aws.amazon.com/efs/faq/)
+- [Blog posts and articles](https://aws.amazon.com/efs/resources/?whats-new-posts.sort-by=item.additionalFields.postDateTime&whats-new-posts.sort-order=descrticles)
+
+### AWS storage training 
+- [STORAGE TRAINING](https://explore.skillbuilder.aws/learn/external-ecommerce;view=none?ctldoc-catalog-0=se-storage)
+- [AWS storage learning path](https://aws.amazon.com/training/path-storage/)
