@@ -13,7 +13,7 @@ Amazon S3 data is replicated across three or more AZs in a single region. Each A
 
 Amazon S3 offers a range of storage classes designed for different data use cases. Each object gets assigned a storage class and each bucket can hold objects that reside in different storage classes. You can move or change storage classes as your data needs or access patterns change. Some storage classes have minimum object size requirements and storage-time durations that must be met. Below is a screenshot from the AWS Management Console listing the available storage classes. Changing storage classes is as easy as highlighting a different option and choosing save.
 
-1[storage classes](images/s3-storage-classes.jpg)
+![storage classes](images/s3-storage-classes.jpg)
 
 ## Data organization - prefixes and tags
 
