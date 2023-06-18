@@ -630,3 +630,42 @@ You can view all functions in the account or only the functions that have a cust
 
 **UnreservedConcurrentExecutions**
 - Shows the sum of the concurrency for the functions that do not have a custom concurrency limit specified.
+
+
+## Additional Resources
+
+### Websites
+- [**AWS Serverless Land**](https://serverlessland.com/)
+    - This site brings together all the latest blogs, videos, and training for AWS serverless.
+- [**AWS homepage: Serverless on AWS**](https://aws.amazon.com/serverless/)
+    - Serverless solutions on AWS. Serverless services for all three layers of your stack: compute, integration, and data stores. 
+- [**AWS Lambda Operator Guide**](https://docs.aws.amazon.com/lambda/latest/operatorguide/intro.html)
+    - This guide covers many of the most important operational best practices and advice, while explaining core topics that underpin how Lambda based applications work.
+- [**AWS Lambda Developer Guide**](https://docs.aws.amazon.com/lambda/latest/dg/welcome.html)
+    - The AWS Lambda Developer Guide is the go-to guide on setting up and configuring all the options, settings, runtimes. It also includes examples of using Lambda.
+
+### Whitepapers
+- [**AWS Serverless Multi-Tier Architectures Whitepaper**](https://d1.awsstatic.com/whitepapers/AWS_Serverless_Multi-Tier_Architectures.pdf)
+    - This whitepaper illustrates how you can use innovations from AWS to change the way you design multi-tier architectures.
+- [**Security Overview of AWS Lambda Whitepaper**](https://docs.aws.amazon.com/whitepapers/latest/security-overview-aws-lambda/security-overview-aws-lambda.pdf)
+    - This whitepaper presents a deep dive of the AWS Lambda service through a security lens. It provides a well-rounded picture of the service, which is useful for new adopters, and deepens the understanding of Lambda for current users.
+
+### Blogs
+- [**AWS Compute blog for Lambda**](https://aws.amazon.com/blogs/compute/category/compute/aws-lambda/)
+    - Lists a variety of blog posts on Lambda topics.
+
+### Online serverless workshops
+- [**Build On Serverless Season 2**](https://www.youtube.com/playlist?list=PLJV9303TMVKzFk1CNV_bStVZd3ZhW8dNz)
+    - Recorded live series in which Specialist Solutions Architect Heitor Lessa and guests build a serverless airline web booking application, episode by episode.
+
+### Recorded talks
+- [**Customer Talks**](https://aws.amazon.com/lambda/resources/customer-talks/)
+    - Recorded customer presentations focused on how they solved business challenges with AWS Lambda.
+- [**Tech Talks**](https://aws.amazon.com/lambda/resources/webinars-and-talks/)
+    - Recorded talks on developing and running serverless applications built with AWS Lambda or Amazon API Gateway. The main categories are Getting Started, Use Cases, Security, Best Practices, and Development Practices.
+
+### Other courses in the serverless learning path
+- [Amazon API Gateway for Serverless Applications (digital training)](https://www.aws.training/Details/eLearning?id=27199)
+- [Amazon DynamoDB for Serverless Architectures (digital training)](https://www.aws.training/Details/eLearning?id=27196)
+- [Architecting Serverless Solutions (digital training)](https://www.aws.training/Details/eLearning?id=42594)
+- [Developing Serverless Solutions on AWS (classroom training)](https://www.aws.training/SessionSearch?pageNumber=1&courseId=53785&languageId=1)
