@@ -14,3 +14,8 @@
     - [**SQL cheat sheet**](./SQL%20cheat%20sheet.pdf)
 - [**Learn SQL in 60 mins**](https://www.youtube.com/watch?v=p3qvj9hO_Bo)
     - [** Exercises Worksheet Repository**](https://github.com/WebDevSimplified/Learn-SQL)
+
+## What is NoSQL?
+- [**What is NoSQL Database (IBM Developer)**](https://www.youtube.com/watch?v=f8t3Hh1RxVA)
+- [**What is NoSQL (By Amazon)**](https://aws.amazon.com/nosql/)
+- [**NoSQL MongoDB Tutorial**](https://www.mongodb.com/nosql-explained)
