@@ -19,3 +19,8 @@
 - [**What is NoSQL Database (IBM Developer)**](https://www.youtube.com/watch?v=f8t3Hh1RxVA)
 - [**What is NoSQL (By Amazon)**](https://aws.amazon.com/nosql/)
 - [**NoSQL MongoDB Tutorial**](https://www.mongodb.com/nosql-explained)
+
+## Learning Resources
+- [**Compare and Contrast SQL and NoSQL**](https://arstechnica.com/information-technology/2016/03/to-sql-or-nosql-thats-the-database-question/)
+- [**Beginner Guide To The SQL Language**](https://clarusway.com/a-beginner-guide-to-the-sql-language/)
+- [**W3School SQL Tutorial**](https://www.w3schools.com/sql/)
