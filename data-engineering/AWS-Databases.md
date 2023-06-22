@@ -482,3 +482,92 @@ DynamoDB is a fully managed, serverless, key-value, NoSQL database designed to r
 #### Resources
 - [**Amazon DynamoDB**](https://aws.amazon.com/dynamodb/)
 - [**Amazon DynamoDB Developer Guide**](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html)
+
+### Amazon Keyspaces (for Apache Cassandra)
+
+Amazon Keyspaces (for Apache Cassandra) is a scalable, highly available, and managed database service that is compatible with Apache Cassandra. With Amazon Keyspaces, you can run your Cassandra workloads on AWS using the same Cassandra application code and developer tools that you use today. You don’t have to provision, patch, or manage servers, and you don’t have to install, maintain, or operate software. Amazon Keyspaces is serverless, so you pay for only the resources you use and the service can automatically scale tables up and down in response to application traffic.
+
+You can build applications that serve thousands of requests per second with virtually unlimited throughput and storage. Data is encrypted by default. With Amazon Keyspaces, you can back up your table data continuously using point-in-time recovery (PITR). Amazon Keyspaces gives you the performance, elasticity, and enterprise features you need to operate business-critical Cassandra workloads at scale.
+
+#### Compatible with Apache Cassandra
+
+With Amazon Keyspaces, you can use the Cassandra Query Language (CQL) API code, Cassandra drivers, and developer tools that you already use. Updating applications to use Amazon Keyspaces is as straightforward as changing the Cassandra hostname to the Amazon Keyspaces service endpoint.
+
+#### No servers to manage
+
+You don’t need to provision, patch, or manage servers, so you can focus on building better applications. Tables can scale up and down automatically, and you can optimize the cost of reads and writes based on your application’s traffic patterns by choosing either on-demand or provisioned capacity mode.
+
+#### Performance at scale
+
+You have consistent, single-digit-millisecond response times at any scale. Build applications with virtually unlimited throughput and storage that can serve thousands of requests per second without the need for capacity planning. You can monitor performance by using Amazon CloudWatch to help keep your applications running smoothly.
+
+#### Highly available and secure
+
+Amazon Keyspaces offers a 99.99 percent availability service-level agreement (SLA) within an AWS Region. Tables are encrypted by default and replicated three times in multiple AWS Availability Zones for high availability. You can create continuous table backups with hundreds of terabytes of data with no performance impact to your application, and recover to any point in time in the preceding 35 days.
+
+#### Resources
+- [**Amazon Keyspaces (for Apache Cassandra) **](https://aws.amazon.com/keyspaces/)
+- [**Amazon Keyspaces (for Apache Cassandra) Developer Guide**](https://docs.aws.amazon.com/keyspaces/latest/devguide/what-is-keyspaces.html)
+
+### Amazon DocumentDB
+
+Amazon DocumentDB (with MongoDB compatibility) is a fast, reliable, and fully managed database service. Amazon DocumentDB makes it easy to set up, operate, and scale MongoDB-compatible databases in the cloud. With Amazon DocumentDB, you can run the same application code and use the same drivers and tools that you use with MongoDB.
+
+#### Resources
+- [**Amazon DocumentDB**](https://aws.amazon.com/documentdb/)
+- [**Amazon DocumentDB Developer Guide**](https://docs.aws.amazon.com/documentdb/latest/developerguide/what-is.html)
+
+### Amazon Neptune
+
+Amazon Neptune is a fast, reliable, fully managed graph database service that streamlines building and running applications that work with highly connected datasets. The core of Neptune is a purpose-built, high-performance graph database engine optimized for storing billions of relationships and querying the graph with milliseconds latency.
+
+#### Understanding graph relationships
+
+Suppose you wanted to look at a product or social recommendation. In the following diagram, notice Diego at the top right. The graph shows that Diego knows Liu and Mary. Graph databases, like all others, can store information on many different entities. Entities are called nodes in a graph database. Diego, Liu, and Shirley represent customer nodes. The relationship between two nodes is known as an edge.
+
+A graph database can have multiple types of nodes. Notice the product node at the top of the graph. This node tracks purchase history. Three customers purchased this particular product.
+
+![Relationships](images/people-product-relationship.png)
+
+You can go a step further and track customer interests, such as a favorite sport. This graph provides analysts with an opportunity to answer helpful questions. Richard may be interested in products that were purchased by other customers who like sports. Liu might be interested to know about the other customers that his friends know.
+
+#### Resources
+- [**Amazon Neptune**](https://aws.amazon.com/neptune/)
+- [**Amazon Neptune User Guide**](https://docs.aws.amazon.com/neptune/latest/userguide/intro.html)
+
+### Amazon Timestream
+
+Amazon Timestream is a fast, scalable, and serverless time-series database service for Internet of Things (IoT) and operational applications that makes it easy to store and analyze trillions of events per day. Timestream saves you time and cost in managing the lifecycle of time-series data by keeping recent data in memory and moving historical data to a cost-optimized storage tier based upon user-defined policies.
+
+With the Timestream purpose-built query engine, you can access and analyze recent and historical data together, without needing to specify explicitly in the query whether the data resides in the in-memory or cost-optimized tier. Timestream has built-in time-series analytics functions, helping you identify trends and patterns in your data in near real time. Timestream is serverless and automatically scales up or down to adjust capacity and performance, so you don’t need to manage the underlying infrastructure, freeing you to focus on building your applications.
+
+#### High performance at low cost
+
+Timestream is designed to facillitate interactive and affordable real-time analytics. With product features such as scheduled queries, multi-measure records, and data storage tiering, you can process, store, and analyze your time-series data at a fraction of the cost of existing time-series solutions. Timestream can help you derive faster and more-affordable insights from your data so you can continue to make more data-driven business decisions.
+
+### Serverless with auto scaling
+
+Timestream is serverless—there are no servers to manage and no capacity to provision, so you can focus on building your applications. Timestream gives you the scale to process trillions of events and millions of queries a day. As your application needs change, it automatically scales to adjust capacity.
+
+#### Data lifecycle management
+
+Timestream simplifies the complex process of data lifecycle management. It offers storage tiering, with a memory store for recent data and a magnetic store for historical data. Timestream automates the transfer of data from the memory store to the magnetic store based on user-configurable policies.
+
+#### Simplified data access
+
+With Timestream, you no longer need to use disparate tools to access recent and historical data. The Timestream purpose-built query engine transparently accesses and combines data across storage tiers without you having to specify the data location.
+
+#### Purpose-built for time series
+
+You can quickly analyze time-series data using SQL, with built-in time-series functions for smoothing, approximation, and interpolation. Timestream also supports advanced aggregates, window functions, and complex data types such as arrays and rows.
+
+#### Always encrypted
+
+Timestream ensures that your time-series data is always encrypted, whether at rest or in transit. With Timestream, you also can specify an AWS Key Management Service (AWS KMS) customer managed key for encrypting data in the magnetic store.
+
+#### Resources
+- [*Amazon Timestream**](https://aws.amazon.com/timestream/?nc=sn&loc=0&whats-new-cards.sort-by=item.additionalFields.postDateTime&whats-new-cards.sort-order=desc&amazon-timestream-blogs.sort-by=item.additionalFields.createdDate&amazon-timestream-blogs.sort-order=desc)
+- [**Amazon Timestream Developer Guide**](https://docs.aws.amazon.com/timestream/latest/developerguide/what-is-timestream.html)
+
+
+### Amazon Quantum Ledger Database (Amazon QLDB)
