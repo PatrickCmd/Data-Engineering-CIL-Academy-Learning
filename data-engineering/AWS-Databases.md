@@ -354,3 +354,123 @@ Aurora is up to five times faster than standard MySQL databases and three times 
 
 - [**Amazon Aurora**](https://aws.amazon.com/rds/aurora/)
 - [**Amazon Aurora developer resources**](https://aws.amazon.com/rds/aurora/resources/)
+
+
+## Nonrelational Databases
+
+**Semi-structured** and **unstructured** data are often stored in nonrelational database systems, sometimes called **NoSQL** databases. This term can cause a bit of confusion. It is important to remember that structured query language (SQL) is a way of querying data. It implies precise structure. Nonrelational or NoSQL does not mean the data stored cannot be queried using SQL. One way to think of the term NoSQL is not only SQL.
+
+### Nonrelational database types
+
+#### Key-value databases
+
+Key-value databases logically store data in a single table. Within the table, the values are associated with a specific key and stored in the form of blob objects without a predefined schema. The values can be of nearly any type.
+
+**Strengths**
+
+- They are very flexible.
+- They can handle a wide variety of data types.
+- Keys are linked directly to their values with no need for indexing or complex join operations.
+- Content of a key can easily be copied to other systems without reprogramming the data.
+
+**Weaknesses**
+- Analytical queries are difficult to perform due to the lack of joins.
+- Access patterns need to be known in advance for optimum performance.
+
+**AWS service**
+- Amazon DynamoDB
+
+#### Document databases
+
+Document stores keep files containing data as a series of elements. These files can be navigated using numerous languages including Python and Node.js. Each element is an instance of a person, place, thing, or event. For example, a document store may hold a series of log files from a set of servers. These log files can each contain the specifics for that system without concern for what the log files in other systems contain.
+
+**Strengths**
+- They are flexible.
+- There is no need to plan for a specific type of data when creating one.
+- They are scalable.
+
+**Weaknesses**
+- You sacrifice ACID compliance for flexibility.
+- Databases cannot query across files natively.
+
+**AWS service**
+- Amazon DocumentDB (with MongoDB compatibility)
+
+#### In-memory databases
+
+In-memory databases are used for applications that require real-time access to data. Most databases have areas of data that are frequently accessed but seldom updated. Additionally, querying a database is always slower and more expensive than locating a key in a key-value pair cache. Some database queries are especially expensive to perform. By caching such query results, you pay the price of the query once and then are able to quickly retrieve the data multiple times without having to rerun the query.
+
+**Strengths**
+- They support the most demanding applications requiring sub-millisecond response times.
+- They are great for caching, gaming, and session store.
+- They adapt to changes in demands by scaling out and in without downtime.
+- They provide ultrafast (sub-microsecond latency) and inexpensive access to copies of data.
+
+**Weaknesses**
+- They are not suitable for data that is rapidly changing or is seldom accessed.
+- Application using the in-memory store has a low tolerance for stale data.
+
+**AWS service**
+- Amazon ElastiCache
+- Amazon MemoryDB for Redis
+
+#### Graph databases
+
+Graph databases store data as nodes, while edges store information on the relationships between nodes. Data within a graph database is queried using specific languages associated with the software tool you have implemented.
+
+**Strengths**
+- They allow straightforward, fast retrieval of complex hierarchical structures.
+- They are great for real-time big data mining.
+- They can rapidly identify common data points between nodes.
+- They are great for making relevant recommendations and allowing for rapid querying of those relationships.
+
+**Weaknesses**
+- They cannot adequately store transactional data.
+- Analysts must learn new languages to query the data.
+- Performing analytics on the data may not be as efficient as with other database types.
+
+**AWS service**
+- Amazon Neptune
+
+#### Ledger databases
+
+Ledger databases are used for operations in which your data is immutable. That is, it cannot be changed. This is useful for banking records, cryptocurrency, and more. Once data is written to a ledger database, it cannot be modified. Where in standard databases, you could update a customer's address, in a ledger database, this would become an entirely new record. The old record and address would remain. For banking, legal, crypto, and others this is extremely useful as there is a record over time. You would actually be able to see the changes your customers have made over time as an example.
+
+**Strengths**
+- Records are immutable.
+- You can track changes over time.
+- You can legally prove that data has not been altered.
+
+**Weaknesses**
+- Data cannot be changed if inputted incorrectly.
+
+**AWS service**
+- Amazon Quantum Ledger Database (Amazon QLDB)
+
+#### Time series databases
+
+Often in databases, you are interested in simply a moment in time, or a relation to two or more items. Time-series databases, however, focus on data changing over time. Imagine if you want to see how popular a hashtag was. Knowing how many times it was used might be useful, but what might be more useful is looking at how the usage changed by the hour or by the day. This type of data is what time-series databases specialize in. They can also be used to monitor server or  central processing unit (CPU) loads over time. The key to remember is that, as implied by the name, time is always going to play a part in these databases.
+
+**Strengths**
+- You can see how certain metrics change over the course of specific time intervals.
+
+**Weaknesses**
+- They are appropriate for very specific uses involved in time and not flexible for other needs.
+
+**AWS service**
+- Amazon Timestream
+
+#### Wide-column databases
+
+Wide-column databases are NoSQL databases that organize data storage into columns and rows that can then be placed into column families. The data in each family can be different and have a different number of columns and rows.
+
+**Strengths**
+- They support a large volume of data.
+- They are scalable.
+- They have fast write speeds.
+
+**Weaknesses**
+- It is not easy to work with changing database requirements.
+
+**AWS service**
+- Amazon Keyspaces (for Apache Cassandra)
