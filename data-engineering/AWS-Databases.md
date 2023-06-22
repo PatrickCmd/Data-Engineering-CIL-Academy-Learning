@@ -474,3 +474,11 @@ Wide-column databases are NoSQL databases that organize data storage into column
 
 **AWS service**
 - Amazon Keyspaces (for Apache Cassandra)
+
+### Amazon DynamoDB
+
+DynamoDB is a fully managed, serverless, key-value, NoSQL database designed to run high-performance applications at any scale. DynamoDB offers built-in security, continuous backups, automated multi-Region replication, in-memory caching, and data export tools.
+
+#### Resources
+- [**Amazon DynamoDB**](https://aws.amazon.com/dynamodb/)
+- [**Amazon DynamoDB Developer Guide**](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html)
