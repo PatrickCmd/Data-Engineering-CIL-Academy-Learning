@@ -651,3 +651,103 @@ With Athena, you don't have to worry about having enough compute resources to ge
 #### Resources
 - [**Amazon Athena**](https://aws.amazon.com/athena/?nc=sn&loc=0&whats-new-cards.sort-by=item.additionalFields.postDateTime&whats-new-cards.sort-order=desc)
 - [**Amazon Athena User Guide**](https://docs.aws.amazon.com/athena/latest/ug/what-is.html)
+
+## Database Migration
+
+### Migrating database schemas
+
+There are many different migration strategies. Some common migrations include on-premises databases to the AWS Cloud, relational to nonrelational databases, and databases hosted on Amazon Elastic Compute Cloud (Amazon EC2) to fully managed AWS databases services such as Amazon Aurora. AWS Database Migration Service (AWS DMS) supports homogeneous migrations such as Oracle to Oracle as well as heterogeneous migrations between different database engines, such as Oracle to MySQL.
+
+However, AWS DMS creates only those objects required to efficiently migrate the data. To migrate the remaining database elements and schema, you need to use other tools depending on the type of database migration. For example, if you are migrating an on-premises Microsoft SQL database, you can use native Microsoft SQL tools to migrate the database to Amazon Relational Database Service (Amazon RDS) for Microsoft SQL.
+
+**Homogeneous** migrations, where you migrate between the same database engines, might require the use of native database tools to migrate database elements.
+
+**Heterogeneous** migrations, where you migrate between different database engines, such as Oracle to Amazon Aurora, require the use of the AWS Schema Conversion Tool (AWS SCT) to first translate your database schema to the new platform. You can then use AWS DMS to migrate the data. It is important to understand that AWS DMS and AWS SCT are two different tools that serve different needs. 
+
+### What is AWS SCT?
+
+The AWS Schema Conversion Tool (AWS SCT) makes heterogeneous database migrations predictable. It does this by automatically converting the source database schema and a majority of the database code objects—including views, stored procedures, and functions—to a format compatible with the target database. Any objects that cannot be automatically converted are clearly marked so that they can be manually converted to complete the migration.
+
+AWS SCT can also scan your application source code for embedded SQL statements and convert them as part of a database schema conversion project. During this process, AWS SCT performs cloud-native code optimization by converting legacy Oracle and Microsoft SQL Server functions to their equivalent AWS service. This helps you modernize the applications at the time of database migration.
+
+### What is AWS DMS?
+
+AWS Database Migration Service (AWS DMS) helps you migrate databases to AWS quickly and securely. The source database remains fully operational during the migration, minimizing downtime to applications that rely on the database. The AWS Database Migration Service can migrate your data to and from the most widely used commercial and open-source databases.
+
+AWS Database Migration Service supports homogeneous migrations such as Oracle to Oracle, as well as heterogeneous migrations between different database platforms, such as Oracle or Microsoft SQL Server to Amazon Aurora. With AWS Database Migration Service, you can also continuously replicate data with low latency from any supported source to any supported target. For example, you can replicate from multiple sources to Amazon Simple Storage Service (Amazon S3) to build a highly available and scalable data lake solution. You can also consolidate databases into a petabyte-scale data warehouse by streaming data to Amazon Redshift.
+
+### How do AWS SCT and AWS DMS work together?
+
+AWS SCT enables you to convert your schema, and AWS Database Migration Service (AWS DMS) will help you migrate the actual data in your database. AWS DMS can do migration in two ways. It can do full-load migration, in which you stop your system and transfer your data all at once. Or it can perform ongoing replication and change data capture, in which you do an initial transfer of data, and then repeatedly transfer changes. This enables you to run the two systems in parallel to ensure the new system works.
+
+![Step 1](images/dm-step-1.png)
+
+![Step 2](images/dm-step-2.png)
+
+#### Resources
+- [**AWS Data Migration Service**](https://aws.amazon.com/dms/)
+- [**AWS Schema Conversion Tool User Guide**](https://docs.aws.amazon.com/SchemaConversionTool/latest/userguide/CHAP_Welcome.html)
+- [**AWS Professional Services**](https://aws.amazon.com/professional-services/)
+-[**AWS Database Migration Service Partners**](https://aws.amazon.com/dms/partners/)
+- [**AWS Migration Acceleration Program**](https://aws.amazon.com/migration-acceleration-program/)
+
+## Architecture
+
+### Server-Based Architecture
+
+AWS offers different ways to deploy your database using a server-based approach in the cloud. This lesson focuses on two AWS database services—Amazon Relational Database Service (Amazon RDS) and Amazon Elastic Compute Cloud (Amazon EC2)—to host your database engine. Before diving into these services, take a look at what a server-based application environment might look like on AWS.
+
+#### Use Case: Server-based web application
+
+The following diagram shows a typical use case of a web application using a server-based database solution. This architecture includes website content and application functions hosted on Amazon EC2 instances. Amazon RDS provides data store in multiple Availability Zones for fault tolerance.
+
+![Server-based architecture](images/server-based-architecture.png)
+
+#### Scaling in a server-based architecture
+
+When it comes to server-based architectures, scaling usually comes with a cost and might introduce complexity to a solution. For a web application that’s under too much load, for example, that means finding out what resource your application is running out of on the server.
+
+AWS offers instance monitoring out of the box for its server-based databases. This makes it easier to determine what needs scaling. To handle a higher load in your database, for example, you can vertically scale up your Amazon RDS primary database instance by selecting a bigger instance size. There are currently more than 18 instance sizes to choose from when resizing your Amazon RDS MySQL, PostgreSQL, MariaDB, Oracle, or Microsoft SQL Server instance. Your application can remain online and Amazon RDS manages the scaling.
+
+### Benefits of a server-based architecture
+
+#### Developer Perspective
+
+- **Predictive tasks**: For tasks that use constant or predictive compute, it may be more cost-effective to use server-based billing.
+- **Testing and debugging**: Debugging is less complicated because there is visibility into backend processes and the application is not broken up into separate, smaller functions. It's difficult to replicate the serverless environment to see how code will actually perform once deployed.
+- **Fewer units of integration**: Serverless architecture has fewer components compared to server-based architectures, which helps save time.
+
+#### Business Perspective
+
+- **Overall control**: The company owns and manages the infrastructure, which provides full control over all aspects of the application.
+- **Compliance and security**: Having full control over the infrastructure allows for full visibility, which might be required for compliance and security standards.
+- **Legacy applications**: Existing applications might not have the flexibility of decoupling individual parts and might be better suited to migrate to a server-based architecture.
+
+### Serverless Architecture
+
+All AWS serverless database services feature a distributed, fault-tolerant, highly available storage system that automatically scales as demand grows. This lesson focuses on two AWS serverless database solutions: **Amazon DynamoDB** and **Amazon Aurora Serverless**.
+
+#### Use Case: Serverless web application
+
+The following diagram shows a typical use case of a web application, similar to the application architecture from the previous lesson, only this time using serverless. This architecture includes website content stored in Amazon Simple Storage Service (Amazon S3), application code executed using AWS Lambda functions, user authentication provided by Amazon Cognito, and DynamoDB to store application data. For more information, choose each of the five numbered markers.
+
+![Serverless architecture](images/serverless-architecture.png)
+
+#### Scaling in a serverless architecture
+
+When you implement a serverless architecture, your backend AWS services can efficiently and automatically scale, keeping your costs low. Scaling is an event-driven process. For example, when it comes to DynamoDB, you can use Amazon CloudWatch to monitor and track a table’s read and write capacity metrics. Even if you’re not around, DynamoDB automatic scaling monitors your tables and indexes to automatically adjust throughput in response to changes in application traffic as demand increases and decreases.
+
+### Benefits of a serverless architecture
+
+#### Developer Perspective
+
+- **Server management**: Because there is no backend infrastructure to be responsible for, liability is reduced and there is no system administration.
+- **Scalability**: With a serverless architecture, you don’t have to think twice about provisioning infrastructure because of its ability to automatically scale with traffic volumes.
+- **Application flexibility**: You can migrate individual application features or partial workloads to run on serverless as on-demand events. This frees up resources in production to be used for more critical tasks.
+
+#### Business Perspective
+
+- **Time to market**: Smaller deployable units result in faster delivery of features to market, increasing the ability to adapt to change.
+- **Cost**: The cost of hiring backend infrastructure engineers goes down, along with operational costs.
+- **Customer obsession**: Abstraction from servers lets companies dedicate more time and resources to developing and improving customer experience.
+- **Startup friendly**: With the serverless architecture pay-as-you-go model, you can build an environment at a low cost and ease into the market without dealing with huge bills for minimum traffic.
