@@ -616,4 +616,38 @@ Run high-concurrency streaming data feeds to ingest user activity and support mi
 
 ## Data Access and Analysis
 
+Outside your database needs, there are services that Amazon Web Service (AWS) offers to help with data access and analysis. These two services, while they don't fall under a relational or nonrelational database category, are essential tools.
 
+### Amazon Redshift
+
+Amazon Redshift is a fast, simple, and cost-effective data warehouse.
+
+Tens of thousands of customers today rely on Amazon Redshift to analyze exabytes of data and run complex analytical queries, making it the most widely used cloud data warehouse. Run and scale analytics in seconds on all your data without having to manage your data warehouse infrastructure.
+
+Amazon Redshift is a fast, scalable data warehouse that makes it simple and cost effective to analyze all your data across your data warehouse and data lake. Amazon Redshift uses machine learning, massively parallel query execution, and columnar storage on high-performance disk.
+
+#### Resources
+- [**Amazon Redshift**](https://aws.amazon.com/redshift/)
+- [**Amazon Redshift resources**](https://aws.amazon.com/redshift/resources/)
+
+### Amazon Athena
+
+Amazon Athena is an interactive query service that streamlines analyzing data in Amazon Simple Storage Service (Amazon S3) using standard structured query language (SQL). Athena is serverless, so there is no infrastructure to manage, and you pay only for the queries that you run.
+
+Athena is straightforward to use. Point to your data in Amazon S3, define the schema, and start querying using standard SQL. Most results are delivered within seconds. With Athena, there’s no need for complex ETL jobs to prepare your data for analysis. This helps anyone with SQL skills to quickly analyze large-scale datasets.
+
+#### Pay per query
+
+With Athena, you pay only for the queries that you run. You are charged $5 per terabyte scanned by your queries. You can save from 30 percent to 90 percent on your per-query costs and get better performance by compressing, partitioning, and converting your data into columnar formats. Athena queries data directly in Amazon S3. There are no additional storage charges beyond S3. 
+
+#### Open, powerful, standard
+
+Athena uses Presto with ANSI SQL support and works with a variety of standard data formats, including CSV, JSON, ORC, Avro, and Parquet. Athena is ideal for quick, one-time querying but it can also handle complex analysis, including large joins, window functions, and arrays. Athena is highly available and runs queries using compute resources across multiple facilities and devices in each facility. Athena uses Amazon S3 as its underlying data store, making your data highly available and durable.
+
+#### Fast...really fast
+
+With Athena, you don't have to worry about having enough compute resources to get fast, interactive query performance. Athena automatically runs queries in parallel, so most results come back within seconds.
+
+#### Resources
+- [**Amazon Athena**](https://aws.amazon.com/athena/?nc=sn&loc=0&whats-new-cards.sort-by=item.additionalFields.postDateTime&whats-new-cards.sort-order=desc)
+- [**Amazon Athena User Guide**](https://docs.aws.amazon.com/athena/latest/ug/what-is.html)
