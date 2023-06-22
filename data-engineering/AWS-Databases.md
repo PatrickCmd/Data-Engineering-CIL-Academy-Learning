@@ -571,3 +571,49 @@ Timestream ensures that your time-series data is always encrypted, whether at re
 
 
 ### Amazon Quantum Ledger Database (Amazon QLDB)
+
+Amazon Quantum Ledger Database (Amazon QLDB) is a fully managed ledger database that provides a transparent, immutable, and cryptographically verifiable transaction log owned by a central trusted authority. Amazon QLDB tracks each and every application data change and maintains a complete and verifiable history of changes over time.
+
+#### Resources
+- [**Amazon Quantum Ledger Database**](https://aws.amazon.com/qldb/)
+- [**Amazon QLDB developer resources**](https://aws.amazon.com/qldb/resources/)
+
+### Amazon ElastiCache
+
+ElastiCache offers fully managed Redis and Memcached distributed memory caches. Seamlessly deploy, run, and scale popular open source-compatible, in-memory data stores. Build data-intensive apps or improve the performance of your existing apps by retrieving data from high throughput and low latency in-memory data stores.
+
+#### Resources
+- [**Amazon ElastiCache**](https://aws.amazon.com/elasticache/)
+- [**Amazon ElastiCache for Redis User Guide**](https://docs.aws.amazon.com/AmazonElastiCache/latest/red-ug/WhatIs.html)
+- [**Amazon ElastiCache for Memcached User Guide**](https://docs.aws.amazon.com/AmazonElastiCache/latest/mem-ug/WhatIs.html)
+
+
+### Amazon MemoryDB for Redis
+
+Amazon MemoryDB for Redis is a Redis-compatible, durable, in-memory database service that delivers ultra-fast performance. It is purpose-built for modern applications with microservices architectures.
+
+MemoryDB is compatible with Redis, a popular open-source data store, giving customers the ability to quickly build applications using the same flexible and friendly Redis data structures, application programming interfaces (APIs), and commands that they already use today. With MemoryDB, all your data is stored in memory, so you can achieve microsecond read and single-digit millisecond write latency and high throughput. MemoryDB also stores data durably across multiple Availability Zones using a distributed transactional log to facilitate fast failover, database recovery, and node restarts. Delivering both in-memory performance and Multi-AZ durability, Amazon MemoryDB can be used as a high-performance primary database for your microservices applications, eliminating the need to separately manage both a cache and durable database.
+
+#### Build web and mobile applications
+
+Use versatile Redis data structures such as streams, lists, and sets to build content data stores, chat and message queues, and geospatial indexes for demanding, data-intensive web and mobile applications that require low latency and high throughput.
+
+#### Quickly access customer data for retail
+
+Deliver personalized customer experiences and manage user profiles, preferences, and inventory tracking and fulfillment with microsecond read and single-digit millisecond write latency.
+
+#### Develop online games
+
+Build player data stores, session history, and leaderboards for gaming applications that require massive scale, low latency, and high concurrency to make real-time updates.
+
+#### Stream media and entertainment
+
+Run high-concurrency streaming data feeds to ingest user activity and support millions of requests per day for media and entertainment applications.
+
+#### Resources
+- [**Amazon MemoryDB for Redis**](https://aws.amazon.com/memorydb/)
+- [**Amazon MemoryDB for Redis Developer Guide**](https://docs.aws.amazon.com/memorydb/latest/devguide/what-is-memorydb-for-redis.html)
+
+## Data Access and Analysis
+
+
