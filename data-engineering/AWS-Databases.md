@@ -684,12 +684,75 @@ AWS SCT enables you to convert your schema, and AWS Database Migration Service (
 
 ![Step 2](images/dm-step-2.png)
 
+### What are the benefits of migrating a database with AWS?
+
+Relational databases are a mature technology, enabling you to routinely manage high levels of availability with on-premises servers. Although NoSQL databases are newer, we can usually maintain high availability on-premises; however, any database downtime can severely impact both application downtime and a company's ability to serve its customers in a timely manner.
+
+AWS database technologies, such as Amazon Relational Database Service (Amazon RDS) and Amazon DynamoDB, provide low-cost, scalable, highly available database solutions that are simple to set up and use. For many companies, migrating their databases to the cloud (particularly if switching to a different engine) would lower downtime and cost compared to on-premises servers.
+
+#### Simple to use
+AWS Database Migration Service (AWS DMS) is easy to use. You do not need to install drivers or applications, and it typically does not require changes to the source database.
+
+#### Minimal downtime
+AWS DMS helps you migrate your databases to AWS with virtually no downtime.
+
+#### Supports widely used database engines
+AWS DMS can migrate your data to and from most widely used commercial and open-source database engines. 
+
+#### Low cost
+AWS DMS is a low-cost service. You only pay for the compute resources used during the migration process, any additional log storage, and data transfer if not in the same AWS Region.
+
+#### Fast and easy to set up
+You can set up a migration task within minutes in the AWS Management Console. This lets you define  parameters used by AWS DMS to execute the migration.
+
+#### Reliable
+AWS DMS is highly resilient and self-healing. It continually monitors source and target databases, network connectivity, and the replication instance.
+
+### How do I migrate my database to AWS?
+
+AWS DMS and AWS Schema Conversion Tool (AWS SCT) can help you migrate your databases to or from AWS quickly and securely. Using AWS DMS, your source database remains fully operational during migration, minimizing downtime to applications that rely on the database.
+
+You can migrate to the same database engine, or switch database engines to modernize your database platform. You can also replicate data to sync source and target databases.
+
+#### For example:
+
+You can migrate from an on-premises Oracle instance to an Amazon RDS for Oracle instance.
+
+![DB migration](images/step1-db-migration.png)
+
+**Or...**
+
+You can migrate an Oracle instance, either on-premises or in the cloud, to a PostgreSQL database like Amazon RDS for PostgreSQL or Amazon Aurora PostgreSQL.
+
+![DB migration steps](images/step2-db-migration.png)
+
+### What tools can help with my migration? 
+
+#### AWS DMS
+
+At its most basic level, AWS DMS is a server in the AWS Cloud that runs replication software. You create a source and target connection to tell AWS DMS where to extract from and load to. Then you schedule a task that runs on this server to move your data.
+
+AWS DMS creates the tables and associated primary keys if they don't exist on the target. You can pre-create the target tables manually, if you prefer. Or you can use AWS SCT to create some or all of the target tables, indexes, views, triggers, and so on.
+
+#### AWS SCT
+
+If you want to switch database engines, AWS SCT can convert your existing database schema to the target platform. This includes tables, indexes, views, and stored procedures, plus your application code. If the schema from your source database can't be converted automatically, AWS SCT provides guidance on how you can create equivalent schema in your target database engine.
+
+### How do I manage a migration project?
+
+How do AWS DMS and AWS SCT fit into your migration project? Customers typically structure a migration into 12 distinct steps. Not all of the steps apply to every migration project—your particular use case will dictate which steps apply based on characteristics of your application, database, infrastructure, available resources, and skill sets.
+
+12-step process for migrating your databases and where AWS data migration tools can help. Steps are grouped into three categories: schema migration, data migration, and training and support.
+
+![Migration process](images/12-step-migration-process.png)
+
 #### Resources
 - [**AWS Data Migration Service**](https://aws.amazon.com/dms/)
 - [**AWS Schema Conversion Tool User Guide**](https://docs.aws.amazon.com/SchemaConversionTool/latest/userguide/CHAP_Welcome.html)
 - [**AWS Professional Services**](https://aws.amazon.com/professional-services/)
 -[**AWS Database Migration Service Partners**](https://aws.amazon.com/dms/partners/)
 - [**AWS Migration Acceleration Program**](https://aws.amazon.com/migration-acceleration-program/)
+- [**Database migration playbooks**](https://docs.aws.amazon.com/dms/index.html)
 
 ## Architecture
 
