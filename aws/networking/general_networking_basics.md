@@ -12,3 +12,4 @@
 - [**Understanding IPv4 address**](https://bikramat.medium.com/understanding-cidr-for-vpc-6d9fb45f3690)
 - [**What Is CIDR?**](https://aws.amazon.com/what-is/cidr/)
 - [**Understanding CIDR Notation and IP Address Range**](https://michelburnett27.medium.com/understanding-cidr-notation-and-ip-address-range-3ad28194bc8d)
+- [**Freecodecamp Subnet Cheat Sheet – 24 Subnet Mask, 30, 26, 27, 29, and other IP Address CIDR Network References**](https://www.freecodecamp.org/news/subnet-cheat-sheet-24-subnet-mask-30-26-27-29-and-other-ip-address-cidr-network-references/)
