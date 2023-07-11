@@ -59,3 +59,5 @@ If you don’t have the resources to completely rearchitect your data model or h
 2. [**AWS Databases LinkedIn Page**](http://linkedin.com/showcase/aws-databases/)
 3. [**Databases Learning Path**](https://aws.amazon.com/training/path-databases/)
 4. [**Breaking Free from Legacy Databases curriculum page**](https://www.aws.training/Details/Curriculum?id=61146)
+
+5. [**Purpose-built databases**](https://aws.amazon.com/getting-started/hands-on/purpose-built-databases/)
