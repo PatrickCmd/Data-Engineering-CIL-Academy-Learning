@@ -6,3 +6,4 @@
 - [**Caching for high-volume workloads with Amazon ElastiCache**](https://aws.amazon.com/getting-started/hands-on/purpose-built-databases/elasticache/)
 - [**Graph relationships with Amazon Neptune**](https://aws.amazon.com/getting-started/hands-on/purpose-built-databases/neptune/)
 - [**Document storage with Amazon DocumentDB**](https://aws.amazon.com/getting-started/hands-on/purpose-built-databases/documentdb/)
+- [**Scalability and familiarity with Amazon Keyspaces**](https://aws.amazon.com/getting-started/hands-on/purpose-built-databases/keyspaces/)
