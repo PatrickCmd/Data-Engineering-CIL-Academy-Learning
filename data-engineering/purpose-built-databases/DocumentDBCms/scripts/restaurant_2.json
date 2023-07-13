@@ -1,0 +1,31 @@
+{
+  "name": "Bill's Burgers",
+  "createdAt": "2020-01-08 09:22:54",
+  "updatedAt": "2020-04-10 04:07:23",
+  "address": {
+    "street": "444 1st Avenue",
+    "location": "New York, NY"
+  },
+  "promotedReviews": [
+    {
+      "reviewer": "satisfied_sally",
+      "rating": 5,
+      "review": "Come for the burgers, stay for the fries! Lots of fun for the whole family."
+    },
+    {
+      "reviewer": "pleased_paul",
+      "rating": 4,
+      "review": "Delicious! Fast, clean, and kind."
+    }
+  ],
+  "foodImages": [
+    {
+      "url": "https://cdn.reviewmyrestaurant.com/mao9oi12.png",
+      "caption": "Cheeseburger"
+    },
+    {
+      "url": "https://cdn.reviewmyrestaurant.com/aoeirof014f.png",
+      "caption": "Bronco Burger"
+    }
+  ]
+}

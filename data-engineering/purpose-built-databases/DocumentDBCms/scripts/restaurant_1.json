@@ -1,0 +1,31 @@
+{
+  "name": "The Vineyard",
+  "createdAt": "2020-02-15 01:45:40",
+  "updatedAt": "2020-03-13 03:48:35",
+  "address": {
+    "street": "1122 Broadway",
+    "location": "New York, NY"
+  },
+  "promotedReviews": [
+    {
+      "reviewer": "delighted_dan",
+      "rating": 5,
+      "review": "This place is great! Came here with my family and we all loved it. Try the tortelini!"
+    },
+    {
+      "reviewer": "happy_hannah",
+      "rating": 4,
+      "review": "Pretty good! Very nice service and good food. Would come again!"
+    }
+  ],
+  "foodImages": [
+    {
+      "url": "https://cdn.reviewmyrestaurant.com/lkj234n1k.png",
+      "caption": "Croque Madame"
+    },
+    {
+      "url": "https://cdn.reviewmyrestaurant.com/lksfm1340.png",
+      "caption": "French Onion Soup"
+    }
+  ]
+}
