@@ -250,6 +250,7 @@ NACLs provide an additional layer of security and control at the subnet level wi
 **Resources**
 - [Amazon VPC User guide](https://docs.aws.amazon.com/vpc/latest/userguide/what-is-amazon-vpc.html)
 - [AWS Networking Basics for Programmers | Hands On - Travis Media](https://www.youtube.com/watch?v=2doSoMN2xvI)
+- [The Basics of AWS VPC](https://aws.plainenglish.io/aws-vpc-refresher-40ac90196ea8)
 
 
 ![AWS Networking](images/AWS%20Networking%20Basics.png)
