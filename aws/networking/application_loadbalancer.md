@@ -1194,3 +1194,62 @@ aws elbv2 register-targets \
 ```
 
 Now, the instance target group is created, and the two private EC2 instances are associated with it. The target group is used to distribute incoming traffic from the load balancer to these instances based on the specified health check and routing rules.
+
+
+### How Do I Launch the Application Load Balancer?
+
+In this demonstration, you will launch the Application Load Balancer.
+
+- To create an Application Load Balancer, open the AWS Management Console. In the search bar, enter EC2 and then choose EC2 from the search results.
+- On the navigation pane, select Load Balancers, then choose Create Load Balancer.
+- You will then select the Application Load Balancer option and choose Create.
+- Next, you will configure the Application Load Balancer.
+- Choose Create.
+- For Load balancer name, enter a name, such as ALB-Tutorial,
+- For Scheme, choose Internet-facing. Finally, for IP address type, choose IPv4.
+- Next, you will assign subnets for the load balancer. Under Network mapping, for VPC, select the VPC that you created.
+- For Mappings, select both Regions that you selected earlier, and then select the two public subnets that you created.
+- Next, assign a security group to the load balancer, so that it can communicate with registered targets on both the listener port and the health check port.
+- Now create a listener configuration on the load balancer. Under Listeners and routing, keep the Protocol and Port settings of HTTP and 80, respectively. For Forward to, select the target group that you created.
+- Review the summary and then choose Create load balancer.
+- You have successfully launched the load balancer.
+
+![Create - ALB](images/alb/create-alb-1.png)
+![Create - ALB](images/alb/create-alb-2.png)
+![Create - ALB](images/alb/create-alb-3.png)
+![Create - ALB](images/alb/create-alb-4.png)
+![Create - ALB](images/alb/create-alb-5.png)
+
+#### Below are the AWS CLI commands to launch an Application Load Balancer (ALB) that listens on HTTP port 80 and forwards traffic to the previously created instance target group:
+
+Step 1: Create the Application Load Balancer:
+```bash
+aws elbv2 create-load-balancer \
+  --name "MyALB" \
+  --subnets "your_subnet_id_1" "your_subnet_id_2" \  # Replace with the subnet IDs where you want to deploy the ALB
+  --security-groups "your_security_group_id" \     # Replace with the security group ID for the ALB
+  --scheme internet-facing \
+  --type application \
+  --ip-address-type ipv4
+```
+
+Step 2: Get the ARN of the created ALB:
+```bash
+ALB_ARN=$(aws elbv2 describe-load-balancers \
+  --names "MyALB" \
+  --query 'LoadBalancers[0].LoadBalancerArn' \
+  --output text)
+```
+
+Step 3: Create a listener on port 80 with the target group association:
+```bash
+aws elbv2 create-listener \
+  --load-balancer-arn $ALB_ARN \
+  --protocol HTTP \
+  --port 80 \
+  --default-actions Type=forward,TargetGroupArn=$TARGET_GROUP_ARN
+```
+
+Now, the Application Load Balancer is created and configured to listen on HTTP port 80, forwarding incoming traffic to the previously created instance target group. The ALB will distribute incoming requests to the private EC2 instances based on the routing rules defined in the target group.
+
+
