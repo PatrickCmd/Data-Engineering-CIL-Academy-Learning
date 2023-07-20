@@ -1128,3 +1128,69 @@ In this updated Terraform script, we have added the following resources and conf
 4. `aws_instance` resource (`ec2_instance`) to create the EC2 instance with the specified user data script, associated with the private subnet, and allowed HTTP traffic from the internet.
 
 Remember to replace `your_key_pair_name` with the actual name of your EC2 key pair that you want to use to access the instance. Additionally, ensure you have the correct AMI ID for Amazon Linux 2 (AMI ID: "ami-0c55b159cbfafe1f0") in the `aws_instance` resource.
+
+### How Do I Create a Target Group?
+
+In this demonstration, you will learn how to create a target group for the Application Load Balancer.
+
+- In the search bar, enter EC2 and then choose EC2 from the search results.
+- On the navigation pane, choose Target Groups.
+- Now, you will configure the target group.
+- Under Choose a target type, choose Instances.
+- Next, for Target group name, enter a name, such as ALB-Tutorial-Target-Group. For Protocol, select HTTP. Keep the Port value at 80. For VPC, select the VPC that you created.
+- Keep the remaining settings at their default values.
+- Keep the Health checks settings at their defaults and choose Next.
+- Next, you will register the target.
+- Select the two EC2 instances that you created, and then choose Include as pending below.
+- Review the targets.
+- Make sure that the targets that you selected appear in the Review targets section. Choose Create target group.
+- You have successfully created the Target group.
+
+![Create target group](images/target-groups/create-target-group-1.png)
+![Create target group](images/target-groups/create-target-group-2.png)
+![Create target group](images/target-groups/create-target-group-3-register-targets.png)
+![Create target group](images/target-groups/create-target-group-4-register-targets.png)
+![Create target group](images/target-groups/create-target-group-5.png)
+
+
+#### Below are the AWS CLI commands to create an instance target group and associate it with the two private EC2 instances:
+
+Step 1: Create an instance target group:
+```bash
+aws elbv2 create-target-group \
+  --name "MyInstanceTargetGroup" \
+  --protocol HTTP \
+  --port 80 \
+  --target-type instance \
+  --vpc-id "your_vpc_id" \
+  --health-check-protocol HTTP \
+  --health-check-port 80 \
+  --health-check-path "/health" \
+  --health-check-interval-seconds 30 \
+  --health-check-timeout-seconds 5 \
+  --healthy-threshold-count 3 \
+  --unhealthy-threshold-count 3
+```
+
+Step 2: Get the ARN of the created target group:
+```bash
+TARGET_GROUP_ARN=$(aws elbv2 describe-target-groups \
+  --names "MyInstanceTargetGroup" \
+  --query 'TargetGroups[0].TargetGroupArn' \
+  --output text)
+```
+
+Step 3: Get the IDs of the private EC2 instances that you want to associate with the target group. You can find the instance IDs using the AWS Management Console or the AWS CLI:
+```bash
+PRIVATE_INSTANCE_1_ID="i-xxxxxxxxxxxxxxx"
+PRIVATE_INSTANCE_2_ID="i-xxxxxxxxxxxxxxx"
+```
+
+Step 4: Associate the private EC2 instances with the target group:
+```bash
+aws elbv2 register-targets \
+  --target-group-arn $TARGET_GROUP_ARN \
+  --targets "Id=$PRIVATE_INSTANCE_1_ID,Port=80" "Id=$PRIVATE_INSTANCE_2_ID,Port=80"
+```
+
+Now, the instance target group is created, and the two private EC2 instances are associated with it. The target group is used to distribute incoming traffic from the load balancer to these instances based on the specified health check and routing rules.
