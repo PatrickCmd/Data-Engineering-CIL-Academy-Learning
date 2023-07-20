@@ -1253,3 +1253,35 @@ aws elbv2 create-listener \
 Now, the Application Load Balancer is created and configured to listen on HTTP port 80, forwarding incoming traffic to the previously created instance target group. The ALB will distribute incoming requests to the private EC2 instances based on the routing rules defined in the target group.
 
 
+### How Do I Test Load Balancing?
+
+- On the navigation pane, select Load Balancers.
+- This page shows active load balancers. Select the load balancer you have created during this demonstration.
+- Under the Description tab, Basic Configuration, make sure that the State is Active. Then, copy the load balancer name that appears to the right of the DNS name field.
+- From a terminal, run a cURL to the DNS name of the load balancer several times. Confirm that the load balancer routes traffic to different targets.
+- A successful tested output is provided through the Hello World test page. This webpage confirms that the load balancer routed traffic to different targets.
+- It is key to run the load balancer test multiple times to ensure it is fully operational. Again, the Hello World webpage will provide conformation of the successful tested webpage output.
+
+![Test ALB](images/alb/test-alb.png)
+
+To test the load balancer using the `curl` command, you can use the ALB's DNS name or its public IP address (if the load balancer is internet-facing). Here's how you can do it:
+
+Assuming the Application Load Balancer (ALB) is internet-facing, and you have configured it to listen on port 80, you can use the following `curl` command:
+
+```bash
+ALB_DNS_NAME="your_alb_dns_name"  # Replace with the DNS name of your ALB
+
+curl -i http://$ALB_DNS_NAME/
+```
+
+Or, if you have the public IP address of your ALB, you can use:
+
+```bash
+ALB_PUBLIC_IP="your_alb_public_ip"  # Replace with the public IP address of your ALB
+
+curl -i http://$ALB_PUBLIC_IP/
+```
+
+The `-i` option in the `curl` command will include the HTTP response headers in the output, allowing you to see the response from your application instances behind the ALB.
+
+Make sure that the ALB's security group allows inbound traffic on port 80 from your location so that `curl` can access the ALB endpoint. Additionally, ensure that the instances in the target group are running and responding to HTTP requests properly to see the expected output from the ALB.
