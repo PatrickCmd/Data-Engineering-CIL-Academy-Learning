@@ -1285,3 +1285,93 @@ curl -i http://$ALB_PUBLIC_IP/
 The `-i` option in the `curl` command will include the HTTP response headers in the output, allowing you to see the response from your application instances behind the ALB.
 
 Make sure that the ALB's security group allows inbound traffic on port 80 from your location so that `curl` can access the ALB endpoint. Additionally, ensure that the instances in the target group are running and responding to HTTP requests properly to see the expected output from the ALB.
+
+### How Do I Clean up the Resources?
+
+- Open the AWS Management Console. 
+- In the search bar, enter EC2 and then choose EC2 from the search results.
+- On the navigation pane, choose Instances.
+- Select the instances that you created, and then choose Instance state, Terminate Instance and confirm the deletion.
+- Next, you will delete the target group you created. 
+- In the navigation pane, choose Target Groups.  
+- You will then select the target group that you created.
+- Now, choose Actions, Delete, and confirm the deletion.
+- On the navigation pane, select Load Balancers.
+- Now, select the Application Load Balancer you created, choose Actions, Delete, and then confirm the deletion.   
+- Next, you will delete the NAT gateway you created. 
+- In the search bar, enter VPC and then choose VPC from the search results.
+- From the navigation pane, choose NAT gateways. 
+- Then select the NAT gateway that you created, choose Action, Delete NAT Gateway.
+- Next, you will delete the security group you created. 
+- From the navigation pane, choose Security groups.
+- Then select the security group that you created, choose Action, Delete Security groups.
+- Lastly, you will delete the VPC that you created. 
+- From the navigation pane, choose Your VPCs. 
+- Then select your VPC, choose Action, Delete VPC. 
+- You have successfully deleted all resources, that were created in the preceding demonstrations.
+
+**To clean up all the AWS resources created in the previous steps, you can use the AWS CLI commands as follows**:
+
+Step 1: Delete the load balancer listener:
+```bash
+aws elbv2 delete-listener --listener-arn "your_listener_arn"
+```
+
+Step 2: Deregister the instances from the target group:
+```bash
+aws elbv2 deregister-targets \
+  --target-group-arn "your_target_group_arn" \
+  --targets "Id=your_instance_id1,Port=80" "Id=your_instance_id2,Port=80"
+```
+
+Step 3: Delete the target group:
+```bash
+aws elbv2 delete-target-group --target-group-arn "your_target_group_arn"
+```
+
+Step 4: Delete the Application Load Balancer:
+```bash
+aws elbv2 delete-load-balancer --load-balancer-arn "your_load_balancer_arn"
+```
+
+Step 5: Release the Elastic IP address (if applicable):
+```bash
+aws ec2 release-address --public-ip "your_elastic_ip"
+```
+
+Step 6: Terminate the EC2 instances (if applicable):
+```bash
+aws ec2 terminate-instances --instance-ids "your_instance_id1" "your_instance_id2"
+```
+
+Step 7: Delete the NAT gateway (if applicable):
+```bash
+aws ec2 delete-nat-gateway --nat-gateway-id "your_nat_gateway_id"
+```
+
+Step 8: Delete the route tables and associations (if applicable):
+```bash
+aws ec2 disassociate-route-table --association-id "your_association_id1" "your_association_id2"
+aws ec2 delete-route-table --route-table-id "your_route_table_id1" "your_route_table_id2"
+```
+
+Step 9: Delete the internet gateway (if applicable):
+```bash
+aws ec2 detach-internet-gateway --internet-gateway-id "your_internet_gateway_id" --vpc-id "your_vpc_id"
+aws ec2 delete-internet-gateway --internet-gateway-id "your_internet_gateway_id"
+```
+
+Step 10: Delete the VPC:
+```bash
+aws ec2 delete-vpc --vpc-id "your_vpc_id"
+```
+
+Make sure to replace "your_..." with the actual IDs or values of the resources you created during the setup. Please note that some resources may have dependencies, so ensure that you delete them in the correct order to avoid any issues. Additionally, be cautious while executing these commands as they will permanently delete the specified resources.
+
+### How can I learn more about Application Load Balancer?
+- [**AWS Application Load Balancer Documentation**](https://docs.aws.amazon.com/elasticloadbalancing/latest/application/introduction.html)
+- [**AWS Application Load Balancer FAQs**](https://aws.amazon.com/elasticloadbalancing/pricing/)
+- [**AWS Application Load Balancer Pricing**](https://aws.amazon.com/elasticloadbalancing/pricing/)
+- [**AWS Application Load Balancer Pricing calculator**](https://calculator.aws/#/createCalculator/ElasticLoadBalancing)
+- [**AWS ELB product comparisons**](https://aws.amazon.com/elasticloadbalancing/features/#compare)
+- [**Monitoring Application Load Balancer**](https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-monitoring.html)
