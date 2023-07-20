@@ -550,3 +550,404 @@ Resources:
 ```
 
 Copy the above YAML code into a new CloudFormation stack template. You can create a new stack by logging into the AWS Management Console, navigating to the CloudFormation service, and selecting "Create stack." Then, upload or paste the template, follow the on-screen instructions, and create the stack. The CloudFormation stack will create the VPC, subnets, route table, and internet gateway as specified in the template.
+
+### How Do I Create a NAT Gateway and Associate It with a Private Subnet?
+You will learn how to create a network address translation (NAT) gateway in a public subnet to route traffic to the internet gateway for the VPC. You will creat the NAT gateway using the AWS Management Console.
+
+#### How do I manually create a NAT gateway and associate it with a private subnet in the AWS Management Console?
+
+In this demo, you will learn how to create a NAT gateway and associate it with a private subnet.
+
+Here are the steps to manually create a NAT gateway and associate it with the private subnets in the AWS Management Console:
+
+Step 1: Sign in to the AWS Management Console
+Visit https://aws.amazon.com/ and sign in to your AWS account.
+
+Step 2: Open the VPC Dashboard
+Once you're logged in, go to the AWS Management Console and open the "VPC Dashboard."
+
+Step 3: Create a NAT Gateway
+- In the left-hand menu, click on "NAT Gateways."
+- Click on the "Create NAT Gateway" button.
+- Choose the public subnet where you want the NAT gateway to reside (it should be different from the private subnets).
+- Choose an Elastic IP address for the NAT gateway (or create a new one if you don't have any available).
+- Click on "Create NAT Gateway" to create the NAT gateway.
+
+![Create NATGW](images/nat-gateway/create-nat-gateway-1.png)
+
+Step 4: Wait for NAT Gateway Creation
+The NAT gateway creation process may take a few minutes. Wait for the status of the NAT gateway to become "Available."
+
+Step 5: Update the Route Table for Private Subnets
+- In the left-hand menu, click on "Route Tables."
+- Locate the route table associated with your private subnets (e.g., PrivateSubnet1 and PrivateSubnet2).
+- Select the route table and click on the "Routes" tab.
+- Click on "Edit routes."
+- Add a new route with the destination CIDR block "0.0.0.0/0" and the target as the NAT gateway you created in Step 3.
+- Click "Save routes" to update the route table.
+
+![Create Private Route Table](images/nat-gateway/create-route-table-private-1.png)
+![Create Private Route Table](images/nat-gateway/create-route-table-private-2-edit-routes.png)
+![Create Private Route Table](images/nat-gateway/create-route-table-private-3-edit-routes.png)
+
+![Create Private Route Table](images/nat-gateway/create-route-table-private-4-edit-associations.png)
+![Create Private Route Table](images/nat-gateway/create-route-table-private-5-edit-associations.png)
+
+Step 6: Associate the NAT Gateway with Elastic IP (EIP)
+If the NAT gateway's Elastic IP (EIP) was not automatically associated during the creation process, you can do it manually:
+- In the left-hand menu, click on "Elastic IPs."
+- Select the Elastic IP associated with your NAT gateway.
+- Click on "Actions" and then choose "Associate IP address."
+- Select the "Network Interface" option and choose the network interface associated with your NAT gateway (it should have the description "NAT Gateway" in the description column).
+- Click "Associate" to associate the Elastic IP with the NAT gateway.
+
+Your NAT gateway is now created and associated with the private subnets. The private subnets should have outbound internet access through the NAT gateway, while remaining private and not directly accessible from the internet.
+
+![VPC details](images/nat-gateway/vpc-details.png)
+
+#### Below are the AWS CLI commands to create a NAT gateway and associate it with the private subnets:
+
+Step 1: Create a NAT Gateway
+```bash
+# Create a NAT Gateway in the public subnet with an existing Elastic IP
+aws ec2 create-nat-gateway --subnet-id <PUBLIC_SUBNET_ID> --allocation-id <EXISTING_EIP_ALLOCATION_ID>
+```
+OR
+```bash
+# Create a new Elastic IP and associate it with the NAT Gateway
+aws ec2 allocate-address --domain vpc
+aws ec2 create-nat-gateway --subnet-id <PUBLIC_SUBNET_ID> --allocation-id <NEW_EIP_ALLOCATION_ID>
+```
+
+Step 2: Wait for NAT Gateway Creation
+After running the create-nat-gateway command, the NAT Gateway may take a few minutes to become available. You can use the following command to check the status:
+```bash
+aws ec2 describe-nat-gateways --filter "Name=subnet-id,Values=<PUBLIC_SUBNET_ID>" --query "NatGateways[0].State"
+```
+Keep running the above command until the State shows "available".
+
+Step 3: Update the Route Table for Private Subnets
+```bash
+# Get the ID of the Route Table associated with your private subnet(s)
+aws ec2 describe-route-tables --filter "Name=association.subnet-id,Values=<PRIVATE_SUBNET_1_ID>,<PRIVATE_SUBNET_2_ID>" --query "RouteTables[*].RouteTableId"
+```
+Replace `<PRIVATE_SUBNET_1_ID>` and `<PRIVATE_SUBNET_2_ID>` with the actual IDs of your private subnets.
+
+```bash
+# Add a route to the NAT Gateway in the private route table(s)
+aws ec2 create-route --route-table-id <PRIVATE_ROUTE_TABLE_1_ID> --destination-cidr-block 0.0.0.0/0 --gateway-id <NAT_GATEWAY_ID>
+aws ec2 create-route --route-table-id <PRIVATE_ROUTE_TABLE_2_ID> --destination-cidr-block 0.0.0.0/0 --gateway-id <NAT_GATEWAY_ID>
+```
+Replace `<PRIVATE_ROUTE_TABLE_1_ID>` and `<PRIVATE_ROUTE_TABLE_2_ID>` with the actual IDs of your private route tables, and `<NAT_GATEWAY_ID>` with the ID of the NAT Gateway created in Step 1.
+
+Step 4: Associate Elastic IP (EIP) with the NAT Gateway (if not already associated)
+```bash
+aws ec2 associate-address --instance-id <NAT_GATEWAY_ID> --allocation-id <EIP_ALLOCATION_ID>
+```
+Replace `<NAT_GATEWAY_ID>` with the ID of the NAT Gateway created in Step 1, and `<EIP_ALLOCATION_ID>` with the Elastic IP Allocation ID associated with the NAT Gateway.
+
+Now, your NAT Gateway is created and associated with the private subnets. The private subnets should have outbound internet access through the NAT gateway, while remaining private and not directly accessible from the internet.
+
+#### Below is an updated Terraform script that includes the steps to create a NAT gateway and associate it with the private subnets:
+
+```hcl
+provider "aws" {
+  region = "us-east-1"
+}
+
+resource "aws_vpc" "my_vpc" {
+  cidr_block = "10.0.0.0/16"
+  tags = {
+    Name = "MyVPC"
+  }
+}
+
+resource "aws_subnet" "public_subnet_1" {
+  vpc_id            = aws_vpc.my_vpc.id
+  cidr_block        = "10.0.1.0/24"
+  availability_zone = "us-east-1a"
+  tags = {
+    Name = "PublicSubnet1"
+  }
+}
+
+resource "aws_subnet" "public_subnet_2" {
+  vpc_id            = aws_vpc.my_vpc.id
+  cidr_block        = "10.0.2.0/24"
+  availability_zone = "us-east-1b"
+  tags = {
+    Name = "PublicSubnet2"
+  }
+}
+
+resource "aws_subnet" "private_subnet_1" {
+  vpc_id            = aws_vpc.my_vpc.id
+  cidr_block        = "10.0.3.0/24"
+  availability_zone = "us-east-1a"
+  tags = {
+    Name = "PrivateSubnet1"
+  }
+}
+
+resource "aws_subnet" "private_subnet_2" {
+  vpc_id            = aws_vpc.my_vpc.id
+  cidr_block        = "10.0.4.0/24"
+  availability_zone = "us-east-1b"
+  tags = {
+    Name = "PrivateSubnet2"
+  }
+}
+
+resource "aws_internet_gateway" "my_igw" {
+  vpc_id = aws_vpc.my_vpc.id
+  tags = {
+    Name = "MyIGW"
+  }
+}
+
+resource "aws_route_table" "public_route_table" {
+  vpc_id = aws_vpc.my_vpc.id
+  tags = {
+    Name = "PublicRouteTable"
+  }
+}
+
+resource "aws_route" "public_route" {
+  route_table_id         = aws_route_table.public_route_table.id
+  destination_cidr_block = "0.0.0.0/0"
+  gateway_id             = aws_internet_gateway.my_igw.id
+}
+
+resource "aws_route_table_association" "public_subnet_1_association" {
+  subnet_id      = aws_subnet.public_subnet_1.id
+  route_table_id = aws_route_table.public_route_table.id
+}
+
+resource "aws_route_table_association" "public_subnet_2_association" {
+  subnet_id      = aws_subnet.public_subnet_2.id
+  route_table_id = aws_route_table.public_route_table.id
+}
+
+resource "aws_eip" "nat_eip" {
+  vpc = true
+}
+
+resource "aws_nat_gateway" "nat_gateway" {
+  allocation_id = aws_eip.nat_eip.id
+  subnet_id     = aws_subnet.public_subnet_1.id
+}
+
+resource "aws_route_table" "private_route_table_1" {
+  vpc_id = aws_vpc.my_vpc.id
+  tags = {
+    Name = "PrivateRouteTable1"
+  }
+}
+
+resource "aws_route_table_association" "private_subnet_1_association" {
+  subnet_id      = aws_subnet.private_subnet_1.id
+  route_table_id = aws_route_table.private_route_table_1.id
+}
+
+resource "aws_route" "private_route" {
+  route_table_id         = aws_route_table.private_route_table_1.id
+  destination_cidr_block = "0.0.0.0/0"
+  nat_gateway_id         = aws_nat_gateway.nat_gateway.id
+}
+
+resource "aws_route_table" "private_route_table_2" {
+  vpc_id = aws_vpc.my_vpc.id
+  tags = {
+    Name = "PrivateRouteTable2"
+  }
+}
+
+resource "aws_route_table_association" "private_subnet_2_association" {
+  subnet_id      = aws_subnet.private_subnet_2.id
+  route_table_id = aws_route_table.private_route_table_2.id
+}
+
+resource "aws_route" "private_route_2" {
+  route_table_id         = aws_route_table.private_route_table_2.id
+  destination_cidr_block = "0.0.0.0/0"
+  nat_gateway_id         = aws_nat_gateway.nat_gateway.id
+}
+```
+
+In this updated Terraform script, we have added the following resources to create and associate the NAT gateway with the private subnets:
+
+1. `aws_eip` resource to allocate an Elastic IP (EIP) for the NAT gateway.
+2. `aws_nat_gateway` resource to create the NAT gateway in the public subnet `public_subnet_1` and associate it with the allocated EIP.
+3. `aws_route_table` resource (`private_route_table_1` and `private_route_table_2`) to create separate route tables for each private subnet (`private_subnet_1` and `private_subnet_2`).
+4. `aws_route` resources (`private_route` and `private_route_2`) to add a default route with the destination CIDR block `0.0.0.0/0` to the NAT gateway for each private route table.
+
+Now, when you run `terraform init`, `terraform plan`, and `terraform apply`, it will create the VPC, public subnets, internet gateway, public route table, NAT gateway, private route tables, and associate the resources as described in the script. The private subnets will have outbound internet access through the NAT gateway while remaining private and not directly accessible from the internet.
+
+#### Below is the updated AWS CloudFormation template that includes the steps to create a NAT gateway and associate it with the private subnets:
+
+```yaml
+AWSTemplateFormatVersion: '2010-09-09'
+Description: AWS CloudFormation Template to create a VPC with public and private subnets and NAT gateway
+
+Parameters:
+  VpcCidrBlock:
+    Type: String
+    Default: 10.0.0.0/16
+    Description: CIDR block for the VPC
+
+Resources:
+  MyVPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: !Ref VpcCidrBlock
+      Tags:
+        - Key: Name
+          Value: MyVPC
+
+  PublicSubnet1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref MyVPC
+      CidrBlock: 10.0.1.0/24
+      AvailabilityZone: us-east-1a
+      Tags:
+        - Key: Name
+          Value: PublicSubnet1
+
+  PublicSubnet2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref MyVPC
+      CidrBlock: 10.0.2.0/24
+      AvailabilityZone: us-east-1b
+      Tags:
+        - Key: Name
+          Value: PublicSubnet2
+
+  PrivateSubnet1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref MyVPC
+      CidrBlock: 10.0.3.0/24
+      AvailabilityZone: us-east-1a
+      Tags:
+        - Key: Name
+          Value: PrivateSubnet1
+
+  PrivateSubnet2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref MyVPC
+      CidrBlock: 10.0.4.0/24
+      AvailabilityZone: us-east-1b
+      Tags:
+        - Key: Name
+          Value: PrivateSubnet2
+
+  MyIGW:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: MyIGW
+
+  IGWAttachment:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref MyVPC
+      InternetGatewayId: !Ref MyIGW
+
+  PublicRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref MyVPC
+      Tags:
+        - Key: Name
+          Value: PublicRouteTable
+
+  PublicRoute:
+    Type: AWS::EC2::Route
+    DependsOn: IGWAttachment
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref MyIGW
+
+  PublicSubnet1Association:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PublicSubnet1
+      RouteTableId: !Ref PublicRouteTable
+
+  PublicSubnet2Association:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PublicSubnet2
+      RouteTableId: !Ref PublicRouteTable
+
+  NATGatewayEIP:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+
+  NATGateway:
+    Type: AWS::EC2::NatGateway
+    Properties:
+      AllocationId: !GetAtt NATGatewayEIP.AllocationId
+      SubnetId: !Ref PublicSubnet1
+
+  PrivateRouteTable1:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref MyVPC
+      Tags:
+        - Key: Name
+          Value: PrivateRouteTable1
+
+  PrivateRoute:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref PrivateRouteTable1
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId: !Ref NATGateway
+
+  PrivateSubnet1Association:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PrivateSubnet1
+      RouteTableId: !Ref PrivateRouteTable1
+
+  PrivateRouteTable2:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref MyVPC
+      Tags:
+        - Key: Name
+          Value: PrivateRouteTable2
+
+  PrivateRoute2:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref PrivateRouteTable2
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId: !Ref NATGateway
+
+  PrivateSubnet2Association:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PrivateSubnet2
+      RouteTableId: !Ref PrivateRouteTable2
+```
+
+In this updated CloudFormation template, we have added the following resources to create and associate the NAT gateway with the private subnets:
+
+1. `NATGatewayEIP`: An Elastic IP (EIP) to be used by the NAT gateway.
+2. `NATGateway`: A NAT gateway created in `PublicSubnet1` and associated with the allocated EIP.
+3. `PrivateRouteTable1`: A separate route table for `PrivateSubnet1`.
+4. `PrivateRoute`: A default route with destination CIDR block `0.0.0.0/0` to the NAT gateway for `PrivateRouteTable1`.
+5. `PrivateSubnet1Association`: Association of `PrivateSubnet1` with `PrivateRouteTable1`.
+6. `PrivateRouteTable2`: A separate route table for `PrivateSubnet2`.
+7. `PrivateRoute2`: A default route with destination CIDR block `0.0.0.0/0` to the NAT gateway for `PrivateRouteTable2`.
+8. `PrivateSubnet2Association`: Association of `PrivateSubnet2` with `PrivateRouteTable2`.
+
+Now, when you create a CloudFormation stack using this template, it will create the VPC, public subnets, internet gateway, public route table, NAT gateway, private route tables, and associate the resources as described in the template. The private subnets will have outbound internet access through the NAT gateway while remaining private and not directly accessible from the internet.
