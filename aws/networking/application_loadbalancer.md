@@ -783,6 +783,8 @@ In this updated Terraform script, we have added the following resources to creat
 
 Now, when you run `terraform init`, `terraform plan`, and `terraform apply`, it will create the VPC, public subnets, internet gateway, public route table, NAT gateway, private route tables, and associate the resources as described in the script. The private subnets will have outbound internet access through the NAT gateway while remaining private and not directly accessible from the internet.
 
+> See refactored script into terraform module [here](./refactor_network_into_modules_terraform.md)
+
 #### Below is the updated AWS CloudFormation template that includes the steps to create a NAT gateway and associate it with the private subnets:
 
 ```yaml
@@ -951,3 +953,178 @@ In this updated CloudFormation template, we have added the following resources t
 8. `PrivateSubnet2Association`: Association of `PrivateSubnet2` with `PrivateRouteTable2`.
 
 Now, when you create a CloudFormation stack using this template, it will create the VPC, public subnets, internet gateway, public route table, NAT gateway, private route tables, and associate the resources as described in the template. The private subnets will have outbound internet access through the NAT gateway while remaining private and not directly accessible from the internet.
+
+
+### How Do I Launch Amazon Elastic Compute Cloud (Amazon EC2) Instances and Install Web Servers?
+
+- To create an Amazon EC2 instance, open the AWS Management Console. Enter EC2 in the search bar and select the EC2 option.
+- On the Amazon EC2 dashboard, choose Launch instance.
+- To launch an instance, you must provide multiple attributes. Start by entering a name for the instance, such as Web Server 1.
+- Next, for the Amazon Machine Image (AMI), choose any free tier Amazon Linux AMI.
+- Next, choose the Instance type. Choose any AWS Free Tier eligible instance type, such as t2.micro.
+- Choose Create new key pair. Key pairs allow you to connect to your instance securely.
+- For Key pair name, enter a name, such as ALB-Tutorial-EC2-Key and then choose Create key pair.
+- You are prompted to download the new key pair.
+- For Network settings, choose the following options in the Firewall Security groups section.
+- Select create a security group. Then, choose Allow SSH traffic from and choose My IP. Next, select Allow HTTP traffic from the internet. Finally, choose Edit to launch the private web servers in one of the private subnets.
+- Choose your VPC and then choose one of the private subnets that you created (for example, ALB-Tutorial-Private-subnet1). When you choose the private subnet, the Auto-assign public IP setting changes to Disable.
+- Next, you will install the Apache web server on the instance. Scroll down to the `Advanced details section`.
+- Enter the following shell script in the User data field.
+
+```sh
+#!/bin/bash
+yum update -y
+yum install -y httpd.x86_64
+systemctl start httpd.service
+systemctl activate httpd.service
+echo “Hello World from $(hostname -f)” > /var/www/html/index.html
+```
+
+- After you have entered the shell script, choose Launch instance.
+
+![Launch EC2 instancce](images/ec2/create-ec2-1.png)
+![Launch EC2 instancce](images/ec2/create-ec2-2.png)
+![Launch EC2 instancce](images/ec2/create-ec2-3.png)
+![Launch EC2 instancce](images/ec2/create-ec2-4.png)
+![Launch EC2 instancce](images/ec2/create-ec2-5.png)
+
+- Follow the same steps to launch a second Amazon EC2 instance with name, such as Web server 2. Be sure to use another private subnet. Use the same Security Group and same EC2 key pair that you have created.
+
+#### Below are the AWS CLI commands to launch an EC2 instance using Amazon Linux 2 AMI and t2.micro instance type in one of the private subnets with the given user data:
+
+```bash
+# Replace these values with your actual values
+REGION="us-east-1"
+VPC_ID="your_vpc_id"
+PRIVATE_SUBNET_ID="your_private_subnet_id"
+KEY_NAME="your_key_pair_name"
+
+# Encode the user data script as base64
+USER_DATA=$(echo -n '#!/bin/bash
+yum update -y
+yum install -y httpd.x86_64
+systemctl start httpd.service
+systemctl activate httpd.service
+echo "Hello World from $(hostname -f)" > /var/www/html/index.html' | base64)
+
+# Launch the EC2 instance
+INSTANCE_ID=$(aws ec2 run-instances \
+  --image-id ami-0c55b159cbfafe1f0 \
+  --instance-type t2.micro \
+  --key-name "$KEY_NAME" \
+  --subnet-id "$PRIVATE_SUBNET_ID" \
+  --user-data "$USER_DATA" \
+  --region "$REGION" \
+  --query 'Instances[0].InstanceId' \
+  --output text)
+
+echo "EC2 instance $INSTANCE_ID is launching..."
+```
+
+Make sure to replace the placeholder values:
+- `your_vpc_id` with the actual VPC ID where you want to launch the EC2 instance.
+- `your_private_subnet_id` with the actual ID of the private subnet where you want to launch the EC2 instance.
+- `your_key_pair_name` with the actual name of your EC2 key pair that you want to use to access the instance.
+
+This script will create an EC2 instance with the given user data script, which will install and start the Apache web server (httpd) and create a simple "Hello World" HTML file in the /var/www/html directory. The instance will be launched in the specified private subnet and will have access to the internet through the NAT gateway created earlier.
+
+
+#### Below is the updated Terraform script to launch an EC2 instance using Amazon Linux 2 AMI and t2.micro instance type in one of the private subnets with the given user data:
+
+```hcl
+provider "aws" {
+  region = "us-east-1"
+}
+
+resource "aws_vpc" "my_vpc" {
+  cidr_block = "10.0.0.0/16"
+  tags = {
+    Name = "MyVPC"
+  }
+}
+
+resource "aws_subnet" "public_subnet_1" {
+  vpc_id            = aws_vpc.my_vpc.id
+  cidr_block        = "10.0.1.0/24"
+  availability_zone = "us-east-1a"
+  tags = {
+    Name = "PublicSubnet1"
+  }
+}
+
+resource "aws_subnet" "private_subnet_1" {
+  vpc_id            = aws_vpc.my_vpc.id
+  cidr_block        = "10.0.2.0/24"
+  availability_zone = "us-east-1a"
+  tags = {
+    Name = "PrivateSubnet1"
+  }
+}
+
+resource "aws_internet_gateway" "my_igw" {
+  vpc_id = aws_vpc.my_vpc.id
+  tags = {
+    Name = "MyIGW"
+  }
+}
+
+resource "aws_route_table" "public_route_table" {
+  vpc_id = aws_vpc.my_vpc.id
+  tags = {
+    Name = "PublicRouteTable"
+  }
+}
+
+resource "aws_route" "public_route" {
+  route_table_id         = aws_route_table.public_route_table.id
+  destination_cidr_block = "0.0.0.0/0"
+  gateway_id             = aws_internet_gateway.my_igw.id
+}
+
+resource "aws_route_table_association" "public_subnet_1_association" {
+  subnet_id      = aws_subnet.public_subnet_1.id
+  route_table_id = aws_route_table.public_route_table.id
+}
+
+resource "aws_route_table_association" "private_subnet_1_association" {
+  subnet_id      = aws_subnet.private_subnet_1.id
+  route_table_id = aws_route_table.public_route_table.id
+}
+
+resource "aws_security_group" "allow_http" {
+  name_prefix = "allow-http"
+  vpc_id      = aws_vpc.my_vpc.id
+
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+resource "aws_instance" "ec2_instance" {
+  ami           = "ami-0c55b159cbfafe1f0" # Amazon Linux 2 AMI ID
+  instance_type = "t2.micro"
+  subnet_id     = aws_subnet.private_subnet_1.id
+  key_name      = "your_key_pair_name"   # Replace with your key pair name
+  user_data     = <<-EOT
+                    #!/bin/bash
+                    yum update -y
+                    yum install -y httpd.x86_64
+                    systemctl start httpd.service
+                    systemctl enable httpd.service
+                    echo "Hello World from \$(hostname -f)" > /var/www/html/index.html
+                  EOT
+  vpc_security_group_ids = [aws_security_group.allow_http.id]
+}
+```
+
+In this updated Terraform script, we have added the following resources and configurations:
+
+1. `aws_subnet` resource to create a private subnet (`private_subnet_1`) in `us-east-1a`.
+2. `aws_route_table_association` resource (`private_subnet_1_association`) to associate `private_subnet_1` with the `public_route_table`.
+3. `aws_security_group` resource (`allow_http`) to allow incoming HTTP traffic on port 80 for the EC2 instance.
+4. `aws_instance` resource (`ec2_instance`) to create the EC2 instance with the specified user data script, associated with the private subnet, and allowed HTTP traffic from the internet.
+
+Remember to replace `your_key_pair_name` with the actual name of your EC2 key pair that you want to use to access the instance. Additionally, ensure you have the correct AMI ID for Amazon Linux 2 (AMI ID: "ami-0c55b159cbfafe1f0") in the `aws_instance` resource.
