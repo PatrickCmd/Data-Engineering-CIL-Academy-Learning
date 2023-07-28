@@ -546,3 +546,49 @@ You can use AWS Secrets Manager to secure your database credentials. Secrets Man
 - [**Rotating SSH key pairs securely**](https://aws.amazon.com/blogs/security/how-to-use-aws-secrets-manager-securely-store-rotate-ssh-key-pairs/): Provides instructions on how to secure, rotate, and use SSH key pairs for inter-cluster communication.
 - [**Keeping the security and scalability of serverless apps with Secrets Manager**](https://aws.amazon.com/blogs/apn/keeping-the-security-and-scalability-of-serverless-apps-problem-free-with-aws-secrets-manager/): Provides information on how use Secrets Manager to secure serverless applications.
 
+
+## Incident Response
+
+### Rethinking Incident Response
+There are obvious differences between environments built to run in the cloud and environments running on premises. When it comes to incident response, the same can be said. For example, the prepare and practice aspects of incident response can be done more efficiently on AWS. Incident response in the AWS Cloud is faster, cheaper, more effective, and simpler to manage. With AWS, you can significantly enhance your ability to detect, react, and recover. Some capabilities for investigation are possible only by using AWS. 
+
+#### Using APIs for automation
+In AWS, you can use APIs to automate many of the routine tasks that need to be performed during incident response. For example, using a single command, you can isolate an instance by changing the security groups associated with the instance. 
+
+#### Performing forensics on data volumes
+Forensics often requires capturing the disk image or as-is configuration of an operating system. You can use Amazon Elastic Block Store (Amazon EBS) snapshots and the Amazon Elastic Compute Cloud (Amazon EC2) APIs to capture the data and state of systems under investigation.
+
+#### Operating in a clean room
+AWS CloudFormation can be used to quickly create a new, trusted environment in which to conduct deeper investigation. AWS CloudFormation can deploy preconfigured instances in an isolated environment. These instances may contain all the necessary tools forensic teams need to determine the cause of the incident.
+
+#### Coordinating AWS services into serverless workflows
+AWS Step Functions lets you coordinate multiple AWS services into serverless workflows so you can build and update apps quickly. Workflows are made up of a series of steps, with the output of one step acting as the input into the next. Step Functions can be used to design and run workflows that stitch together services such as AWS Lambda and AWS CloudFormation to respond to an incident in the cloud.
+
+#### Additional resources
+
+- [**Building a cloud-specific incident response plan**](https://aws.amazon.com/blogs/publicsector/building-a-cloud-specific-incident-response-plan/): Discusses an example of the steps required to build an incident response plan.
+- [**AWS incident response videos**](https://www.youtube.com/user/AmazonWebServices/search?query=incident+response): Contains a list of AWS videos related to incident response on AWS from past re:Invent sessions and AWS Summits.
+- [**AWS security incident response guide**](https://d1.awsstatic.com/whitepapers/aws_security_incident_response.pdf): Provides an overview of the fundamentals of responding to security incidents within a customer’s AWS Cloud environment.
+
+
+### AWS Config for Responding to Incidents
+
+#### Service features and benefits
+
+- With AWS Config, you are able to continuously monitor and record configuration changes of your AWS resources.
+- AWS Config allows you to continuously audit and assess the overall compliance of your AWS resource configurations with your organization’s policies and guidelines. 
+- With AWS Config, you are able to track the relationships among resources and review resource dependencies prior to making changes. 
+- AWS Config enables you to capture a comprehensive history of your AWS resource configuration changes to simplify troubleshooting of your operational issues.
+
+#### Use case: responding to configuration changes
+
+You can use AWS Config to respond to unwanted configuration changes. AWS Config runs evaluations when certain types of resources are created, changed, or deleted. You choose which resources trigger the evaluation by defining the rule's scope. AWS Config invokes an AWS Lambda function when it detects a configuration change.
+
+![Config changes](images/config_changes.png)
+
+#### Additional resources
+
+- [**Enabling WAF logging via AWS Config**](https://aws.amazon.com/blogs/security/enable-automatic-logging-of-web-acls-by-using-aws-config/): Provides information on how to use AWS Config to ensure all AWS WAF web access control lists (ACLs) have logging enabled.
+- [**Monitoring Amazon S3 buckets with AWS Config**](https://aws.amazon.com/blogs/security/how-to-use-aws-config-to-monitor-for-and-respond-to-amazon-s3-buckets-allowing-public-access/): Demonstrates how to set up AWS Config to monitor Amazon S3 bucket ACLs and policies.
+- [**AWS Config rules repository**](https://aws.amazon.com/blogs/security/announcing-the-aws-config-rules-repository-a-new-community-based-source-of-custom-rules-for-aws-config/): 
+Provides information on the community-based repository of custom AWS Config rules.
