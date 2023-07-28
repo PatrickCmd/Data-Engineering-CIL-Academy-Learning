@@ -429,3 +429,120 @@ AWS provides two levels of protection against DDoS attacks:
 
 #### Additional resources
 - [**AWS best practices for DDoS resiliency**](https://d0.awsstatic.com/whitepapers/Security/DDoS_White_Paper.pdf): Provides information on how to improve the resiliency of your applications running on AWS against DDoS attacks.
+
+
+## Data Protection
+
+### Encryption on AWS
+
+AWS provides services that help you protect your data, accounts, and workloads from unauthorized access. AWS data protection services provide encryption and key management and secure data while in transit.
+
+#### Protection at rest
+
+Data at rest represents any data that you persist, or store, for any duration of time. This includes block storage, object storage, databases, archives, and any other storage medium on which data is persisted. Implementing encryption and appropriate access controls helps protect your data at rest and reduces the risk of unauthorized access.
+
+When encrypting data, you have two options: 
+
+![Data protection](images/data_protection_at_rest.png)
+
+#### Protection in transit
+
+Data in transit is any data that gets transmitted from one system to another. This includes communication between resources within your environment and communication between other services and your end users. By providing the appropriate level of protection for your data in transit, you protect the confidentiality and integrity of your application’s data.
+
+- AWS services provide HTTPS endpoints using TLS for communication, thus providing end-to-end encryption when communicating with the AWS APIs.
+- Use AWS to generate, deploy, and manage public and private certificates used for TLS encryption in web-based workloads.
+- Use IPsec with VPN connectivity into AWS to facilitate the encryption of traffic.
+
+#### AWS services for data protection
+
+You can use the following AWS services to encrypt data and protect data both at rest and in transit. 
+
+- **AWS Key Management Service (KMS)**: [AWS KMS](https://aws.amazon.com/kms/?c=sc&sec=srv) is a managed service that enables you to easily create and control the keys used for cryptographic operations. The service provides a highly available key generation, storage, management, and auditing solution that allows you to encrypt or digitally sign data within your own applications. It also allows you to control the encryption of data across AWS services. 
+
+- **AWS CloudHSM**: [CloudHSM](https://aws.amazon.com/cloudhsm/?c=sc&sec=srv) helps you meet corporate, contractual, and regulatory compliance requirements for data security by using dedicated hardware security module (HSM) instances within the AWS Cloud. 
+
+- **AWS Certificate Manager (ACM)**: [ACM](https://aws.amazon.com/certificate-manager/?c=sc&sec=srv) is a service that lets you easily provision, manage, and deploy public and private Secure Sockets Layer/Transport Layer Security (SSL/TLS) certificates for use with AWS services and your internal connected resources.
+
+- **AWS Secrets Manager**: [Secrets Manager](https://aws.amazon.com/secrets-manager/?c=sc&sec=srv) is a secrets management service that helps you protect access to your applications, services, and IT resources. This service enables you to easily rotate, manage, and retrieve database credentials, API keys, and other secrets throughout their life cycle. 
+
+
+### AWS KMS for Key Management
+
+AWS KMS allows you to centrally manage and securely store your keys. You can use these keys from within your applications and supported AWS cloud services to protect your data. The keys never leaves AWS KMS, which reduces the risk of having your data key compromised. You submit data to AWS KMS to be encrypted or decrypted under keys that you control. You set usage policies on these keys that determine which users can use them to encrypt and decrypt data. All requests to use these keys are logged in AWS CloudTrail so that you can understand who used which key and when.
+
+#### Server-side encryption example
+
+![AWS KMS](images/aws_kms_serverside.png)
+
+#### Types of CMKs
+
+AWS KMS can use two types of CMKs when encrypting data keys: AWS managed and customer managed. The following table summarizes the key differences and similarities between AWS managed CMKs and customer managed CMKs.
+
+
+|   |AWS managed CMK	|Customer managed CMK|
+|:--|:------------------|:-------------------|
+|Creation	|AWS generated on the customer's behalf	|Customer generated|
+|Rotation	|Once every 3 years automatically	|Once a year automatically through opt-in or manually on-demand|
+|Deletion	|Can't be deleted    |Can be deleted|
+|Scope of use	|Limited to a specific AWS service	|Controlled via AWS KMS or AWS Identity and Access Management (IAM) policy|
+|Key access policy	|AWS managed	|Customer managed|
+|User access management	|AWS IAM policy	|AWS IAM policy|
+
+#### Service features and benefits
+- With AWS KMS, you control access to your encrypted data by defining the permissions to use the keys while AWS KMS enforces your permissions and handles the durability and physical security of your keys. 
+- AWS KMS presents a single control point to manage keys and define policies consistently across integrated AWS services and your own applications.
+- AWS KMS is integrated with the AWS Encryption SDK to enable you to use AWS KMS protected data encryption keys to encrypt locally within your applications. 
+- The security and quality controls in AWS KMS have been certified under multiple compliance schemes to simplify your own compliance obligations.
+- AWS KMS is integrated with AWS services to simplify using your keys to encrypt data across your AWS workloads. 
+
+#### Additional resources
+- [**AWS encryption videos**](https://www.youtube.com/user/AmazonWebServices/search?query=encryption): Contains a list of AWS videos related to data encryption from past re:Invent sessions and AWS Summits.
+- [**AWS KMS cryptographic details**](https://d0.awsstatic.com/whitepapers/KMS-Cryptographic-Details.pdf): Provides details on the cryptographic operations that are executed within AWS when you use AWS KMS.
+- [**AWS KMS best practices**](https://d0.awsstatic.com/whitepapers/aws-kms-best-practices.pdf): Discusses how to use AWS KMS features and key policies, and how to audit the use of the keys.
+
+### AWS Certificate Manager for Securing Communications
+
+#### Service features and benefits
+- ACM manages the renewal and deployment process for the certificates used with ACM integrated services, such as Elastic Load Balancing and Amazon API Gateway. 
+- With AWS Certificate Manager Private Certificate Authority APIs, ACM enables you to automate the creation and renewal of private certificates for on-premises resources, Amazon Elastic Compute Cloud (Amazon EC2) instances, and Internet of Things (IoT) devices.
+- ACM removes many of the time-consuming and error-prone steps to acquire a SSL/TLS certificate for your website or application.
+- With ACM, there is no need to generate a key pair or certificate signing request (CSR), submit a CSR to a certificate authority, or upload and install the certificate once received. 
+- With ACM, there is no additional charge for provisioning public or private SSL/TLS certificates you use with ACM integrated services.
+
+#### Common use cases
+- **Protect and secure your website**: SSL/TLS provides encryption for sensitive data in transit and authentication using certificates to establish the identity of your site and to secure connections between browsers, applications, and your site. ACM provides an easy way to provision and manage these certificates so that you can configure a website or application to use the SSL/TLS protocol. 
+
+- **Protect and secure your internal resources**: AWS Private Certificate Authority (CA) provides you a highly available private certificate authority service without the upfront investment and ongoing maintenance costs of operating your own private CA. AWS Private CA allows developers to be more agile by providing them APIs to create and deploy private certificates programmatically. You also have the flexibility to create private certificates for applications that require custom certificate lifetimes or resource names. 
+
+- **Improve your uptime**: ACM helps manage the challenges of maintaining SSL/TLS certificates, including certificate renewals, so you don’t have to worry about expiring certificates.
+
+#### Additional resources
+- [**Introduction to AWS Private CA**](https://www.youtube.com/watch?v=nDDBcP-iiSs): Provides uses cases for ACM Private CA and a short demo on how to configure the service.
+- [**Certificate validation using DNS**](https://aws.amazon.com/blogs/security/easier-certificate-validation-using-dns-with-aws-certificate-manager/): Provides a walk-through of how to configure ACM to validate certificates via DNS.
+- [**ACM support of certificate transparency**](https://aws.amazon.com/blogs/security/how-to-get-ready-for-certificate-transparency/): Describes how certificate transparency works and how it's supported by ACM.
+
+### AWS Secrets Manager for Credentials Management
+
+#### Service features and benefits
+
+- Secrets Manager helps you meet your security and compliance requirements by enabling you to rotate secrets safely without the need for code deployments. 
+- With Secrets Manager, you can manage access to secrets using fine-grained AWS Identity and Access Management (IAM) policies and resource-based policies.
+- Secrets Manager offers built-in integration for Amazon Relational Database Service (Amazon RDS), Amazon Redshift, and Amazon DocumentDB (with MongoDB compatibility) and automatically rotates these database credentials on your behalf.
+- Using Secrets Manager, you can secure secrets by encrypting them with encryption keys that you manage using AWS KMS.
+- Secrets Manager also integrates with AWS logging and monitoring services for centralized auditing.
+- With Secrets Manager, you pay for the number of secrets managed in Secrets Manager and the number of Secrets Manager API calls made.
+
+
+#### Use case: securely provide database credentials
+
+You can use AWS Secrets Manager to secure your database credentials. Secrets Manager sends your credentials to AWS Lambda functions, which in turn can use the credentials to access and query a database service like Amazon RDS. This process occurs without hardcoding the secrets in code or passing them through environmental variables. This approach will help you secure last-mile secrets and protect your backend databases.
+
+![Secrets Manager](images/aws_secrets_manager.png)
+
+#### Additional resources
+- [**Getting to know Secrets Manager**](https://www.youtube.com/watch?v=ydrcyy1nrQM): Provides a demo of Secrets Manager and discusses considerations in managing secrets.
+- [**Secrets Manager best practices**](https://docs.aws.amazon.com/secretsmanager/latest/userguide/best-practices.html): Lists recommendations to securely use Secrets Manager.
+- [**Securing passwords in AWS Quick Starts**](https://aws.amazon.com/blogs/infrastructure-and-automation/securing-passwords-in-aws-quick-starts-using-aws-secrets-manager/): Offers information on how to store and retrieve secrets using Secrets Manager via AWS CloudFormation.
+- [**Rotating SSH key pairs securely**](https://aws.amazon.com/blogs/security/how-to-use-aws-secrets-manager-securely-store-rotate-ssh-key-pairs/): Provides instructions on how to secure, rotate, and use SSH key pairs for inter-cluster communication.
+- [**Keeping the security and scalability of serverless apps with Secrets Manager**](https://aws.amazon.com/blogs/apn/keeping-the-security-and-scalability-of-serverless-apps-problem-free-with-aws-secrets-manager/): Provides information on how use Secrets Manager to secure serverless applications.
+
