@@ -155,4 +155,78 @@ You can use the following AWS services to protect credentials and allow for user
 
 - **AWS IAM Identity Center (formerly known as AWS Single Sign-On)**: [AWS IAM Identity Center](https://docs.aws.amazon.com/singlesignon/latest/userguide/what-is.html) is a cloud SSO service that allows for the central management of SSO access to multiple AWS accounts and business applications. It enables users to sign in to a user portal with their existing corporate credentials and access all of their assigned accounts and applications from one place. IAM Identity Center includes built-in Security Assertion Markup Language (SAML) integrations to many business applications. IAM Identity Center may be integrated with Microsoft Active Directory, which means your employees can sign in to your user portal using their corporate Active Directory credentials. 
 
+### AWS IAM for Access Management
 
+#### Service features and benefits
+
+- IAM lets you create roles, which allows you to define a set of permissions and then let authenticated users assume them. This feature increases your security posture by granting temporary access to the resources you define.
+- IAM provides the granularity to control a user’s access to specific AWS services and resources using permissions.
+- You can use IAM to grant your employees and applications access to the AWS Management Console and to AWS service APIs using your existing identity systems. 
+- Grant only least privilege to each IAM entity by starting with no access and gradually granting appropriate rights.
+- Your security team and administrators can use IAM Access Analyzer to identify resources that can be accessed from outside an AWS account.
+- IAM is integrated into most AWS services. This integration provides the ability to define access controls from one place in the AWS Management Console that will take effect throughout your AWS environment.
+
+#### Use case: IAM groups and permissions
+
+An IAM group is a collection of users. Groups allow you to specify permissions for similar types of users. For example, if you have a group named Developers, you can give that group the types of permissions that developers typically need. This feature can be considered a form of role-based access control. You should create groups that reflect organization roles instead of technical commonality. 
+
+Examples on different IAM groups that can be created for a company that uses Amazon Elastic Compute Cloud (Amazon EC2) instances.
+
+- AllUsers
+- System Administrators
+- Developers
+- Managers
+
+### Additional resources
+- [**IAM documentation**](https://docs.aws.amazon.com/iam/index.html): Provides several different types of documentation covering IAM.
+- [**IAM best practices**](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html): Lists recommendations for securing your AWS resources.
+- [**IAM in practice**](https://aws.amazon.com/answers/security/aws-iam-in-practice/): Provides guidelines on how to set up IAM for your organization.
+
+### Amazon Cognito for Mobile Authentication
+
+#### Service features and benefits
+
+- Amazon Cognito user pools provide a secure user directory that scales to hundreds of millions of users. It's a standards-based identity provider and supports identity and access management standards, such as Oauth 2.0, SAML 2.0, and OpenID Connect. 
+- With Amazon Cognito identity pools, your can create unique identities for your users so they can sign in through social identity providers such as Google, Facebook, and Amazon and through enterprise identity providers such as Microsoft Active Directory via SAML. 
+- Amazon Cognito supports MFA and encryption of data at rest and data in transit, meeting compliance requirements from several compliance organizations.
+- With a built-in user interface (UI) and easy configuration for federating identity providers, you can integrate Amazon Cognito to add user sign-in, sign-up, and access control to your app.
+
+#### Use case: mobile authentication
+
+An Amazon Cognito user pool is a user directory that manages the overhead of handling the tokens that are returned from social identity providers. After a successful user pool sign-in, your web or mobile app will receive user pool tokens from Amazon Cognito. These tokens can then be used to retrieve AWS credentials via Amazon Cognito identity pools. These credentials allow your app to access other AWS services, and you don’t have to embed long-term AWS credentials in your app.
+
+![AWS Cognito Mobile Auth](images/aws_cognito_mobile_auth.png)
+
+#### Additional resources
+- [**Common Amazon Cognito scenarios**](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-scenarios.html): Describes six common scenarios for using Amazon Cognito.
+- [**Serverless authentication and authorization**](https://www.slideshare.net/AmazonWebServices/srv403serverless-authentication-and-authorization?qid=493b1472-6d48-4bd7-9c2c-7d1b391263d9&v=&b=&from_search=2): Provides a re:Invent video on how to implement identity management for your serverless applications.
+
+### AWS Directory Service for User Federation
+
+Directory Service provides multiple directory choices for customers who want to use existing Microsoft Active Directory or Lightweight Directory Access Protocol (LDAP)-aware applications in the cloud. You can choose directory services with the features and scalability that best meet your needs. 
+
+#### Directory Service solutions
+
+Use the following information to help you determine which Directory Service directory option works best for your organization when it comes user federation.
+
+- **AWS Managed Microsoft AD**: Use AWS Directory Service for Microsoft Active Directory if you need an actual Microsoft Active Directory in the AWS Cloud that supports Active Directory-aware workloads, or that supports AWS applications and services such as Amazon WorkSpaces and Amazon QuickSight, or if you need LDAP support for Linux applications. 
+
+- **Active Directory Connector**: Use AD Connector if all you need is to allow your on-premises users to log in to AWS applications and services with their Active Directory credentials. You can also use AD Connector to join Amazon Elastic Compute Cloud (Amazon EC2) instances to your existing Active Directory domain.
+
+- **Simple Active Directory**: Use Simple AD if you need a low-scale, low-cost directory with basic Active Directory compatibility that supports Samba 4–compatible applications or if you need LDAP compatibility for LDAP-aware applications. Simple AD provides a subset of the features that AWS Managed Microsoft AD offers, including the ability to manage user accounts and group memberships, create and apply group policies, securely connect to Amazon EC2 instances, and provide Kerberos-based single sign-on.
+
+#### Service features and benefits
+- Directory Services allows you the ability to set up and run directories in the AWS Cloud or connect your AWS resources with an existing on-premises Microsoft Active Directory.
+- You can use your existing corporate credentials to administer AWS resources via IAM role-based access to the AWS Management Console, so you do not need to build out more identity federation infrastructure.
+- Directory Service provides automatic monitoring for failed domain controllers.
+- Directory Service enables your end users to use their existing corporate credentials when accessing directory-aware Microsoft workloads, including custom .NET and SQL Server based applications.
+
+#### Use case: extend your on-premises Active Directory to the AWS Cloud
+
+If you already have an Active Directory infrastructure and want to use it when migrating Active Directory aware workloads to the AWS Cloud, AWS Managed Microsoft AD can help. You can use Active Directory trusts to connect AWS Managed Microsoft AD to your existing Active Directory. This means your users can access Active Directory aware and AWS applications with their on-premises Active Directory credentials without needing you to synchronize users, groups, or passwords.
+
+![AWS AD Service](images/aws_ad_service.png)
+
+#### Additional resources
+- [**Use cases: AWS Managed Microsoft AD**](https://docs.aws.amazon.com/directoryservice/latest/admin-guide/ms_ad_use_cases.html): Provides several common use cases for AWS Managed Microsoft AD.
+- [**Simple AD tutorial**](https://docs.aws.amazon.com/directoryservice/latest/admin-guide/simple_ad_tutorial_create.html): Walks you through all of the steps necessary to set up a Directory Service Simple AD directory.
