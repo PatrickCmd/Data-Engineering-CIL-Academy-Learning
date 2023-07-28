@@ -592,3 +592,22 @@ You can use AWS Config to respond to unwanted configuration changes. AWS Config 
 - [**Monitoring Amazon S3 buckets with AWS Config**](https://aws.amazon.com/blogs/security/how-to-use-aws-config-to-monitor-for-and-respond-to-amazon-s3-buckets-allowing-public-access/): Demonstrates how to set up AWS Config to monitor Amazon S3 bucket ACLs and policies.
 - [**AWS Config rules repository**](https://aws.amazon.com/blogs/security/announcing-the-aws-config-rules-repository-a-new-community-based-source-of-custom-rules-for-aws-config/): 
 Provides information on the community-based repository of custom AWS Config rules.
+
+## AWS Well-Architected Tool
+The [AWS Well-Architected Tool](https://aws.amazon.com/well-architected-tool/) is a self-service tool that is designed to help customers review AWS workloads at any time without the need for an AWS solutions architect. By using this tool, you can review your workloads using a consistent process, understand potential risks in your workload architectures, and identify next steps for improvement. 
+
+### How it works
+
+![Framework](images/well_architected_framework_2.jpg)
+
+First, define your workload, and then answer a set of questions across the six pillars of the AWS Well-Architected Framework: operational excellence, security, reliability, performance efficiency, and cost optimization. The AWS WA Tool then provides a plan describing the improvements that can be applied to the workload. There’s no charge for the AWS WA Tool; you pay only for any AWS resources that you consume. However, the tool is available only in select Regions. Check the FAQs for more information.
+
+![FAQS](images/faqs.png)
+![FAQS](images/faqs_pillar.png)
+
+### Additional resources
+
+- [**AWS WA Tool user guide**](https://docs.aws.amazon.com/wellarchitected/latest/userguide/wellarchitected-ug.pdf): Provides details on the AWS Well-Architected Framework and instructions on how to properly use the tool.
+- [**AWS news blog by Jeff Barr**](https://aws.amazon.com/blogs/aws/new-aws-well-architected-tool-review-workloads-against-best-practices/): Covers an example of the steps required to use the AWS Well-Architected Tool.
+- [**Getting started video**](https://d3nn3d4w2aqyem.cloudfront.net/mp4/Getting_started_video.mp4): Provides a demo on using the AWS Well-Architected Tool.
+- [**AWS Well-Architected partners**](https://aws.amazon.com/architecture/well-architected/partners/): Provides a list of AWS partners who can help you with hands-on experience architecting, building, migrating, and optimizing architectures that follow the AWS Well-Architected Framework.
