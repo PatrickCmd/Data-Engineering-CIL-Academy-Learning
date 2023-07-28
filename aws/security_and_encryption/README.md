@@ -342,4 +342,90 @@ Here is an example of a corporation using AWS Direct Connect to create a hybrid 
 - [**Classify sensitive data in your environment**](https://aws.amazon.com/blogs/security/classify-sensitive-data-in-your-environment-using-amazon-macie/): Describes how to create a sample dataset for Macie to implement data-centric compliance and security analytics in your Amazon S3 environment.
 - [**Data classification**](https://d1.awsstatic.com/whitepapers/compliance/AWS_Data_Classification.pdf): Provides insight into data classification categories for public and private organizations to consider when moving data to the cloud.
 
+## Infrastructure Protection
 
+### Securing Your Compute Resources
+
+Infrastructure protection is a key part of any information security program. It ensures that systems and services within your workload are protected against unintended and unauthorized access and potential vulnerabilities. AWS can protect you web applications and compute resources by filtering traffic based on rules that you create. 
+
+#### Infrastructure protection approaches
+In AWS, there are three important approaches to infrastructure protection to consider.
+
+1. **Securing the network and host-level boundaries**
+
+![Approach 1](images/protection_approach_1.png)
+
+Resources that you place within your environment inherit the security properties of the underlying network, so it is critical to establish an appropriate network design for the workload. 
+
+How you design your network can provide isolation and boundaries for resources within your environment. You should to ensure that you implement a design where only the desired network paths and routing are allowed. 
+
+Amazon Virtual Private Cloud (Amazon VPC) lets you provision a logically isolated section of the AWS Cloud where you can launch resources in a virtual network that you define. You have complete control over your virtual networking environment, including the selection of your own IP address ranges, creation of public and private subnets, and configuration of route tables.
+
+2. **Managing system security configuration and maintenance**
+
+![Approach 2](images/protection_approach_2.png)
+
+Managing the security of the systems running within your environment forms the foundation of how you will maintain robust, secure, scalable systems. The security posture of your systems is a function of the controls that are available and your own controls, such as operating-system-installed threat detection, vulnerability scanners, anti-malware detection, and any tools to help verify and maintain the integrity of your operating systems. These controls also form another layer in your defense-in-depth strategy.
+
+AWS provides several services like Amazon Inspector to check on the security posture of your applications and Amazon Elastic Compute Cloud (Amazon EC2) instances. 
+
+3. **Enforcing service-level protection**
+
+![Approach 3](images/protection_approach_3.png)
+
+Service endpoint security configuration is required to ensure that users and automated systems have exactly the level of access needed to perform their tasks (least privilege). You can protect AWS service endpoints by defining policies using AWS Identity and Access Management (IAM). Additionally, some resources have their own resource-level policies. 
+
+When defining IAM and resource policies, ensure that you apply a least-privilege methodology and set service-level access policies accordingly.
+
+#### AWS services for infrastructure protection
+
+AWS provides a suite of services for infrastructure protection. The following are some of them.
+
+- **AWS Shield**: [AWS Shield](https://aws.amazon.com/shield/?c=sc&sec=srv) is a managed service that provides protection against distributed denial of service (DDoS) attacks for applications running on AWS. AWS Shield Standard is automatically enabled to all AWS customers at no additional cost.
+
+- **AWS WAF**: [AWS WAF](https://aws.amazon.com/waf/?c=sc&sec=srv) is a web application firewall that helps protect web applications from attacks by allowing you to configure rules that allow, block, or monitor (count) web requests based on conditions that you define. These conditions include IP addresses, HTTP headers, HTTP body, uniform resource identifier (URI) strings, structured query language (SQL) injection, and cross-site scripting.  
+
+- **AWS Firewall Manager**: [AWS Firewall Manager](https://aws.amazon.com/firewall-manager/?c=sc&sec=srv) is a security management tool that makes it easier for you to configure your AWS WAF rules across your accounts. With Firewall Manager, security administrators of large organizations can write company-wide rules from one place, enforce them across applications protected by AWS WAF, and get the central visibility of attacks against their Application Load Balancers and Amazon CloudFront infrastructure. 
+
+### AWS WAF for Traffic Filtering
+
+#### Service features and benefits
+
+- AWS WAF protects web applications from attacks by filtering traffic based on rules that you create. For example, you can filter any part of the web request, such as IP addresses, HTTP headers, HTTP body, or URI strings.
+- With Managed Rules for AWS WAF, you can quickly get started and protect your web application or APIs against common threats. 
+- AWS WAF gives near-real-time visibility into your web traffic. You can use this visibility to create new rules or alerts in Amazon CloudWatch.
+- AWS WAF protects applications deployed on Amazon CloudFront as part of your content delivery network (CDN) solution, the Application Load Balancer that fronts all your origin servers, or Amazon API Gateway for your APIs. 
+- AWS WAF provides a customizable, self-service offering, and pricing is based on how many rules you deploy and how many web requests your web application receives. 
+
+#### Use case: protecting dynamic web applications against attacks
+
+Amazon CloudFront is a CDN service that securely delivers data, videos, applications, and APIs to customers globally with low-latency, high transfer speeds. Amazon Route 53 is a highly available and scalable cloud DNS web service that connects user requests to applications running in AWS. AWS hosts CloudFront and Route 53 services on a distributed network of proxy servers in data centers throughout the world called edge locations.
+
+![AWS WAF](images/aws_waf.png)
+
+#### Additional resources
+- [**Mitigate web application vulnerabilities with AWS WAF**](https://d1.awsstatic.com/whitepapers/guidelines-implementing-aws-waf.pdf?did=wp_card&trk=wp_card): This "Guideline for Implementing AWS WAF" outlines how you can use AWS WAF to mitigate the application vulnerabilities, including those defined in the Open Web Application Security Project.
+
+### AWS Shield for DDoS Protection
+
+WS Shield is a managed DDoS protection service that safeguards applications running on AWS. A DDoS attack is an attack in which multiple compromised systems attempt to flood a target, such as a network or web application, with traffic. A DDoS attack can prevent legitimate users from accessing a service and can cause the system to crash due to the overwhelming traffic volume.
+
+AWS provides two levels of protection against DDoS attacks: 
+
+- AWS Shield Standard (enabled by default and comes with no additional cost)
+- AWS Shield Advanced
+
+#### Service features and benefits
+
+- AWS Shield provides always-on network flow monitoring, which inspects incoming traffic to AWS and uses a combination of traffic signatures, anomaly algorithms, and other analysis techniques to detect malicious traffic in real time.
+- Automated mitigation techniques are built in and applied inline to your applications, so there is no latency impact. This gives you protection against common, most frequently occurring infrastructure attacks at layers 3 and 4.
+- AWS Shield integrates with Amazon Route 53, Amazon CloudFront, and Elastic Load Balancing to protect your applications from DDoS attacks.
+- AWS Shield Advanced provides real-time metrics and reports for extensive visibility into attacks on your AWS resources.
+- AWS Shield Advanced gives you 24/7 access to the AWS DDoS Response Team (DRT) and protection against DDoS related spikes in your Amazon Elastic Compute Cloud (Amazon EC2), ELB, CloudFront, or Route 53 charges.
+
+#### Use case: high-performance DDoS protection
+
+- [****](https://youtu.be/d0EE1HuZSEU)
+
+#### Additional resources
+- [**AWS best practices for DDoS resiliency**](https://d0.awsstatic.com/whitepapers/Security/DDoS_White_Paper.pdf): Provides information on how to improve the resiliency of your applications running on AWS against DDoS attacks.
