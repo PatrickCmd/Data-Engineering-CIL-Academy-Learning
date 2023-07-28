@@ -230,3 +230,116 @@ If you already have an Active Directory infrastructure and want to use it when m
 #### Additional resources
 - [**Use cases: AWS Managed Microsoft AD**](https://docs.aws.amazon.com/directoryservice/latest/admin-guide/ms_ad_use_cases.html): Provides several common use cases for AWS Managed Microsoft AD.
 - [**Simple AD tutorial**](https://docs.aws.amazon.com/directoryservice/latest/admin-guide/simple_ad_tutorial_create.html): Walks you through all of the steps necessary to set up a Directory Service Simple AD directory.
+
+
+## Detective Controls
+
+### Monitoring Overview
+
+AWS identifies threats by continuously monitoring the network activity and account behavior within your cloud environment. Detective controls allow you to maintain the security of your cloud environment. You can use detective controls to identify a potential security threat or incident. Detective controls are also important as a part of legal or compliance obligations and as part of a governance framework. 
+
+### Monitoring for security
+
+The shared responsibility model requires you to monitor and manage your environment at the operating system and higher layers. You probably already do this on premises or in other environments, so you can adapt your existing processes, tools, and methodologies for use in the cloud. Security monitoring starts by answering the following questions: 
+
+- What are the key performance indicators?
+- How should you measure them? 
+- What are the thresholds for these metrics? 
+- What is the escalation process?
+
+### AWS services for detective controls
+
+AWS provides a suite of services that will monitor and combat threats through unified security and compliance, managed threat detection, application security analysis, and the ability to investigate potential security issues. 
+
+#### AWS Security Hub
+
+- [AWS Security Hub](https://aws.amazon.com/security-hub/?c=sc&sec=srv&aws-security-hub-blogs.sort-by=item.additionalFields.createdDate&aws-security-hub-blogs.sort-order=desc) provides you with a comprehensive view of your security state within AWS and your compliance with security standards and best practices. Security Hub centralizes and prioritizes security findings from across AWS accounts, services, and supported third-party partners to help you analyze your security trends and identify the highest priority security issues. 
+
+#### Amazon GuardDuty
+
+- [Amazon GuardDuty](https://aws.amazon.com/guardduty/?c=sc&sec=srv) offers threat detection that enables you to continuously monitor and protect your AWS accounts and workloads. GuardDuty analyzes continuous streams of metadata generated from your account and network activity found in CloudTrail events, Amazon Virtual Private Cloud (Amazon VPC) flow logs, and Domain Name System (DNS) logs. It also uses integrated threat intelligence such as known malicious IP addresses, anomaly detection, and machine learning to identify threats more accurately. 
+
+#### Amazon Inspector
+
+- [Amazon Inspector](https://aws.amazon.com/inspector/?c=sc&sec=srv) is an automated security assessment service that helps you test the network accessibility of your Amazon Elastic Compute Cloud (Amazon EC2) instances and the security state of your applications running on the instances. 
+
+#### Amazon Detective
+
+- [Amazon Detective](https://aws.amazon.com/detective/?c=sc&sec=srv) makes it easy to analyze, investigate, and quickly identify the root cause of potential security issues or suspicious activities. Detective automatically collects log data from your AWS resources and uses machine learning, statistical analysis, and graph theory to build a linked set of data that enables you to easily conduct faster and more efficient security investigations.
+
+#### Amazon Macie
+
+- [Amazon Macie](https://aws.amazon.com/macie/?c=sc&sec=srv) is a security service that uses machine learning to automatically discover, classify, and protect sensitive data in AWS. Macie recognizes sensitive data such as personally identifiable information (PII) or intellectual property and provides you with dashboards and alerts that give visibility into how this data is being accessed or moved. The fully managed service continuously monitors data access activity for anomalies and generates detailed alerts when it detects risk of unauthorized access or inadvertent data leaks. Macie is available to protect data stored in Amazon S3.
+
+
+### Amazon GuardDuty for Threat Detection
+
+#### Service features and benefits
+
+- GuardDuty's threat intelligence coupled with machine learning and behavior models help you detect activity such as crypto-currency mining, credential compromise behavior, or API calls from known malicious IPs.
+
+- Through the multi-account feature, all member accounts findings can be aggregated with a GuardDuty administrator account. This enables the security team to manage all GuardDuty findings from across the organization in one single account.
+
+- Your security team and administrators can use AWS Identity and Access Management (IAM) Access Analyzer to identify resources that can be accessed from outside an AWS account.
+
+- GuardDuty comes integrated with up-to-date threat intelligence feeds from AWS, CrowdStrike, and Proofpoint.
+
+#### Use case: automatically remediating findings
+
+If you get a GuardDuty finding indicating that a known malicious IP is probing one of your Amazon Elastic Compute Cloud (Amazon EC2) instances, you can address it through an Amazon CloudWatch Events rule that triggers an AWS Lambda function to automatically modify your security group/network access control list (network ACL) rules and restrict access on that port.
+
+![Amazon GuardDuty](images/aws_guardduty.png)
+
+#### Additional resources
+- [**Benchmark and prioritize security threats in GuardDuty**](https://aws.amazon.com/blogs/apn/how-to-benchmark-and-prioritize-security-threats-in-amazon-guardduty-using-sumo-logic/)
+- [**How to visualize GuardDuty findings**](https://aws.amazon.com/blogs/security/how-to-visualize-amazon-guardduty-findings-serverless-edition/)
+- [**Centrally protect your AWS resources with GuardDuty**](https://www.youtube.com/watch?v=t80i_B-7G1M)
+- [**Supercharge GuardDuty with partners**](https://www.youtube.com/watch?v=DygpSx1e3Dg)
+
+#### Service features and benefits
+
+- AWS Security Hub reduces the effort of collecting and prioritizing security findings across accounts, from AWS services, and AWS Partner Network tools. 
+- With AWS Security Hub, you can run automated, continuous account-level configuration and compliance checks based on industry standards and best practices, such as the Center for Internet Security (CIS) AWS Foundations Benchmark. 
+- AWS Security Hub provides integrated dashboards that bring together your security findings across accounts to show you the current security and compliance status. You can easily spot trends, identify potential issues, and take the necessary next steps.
+- AWS Security Hub supports integration with Amazon CloudWatch Events. This integration lets you automate the remediation of specific findings by defining custom actions to take when a finding is received. 
+
+#### Additional resources
+- [**Security standards in Security Hub**](https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-standards.html)
+- [**Security Hub best practices**](https://aws.amazon.com/blogs/security/nine-aws-security-hub-best-practices/)
+
+
+### Amazon Macie for Data Monitoring
+
+Macie enables you to identify business-critical data and analyze access patterns and user behavior. It continuously monitors new data in your AWS environment and uses artificial intelligence to understand access patterns of historical data by automatically accessing user activity, applications, and service accounts. With Macie, you may create your own security alerts and custom policy definitions.
+
+#### Service features and benefits
+- Macie can identify data with high business value, including programming languages, to detect source code, logging formats, database backup formats, credentials, and API key formats.
+- The user behavior analytics engine of Macie helps identify risky or suspicious activity with AWS service API calls and access to high-value content.
+- Macie allows you to integrate with SIEM services and managed security service provider (MSSP) solutions. 
+
+#### Use case: custom alerts
+
+A common use case for Macie is the process of discovering relevant data fields collected by Macie and turning those fields into custom alerts.
+
+When beginning to design alerts, the first step is to think about all of the resources, attributes, actions, and identities related to the subject. In this case, you are looking at sensitive or critical data stored in Amazon Simple Storage Service (Amazon S3), so the following are some potentially useful fields of data to consider:
+
+- Amazon S3 bucket and object resources
+- Amazon S3 configuration and security attributes
+- Read, write, and delete actions on Amazon S3
+- AWS Identity and Access Management (IAM) users, roles, and access policies associated with the Amazon S3 resources
+
+![Amazon Macie](images/aws_macie.png)
+
+Here is an example of a corporation using AWS Direct Connect to create a hybrid connection to AWS. All production data is being sent to AWS for storage, archiving due to compliance requirements, and analysis via Amazon Athena. With the addition of Macie, data is now being monitored and classified for the following:
+
+- Anonymous access via the analysis of AWS CloudTrail logs and events
+- PII artifacts inside a public Amazon S3 bucket
+- Amazon S3 buckets and objects with certain keywords
+- Amazon S3 objects containing certain type of data
+
+#### Additional resources
+- [**Macie custom alerts**](https://aws.amazon.com/blogs/security/how-to-create-custom-alerts-with-amazon-macie/): Provides a tutorial on how to create custom alerts with Macie.
+- [**Classify sensitive data in your environment**](https://aws.amazon.com/blogs/security/classify-sensitive-data-in-your-environment-using-amazon-macie/): Describes how to create a sample dataset for Macie to implement data-centric compliance and security analytics in your Amazon S3 environment.
+- [**Data classification**](https://d1.awsstatic.com/whitepapers/compliance/AWS_Data_Classification.pdf): Provides insight into data classification categories for public and private organizations to consider when moving data to the cloud.
+
+
