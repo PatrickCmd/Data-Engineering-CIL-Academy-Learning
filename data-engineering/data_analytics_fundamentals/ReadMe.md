@@ -359,3 +359,192 @@ Amazon EMR is the AWS service that implements Hadoop frameworks. An Amazon EMR p
 #### Amazon EMRFS
 
 Amazon EMR provides an alternative to HDFS: the EMR File System (EMRFS). EMRFS can help ensure that there is a persistent "source of truth" for HDFS data stored in Amazon S3. When implementing EMRFS, there is no need to copy data into the cluster before transforming and analyzing the data as with HDFS. EMRFS can catalog data within a data lake on Amazon S3. The time that is saved by eliminating the copy step can dramatically improve performance of the cluster.
+
+## Velocity – data processing
+
+When businesses **need rapid insights** from the data they are collecting, but the **systems** in place simply **cannot meet the need**, there's a **velocity** problem.
+
+### The problem of velocity
+
+The speed at which data is being generated is ever accelerating. Emails, photos, Twitter and Facebook posts, log files, and IoT devices are all examples of data that is being generated rapidly and must be collected, processed, analyzed, and stored at high speeds. 
+
+The collection and processing of data are combined into a single concept known as data processing.
+
+### Definition
+
+**Data processing** means the collection and manipulation of data to produce meaningful information. Data collection is divided into two parts, data collection and data processing.
+
+![Data processing](images/data_processing.png)
+
+### Introduction to data processing methods
+
+Data processing is vital to any data system. Data processing defines the methods that are used to collect data and present it to storage or analytic mechanisms.
+
+Data processing may only need to be performed once a day, making results available the following morning, or it may need to be performed and made available immediately. This variance in the speed at which data processing must occur can be broken down into four categories.
+
+![Methods](images/data_processing_methods.png)
+
+### Characteristics of data processing velocity
+
+A system's ability to process data will depend heavily on the requirements placed on it. Choosing the right system is critical for successful implementation. Below are the characteristics of the four velocities on both collecting and processing data.
+
+#### Collecting Data
+
+**Batch**: Velocity is very predictable with batch processing. It amounts to large bursts of data transfer at scheduled intervals.
+
+**Periodic**: Velocity is less predictable with periodic processing. The loss of scheduled events can put a strain on systems and must be considered.
+
+**Near real-time**: Velocity is a huge concern with near real-time processing. These systems require data to be processed within minutes of the initial collection of the data. This can put tremendous strain on the processing and analytics systems involved.
+
+**Real-time**: Velocity is the paramount concern for real-time processing systems. Information cannot take minutes to process. It must be processed in seconds to be valid and maintain its usefulness.
+
+#### Processing Data
+
+**Batch and periodic**: Once the data has been collected, processing can be done in a controlled environment. There is time to plan for the appropriate resources.
+
+**Near real-time and real-time**: Collection of the data leads to an immediate need for processing. Depending on the complexity of the processing (cleansing, scrubbing, curation), this can slow down the velocity of the solution significantly. Plan accordingly.
+
+### Data acceleration
+
+Another key characteristic of velocity on data is data acceleration, which means the rate at which large collections of data can be ingested, processed, and analyzed. Data acceleration is not constant. It comes in bursts. Take Twitter as an example. Hashtags can become hugely popular and appear hundreds of times in just seconds, or slow down to one tag an hour. That's data acceleration in action. Your system must be able to efficiently handle the peak of hundreds of tags a second and the lows of one tag an hour. 
+
+### Attributes of batch and stream processing
+
+The table below highlights the difference between batch and stream processing: 
+
+![Batch and Stream](images/batch_stream_processing.png)
+
+
+### Introduction to batch data processing
+
+Batch processing is often thought of as a slow process. This is not the case. Batch processing must quickly and efficiently consume a huge amount of data all at once. This poses challenges that do not exist with stream processing.
+
+Batch data processing provides companies with the ability to dive deep into the data they have collected to produce complex analytics that simply cannot be achieved using streaming analytics.
+
+**Batch processing** is the processing of a series of programs, or jobs, on one or more computers without manual intervention. Data is collected into batches asynchronously. The batch is sent to a processing system when specific conditions are met, such as a specified time of day. The results of the processing job are then sent to a storage location that can be queried later as needed.
+
+![Batch Processing](images/batch_processing.png)
+
+#### Batch data processing with Amazon EMR and Apache Hadoop
+
+Organizations that need big data solutions are working with data at such a high volume and velocity that traditional environments cannot meet their needs.
+
+Amazon EMR is a managed service for implementing Apache Hadoop workloads. In addition to running the Apache Hadoop framework, you can also run other popular distributed frameworks such as Apache Spark, HBase, Presto, and Flink in EMR. You have the added advantage of being able to interact with data in other AWS data stores such as Amazon S3 and Amazon DynamoDB. 
+
+Amazon EMR notebooks provide a serverless development and collaboration environment for one-time querying and exploratory analysis. You can manipulate the data and generate data plots using rich graphical tools. Amazon EMR notebooks monitor your jobs and even help you debug code from the notebooks.
+
+#### Exploring Apache Hadoop
+
+Apache Hadoop is a scalable storage and batch data processing system. It uses commodity server hardware and provides fault tolerance through software. Hadoop complements existing data systems by simultaneously ingesting and processing large volumes of data, structured or not, from any number of sources, which enables deeper analysis than any one system can provide. These results can be delivered to any existing enterprise system for further use independent of Hadoop.
+
+Hadoop is a platform that provides distinct modules.
+
+- **Hadoop Common**: Hadoop Common is the set of Java utilities and libraries that support the other Hadoop modules. These libraries help abstract the file system from the processing components. These Java files and scripts are required to start Hadoop.
+
+- **Hadoop Distributed File System (HDFS)**: Hadoop Distributed File System (HDFS) is the distributed file system that stores the data in a high-throughput environment of community nodes. This architecture ensures very high aggregate bandwidth access to application data..
+
+- **Hadoop YARN**: Hadoop YARN is the resource management framework responsible for scheduling and processing jobs.
+
+- **Hadoop MapReduce**: Hadoop MapReduce is a YARN-based system that allows for parallel processing of large data sets on the cluster.
+
+### Batch processing architecture
+
+Batch processing can be performed in different ways using AWS services. 
+
+The architecture diagram below depicts the components and the data flow of a basic batch analytics system using a traditional approach. This approach uses **Amazon S3** for storing data, **AWS Lambda** for intermediate file-level ETL, **Amazon EMR** for aggregated ETL (heavy lifting, consolidated transformation, and loading engine), and **Amazon Redshift** as the data warehouse hosting data needed for reporting. 
+
+![Batch Architecture](images/batch_architecture_1.png)
+
+The architecture diagram below depicts the same data flow as above but uses AWS Glue for aggregated ETL (heavy lifting, consolidated transformation, and loading engine). AWS Glue is a fully managed service, as opposed to Amazon EMR, which requires management and configuration of all of the components within the service.
+
+![Batch Architecture](images/batch_architecture_2.png)
+
+####  Batch processing use cases
+
+**Log analytics**
+
+Amazon EMR can be used to process logs generated by web and mobile applications. The service helps customers turn petabytes of unstructured or semistructured data into useful insights about their applications or users. In such use cases, logs are usually collected in batches and aggregated and analyzed at the end of the day for meaningful insights.
+
+**Unified view of data across multiple data stores**
+
+You can use the AWS Glue Data Catalog to quickly discover and search across multiple AWS data sets without moving the data. Once the data is cataloged, it is immediately available for search and query using Amazon Athena, Amazon EMR, and Amazon Redshift Spectrum. 
+
+**Predictive analytics**
+
+Apache Spark on EMR includes MLlib for scalable machine learning algorithms, or you can use your own libraries. By storing datasets in-memory, Spark can provide great performance for common machine learning workloads. 
+
+**Queries against an Amazon S3 data lake**
+
+Data lakes are an increasingly popular way to store and analyze both structured and unstructured data. If you want to build your own custom Amazon S3 data lake, AWS Glue can make all your data immediately available for analytics without moving the data.
+
+### Introduction to stream data processing
+
+Stream data processing is one of the fastest growing areas of processing. The number of devices that are collecting information in real time is growing rapidly. This drives the need for processing solutions that can match the velocity of data generation.
+
+Stream data processing gives companies the ability to get insights from their data within seconds of the data being collected.
+
+Companies can no longer afford to neglect or avoid the vast amounts of data that is steaming in from web applications, ecommerce purchases, in-game player activity, and information from social networks.
+
+![Stream processing](images/stream_data_processing.png)
+
+#### Processing big data streams
+
+There are many reasons to use streaming data solutions. In a batch processing system, processing is always asynchronous, and the collection system and processing system are often grouped together. With streaming solutions, the collection system (producer) and the processing system (consumer) are always separate. Streaming data uses what are called data producers. Each of these producers can write their data to the same endpoint, allowing multiple streams of data to be combined into a single stream for processing. Another huge advantage is the ability to preserve client ordering of data and the ability to perform parallel consumption of data. This allows multiple users to work simultaneously on the same data.
+
+#### Benefits of stream processing
+
+![Streaming](images/stream_data_processing_2.png)
+
+#### Stream data processing with Amazon Kinesis
+
+In stream processing, you use multiple services: one service to ingest the constant stream of data, one to process and analyze the stream, and one to load the data into an analytical data store if required. Amazon Kinesis meets each of these needs, and you can use each Kinesis service independent of the others to create an optimal streaming solution.
+
+1. **Amazon Kinesis Data Firehose**: Amazon Kinesis Data Firehose is the easiest way to capture, transform, and load data streams into AWS data stores for near real-time analytics with existing business intelligence tools. 
+
+2. **Amazon Kinesis Data Streams**: Amazon Kinesis Data Streams enables you to build custom, real-time applications that process data streams using popular stream processing frameworks. 
+
+3. **Amazon Kinesis Video Streams**: Amazon Kinesis Video Streams makes it easy to securely stream video from connected devices to AWS for analytics, machine learning (ML), and other processing. 
+
+4. **Amazon Kinesis Data Analytics**: Amazon Kinesis Data Analytics is the easiest way to process data streams in real time with SQL or Java without having to learn new programming languages or processing frameworks.
+
+#### Stream processing architecture
+
+Several services are involved in the following architecture
+- Amazon Kinesis Data Firehose
+- Amazon Kinesis Data Analytics
+- Amazon S3
+- Amazon Athena
+- Amazon Quicksight
+
+In this architecture, sensor data is being collected in the form of a stream. The streaming data is being collected from the sensor devices by **Amazon Kinesis Data Firehose**. This service is configured to send the data to be processed using **Amazon Kinesis Data Analytics**. This service filters the data for relevant records and send the data into another Kinesis Data Firehose process, which places the results into an **Amazon S3** bucket at the serving layer.
+
+Using **Amazon Athena**, the data in the Amazon S3 bucket can now be queried to produce insightful dashboards and reports using **Amazon QuickSight**.
+
+![Architecture](images/stream_architecture.png)
+
+#### Combined processing architecture
+
+It is important to remember that streaming analytics is very limited. Due to the size of each data packet and the speed the data is moving, you are limited to simple analytics such as aggregating and filtering the data. Due to this limitation, it is common for businesses to incorporate batch analytics to produce deeper insights into the data before producing dashboards and reports on the data.
+
+In the following architecture, streaming data is collected by the same **Amazon Kinesis Data Firehose** service seen in the above architecture. This time however, the data is placed directly into an **Amazon S3** bucket. A separate process loads user device settings into a second Amazon S3 bucket. **AWS Glue** is then used to combine the two Amazon S3 data stores and transform them into a single result set, which is loaded into a third Amazon S3 bucket at the Serving Layer.
+
+Using Amazon Athena, the data in the third Amazon S3 bucket can now be queried. Amazon QuickSight can be used to produce dashboards that include content from both Amazon Athena and the first Amazon S3 bucket where the raw streaming data was loaded. This allows the business to perform comparative analysis on the data.
+
+![Architecture](images/stream_architecture_2.png)
+
+Now that you have seen the two architectures independently, it is time to see how they work together to form a complete end-to-end solution.
+
+![Architecture](images/stream_architecture_3.png)
+
+### Stream processing use cases
+
+#### Build video analytics applications
+You can use Amazon Kinesis to securely stream video from camera-equipped devices in homes, offices, factories, and public places to AWS. You can then use these video streams for video playback, security monitoring, face detection, machine learning, and other analytics. Integrating this data into your applications allows for a wide variety of customer enhancements and data mining capabilities.
+
+#### Evolve from batch to real-time analytics
+With Amazon Kinesis, you can perform real-time analytics on data that has been traditionally analyzed using batch processing in data warehouses or using Hadoop frameworks. The most common use cases include data lakes, data science and machine learning. You can use Kinesis Data Firehose to continuously load streaming data into your Amazon S3 data lakes. You can also update machine learning models more frequently as new data becomes available, ensuring accuracy and reliability of the outputs.
+
+[**Try a tutorial**](https://aws.amazon.com/getting-started/projects/build-log-analytics-solution/).
+
+#### Analyze IoT device data
+You can use Amazon Kinesis to process streaming data from IoT devices such as consumer appliances, embedded sensors, and TV set-top boxes. You can then use the data to send real-time alerts or take other actions programmatically when a sensor exceeds certain operating thresholds. Use our sample IoT analytics code to build your application. No need to start from scratch.
