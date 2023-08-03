@@ -834,3 +834,207 @@ Another drawback is that non-relational databases do not perform as well as rela
 There are many factors that can help you determine which database type is best for a new project or program you are developing. Below are the key characteristics of all three database types we have covered.
 
 ![relational and non-relational databases](images/relation_non_relational_dbs.png)
+
+## Veracity – cleansing and transformation
+
+High-quality data is a must-have for organizations that are now relying so heavily upon the insights the data provides.
+
+> When you have data that is ungoverned, coming from numerous, dissimilar systems and cannot curate the data in meaningful ways, you know you have a **veracity** problem.
+
+### Definitions
+
+- **Curation** is the action or process of selecting, organizing, and looking after the items in a collection.
+- **Data integrity** is the maintenance and assurance of the accuracy and consistency of data over its entire lifecycle.
+- **Data veracity** is the degree to which data is accurate, precise, and trusted.
+
+### The problem of veracity
+
+Data changes over time. As it is transferred from one process to another, and through one system and another, there are opportunities for the integrity of the data to be negatively impacted. You must ensure that you maintain a high level of certainty that the data you are analyzing is trustworthy.
+
+Data veracity is contingent on the integrity of the data.
+
+### Understanding data integrity
+
+#### What is data integrity?
+
+As the name reads, data integrity is all about making sure your data is trustworthy. Does it have integrity? Was the entire data chain secure and uncompromised? Understanding the full lifecycle of your data and knowing how to protect it effectively will greatly strengthen the integrity of your data.
+
+The following graphic displays the steps of a data lifecycle and what data integrity ensures at each phase.
+
+![Data Lifecycle](images/data_lifecycle.png)
+
+#### Definitions
+
+- **Data cleansing** is the process of detecting and correcting corruptions within data.
+- **Referential integrity** is the process of ensuring that the constraints of table relationships are enforced.
+- **Domain integrity** is the process of ensuring that the data being entered into a field matches the data type defined for that field..
+- **Entity integrity** is the process of ensuring that the values stored within a field match the constraints defined for that field.
+
+#### Identifying data integrity issues
+
+As a data analyst, you may be called upon to perform data integrity checks. During this process, you will be looking for potential sources of data integrity problems.
+
+Data can come from both internal and external sources. It is highly unlikely that you will be able to have influence on data generated outside of your business. However, within your business, you may have the ability to make recommendations on improvements for the data sources you will be interacting with.
+
+When changing the way the source systems are ingesting data is not an option, it is often the responsibility of the data analyst to determine the integrity of the data source in question and make adjustments to account for any area where that source may be lacking integrity.
+
+Here are a few best practices to help you identify data integrity issues.
+
+- **Know what clean looks like**: Before you do anything else, you must come to a consensus on what clean looks like. Some businesses deem clean data to be data in its raw format with business rules applied. Some businesses deem clean data as data that has been normalized, aggregated, and had value substitutions applied to regulate all entries. These are two very different understandings of clean. Be sure to know which one you are aiming for.
+
+- **Know where the errors are coming from**: As you find errors in the data, trace them back to their likely source. This will help you to predict workloads that will have integrity issues. It will also help you make a case for changes to the system that would improve the efficiency of the ETL operations.
+
+- **Know what acceptable changes look like**: From a purely data-centric view, entering a zero in an empty column may seem like an easy data cleansing decision to make, but beware the effects of this change. Likewise, combining the "On Order" and "In Stock" inventory numbers for monthly reports may seem inconsequential. However, that data may wind up in the hands of an inventory manager who now believes that there is an inventory loss problem. These are the small details that can make a huge, negative impact.
+
+- **Know if the original data has value**: In some systems, the original data is no longer valuable once it has been transformed. However, in highly regulated data or highly volatile data, it is important that both the original data and the transformed data are maintained in the destination system.
+
+For example, in an online gaming system, there may be no value in recording every direction shift a player makes as they are moving on the map. The only important value is when the player enters or exits key areas of the map. However, in a banking app, all details of every transaction are vital for auditing, even though a customer may only care to see if their transaction was successful or not.
+
+#### Database schemas
+
+As we have discussed, relational databases rely upon database schemas to organize the content within the database and to enforce both referential and domain integrity. Programmers also use these schemas when writing software to interface with the database.
+
+**Data Schemas**: A data schema is the set of metadata used by the database to organize data objects and enforce integrity constraints. The schema defines the attributes of the database, providing descriptions of each object and how it interacts with other objects within the database. One or more schemas can reside on the same database.
+
+There are two types of schemas: logical and physical.
+
+1. **Logical Schemas**: Logical schemas focus on the constraints to be applied to the data within the database. This includes the organization of tables, views, and integrity checks.
+
+Tables and views can be related to one another. The schema defines the information for each relationship and how it is to be enforced. The schema can also provide domain integrity by defining constraints on the values allowed in specific fields within the table providing domain integrity.
+
+Integrity checks come in different forms, but the goal is to ensure that any changes made to the database will not result in a loss of data consistency.
+
+![Logical schemas](images/logical_schemas.png)
+
+2. **Physical Schemas**: Physical schemas focus on the actual storage of data on disk or in a cloud repository. These schemas include details on the files, indices, partitioned tables, clusters, and more.
+
+Analysts can often use physical schemas to calculate estimates on the storage space needed and potential growth of the system. These schemas are also important for disaster recovery and infrastructure planning.
+
+#### Information schema
+
+Have you ever wondered how a DBMS manages all of the databases, tables, and relationships? The answer is found in the information schema. An information schema is a database of metadata that houses information on the data objects within a database.
+
+Microsoft SQL Server calls its information schema the master database. Oracle uses data dictionary tables and a metadata registry. Apache Hadoop uses a metastore. Each DBMS may have different names for the data structure that houses the metadata, but the purpose is the same: to define what all of the objects within the database are and record vital information about them. These databases store information such as the name and size of a table, the indexes on the table, and the constraints on data in the table. Security settings for users, external data assets, and management settings can also be included.
+
+Given the proper permissions on the database, you can query the information schema to learn about the objects within the database. When queries are processed, this information is used to ensure the best optimization for the query. The information schema can also be used in the maintenance of the database itself.
+
+### Understanding database consistency
+
+To maintain veracity in stored data, consistency is key. When data is stored as files, consistency is controlled by the application that is developing the files. When data is stored in a database, consistency is the responsibility of the database that is housing the data.
+
+#### ACID
+
+**ACID** is an acronym for Atomicity, Consistency, Isolation, and Durability. It is a method for maintaining consistency and integrity in a structured database.
+
+#### ACID compliance
+
+ACID is the long-standing bastion of relational data integrity. In a database such as Amazon RDS, a sequence of statements processed together is called a transaction. Millions of transactions can be performed consecutively. The data and the constraints on that data are very active in relational databases.
+
+The goal of an ACID-compliant database is to return the most recent version of all data and ensure that data entered into the system meets all rules and constraints that are assigned at all times.
+
+**Atomicity**
+
+When processing a transaction in a database, atomicity ensures that your transactions either completely succeed or completely fail. No one statement can succeed without the others. Because many requests to a database are multi-faceted, this interaction is very important for avoiding faults in your data set.
+
+When atomicity fails, the results can be devastating. Imagine an operation that is set to copy all orders from a temporary table into a permanent table every 10 minutes. If a single record within that transaction fails, everything following it will also fail. All of the orders before the failure are copied while the remaining records are not. It can be almost impossible to identify the parts that succeeded and the parts that failed.
+
+**Consistency**
+
+Consistency ensures that all transactions provide valid data to the database. This data must adhere to all defined rules and constraints. For a transaction to complete successfully, all of the statements within it must be valid against all relevant constraints set in the database. If any single statement violates these checks, the whole transaction will be rolled back, and the database will be returned to its previous state. Consistency also ensures that data updates are not made available until all replicates have been updated as well.
+
+**Isolation**
+
+Isolation ensures that one transaction cannot interfere with another concurrent transaction. Databases are busy places. Isolation ensures that when multiple transactions request the same data, there are rules in place ensuring that the operations will not cause data corruption and that all data will be made available in an orderly fashion.
+
+**Durability**
+
+Data durability is all about making sure your changes actually stick. Once a transaction has successfully completed, durability ensures that the result of the transaction is permanent even in the event of a system failure. This means that all completed transactions that result in a new record or update to an existing record will be written to disk and not left in memory.
+
+> All four of these properties work together to enforce integrity in a relational database. Many regulations require businesses to implement ACID-compliant databases. However, in a world where unstructured data, non-relational data, and distributed systems are taking up ever increasing percentages of a business’ data consumption, another option is necessary. 
+
+
+#### BASE
+
+**BASE** is an acronym for Basically Available Soft state Eventually consistent. It is a method for maintaining consistency and integrity in a structured or semistructured database.
+
+#### BASE compliance
+
+BASE supports data integrity in non-relational databases, which are sometimes called NoSQL databases. Non-relational databases like Amazon DynamoDB still use transactions for processing requests. These databases are hyperactive, and the primary concern is the availability of the data over the consistency of the data. To ensure the data is highly available, changes to data are made available immediately on the instance where the change was made. However, it may take time for that change to be replicated across the fleet of instances. The aim is that the change will eventually be fully consistent across the fleet. 
+
+**Basically Available**
+
+BA allows for one instance to receive a change request and make that change available immediately. The system will always guarantee a response to each request. However, it is possible that the response may be a failure or stale data if the change has not been replicated to all nodes. In an ACID system, the change would not become available until all instances were consistent. Consistency in a BASE model is traded for availability.
+
+**Soft State**
+
+In a BASE system, there are allowances for partial consistency across distributed instances. For this reason, BASE systems are considered to be in a soft state, also known as a changeable state.
+
+In an ACID system, the database is considered to be in a hard state because users cannot access data that is not fully consistent.
+
+**Eventual consistency**
+
+This reinforces the other letters in the acronym. The data will be eventually consistent. In other words, a change will eventually be made to every copy. However, the data will be available in whatever state it is during the propagation of the change.
+
+![ACID - BASE](images/acid_base_complaince.png)
+
+#### Amazon DynamoDB transactions
+
+In November 2018, Amazon introduced Amazon DynamoDB transactions. This feature implements ACID compliance across one or more tables within a single AWS account and region. You can use transactions when building applications that require coordinated inserts, deletes, or updates to multiple items as part of a single, logical business operation.
+
+### Introduction to the ETL process
+
+Source data is messy, in a thousand locations, and rarely developed with the same style of organization. Trying to make sense of this mess without transforming the source data is like trying to clearly hear a single voice in a crowd. You may catch parts of the conversation, but it will lose context and validity quickly.
+
+#### Understanding ETL
+**ETL—Extract, Transform, Load**—is the process of collecting data from raw data sources and transforming that data into a common type. This new data is loaded into a final location to be available for analytical analysis and inspection. In modern cloud-based environments, we often refer to this process as **ELT (Extract, Load, Transform)** instead. The steps are simply performed in a different order, but the result is the same.
+
+#### Extracting data
+
+![Data Extract](images/data_extract.png)
+
+The extraction phase of this process is arguably the most important of all phases. The data required for most data analytics transformations will likely come from multiple locations and be of multiple types, such as transaction logs, product databases, public data sources, or application streams.
+
+There are four key areas you must plan for.
+
+1. You must identify **where** all of the source data resides. This may be data stored on-premises by your company but can also include data that is found online.
+2. You must carefully plan **when** the extraction will take place due to the potential impact of the copy process on the source system.
+3. You must plan for **where** the data will be stored during processing. This is generally referred to as a staging location.
+4. You must plan for how **often** the extraction must be repeated.
+
+Once you have determined where you data is coming from, and what you want, you will extract that information and place it into a staging location.
+
+#### Transforming data
+
+![Transforming Data](images/transforming_data.png)
+
+Transforming your data into a uniform, queryable format is really the heart of the ETL process. This phase involves using a series of rules and algorithms to massage the data into its final form. Data cleansing also occurs during this part of the process.
+
+Transformations can be basic, such as cleaning data to update formats or to perform data substitutions. This could be replacing NULL values with a zero or replacing the word female with the letter F. These seemingly small changes can have a huge impact on the usefulness of this data to analysts later, in the visualization process.
+
+Transformations can also be more advanced, including applying business rules to the data to calculate new values. Filtering, complex join operations, aggregating rows, splitting columns, and data validation are all very common types of transformations applied at this phase.
+
+Amazon ETL services can even transform between different data source types, such as transforming non-relational data into a relational data format or taking relational data and transforming it into JSON files to be stored in an Amazon S3 data lake.
+
+Some data might already be in its final state and can pass through into the next phase.
+
+#### Loading data
+
+![Data load](images/loading_data.png)
+
+The final phase of the ETL process is choosing a location to load the newly transformed data. The planning steps you took in the transformation phase will dictate the form the final data store must take. This could be a database, data warehouse, or data lake. Once the process has successfully completed, the data in this location is ready to be analyzed.
+
+### AWS services in the ETL process
+
+AWS provides services for every phase of the ETL process. From data source storage to reporting, AWS has you covered.
+
+![AWS ETL Services](images/aws_etl_process.png)
+
+#### Transforming your data – comparing Amazon EMR and AWS Glue
+
+When it comes to performing the data transformation component of ETL, there are two options within AWS: Amazon EMR and AWS Glue. These two services provide similar results but require different amounts of knowledge and time investment.
+
+**Amazon EMR** is a more hands-on approach to creating your data pipeline. This service provides a robust data collection and processing platform. Using this service requires you to have strong technical knowledge and know-how on your team. The upside of this is that you can create a more customized pipeline to fit your business needs. Additionally, your infrastructure costs may be lower than running the same workload on AWS Glue.
+
+**AWS Glue** is a serverless, managed ETL tool that provides a much more streamlined experience than Amazon EMR. This makes the service great for simple ETL tasks, but you will not have as much flexibility as with Amazon EMR. You can also use AWS Glue as a metastore for your final transformed data by using the AWS Glue Data Catalog. This catalog is a drop-in replacement for a Hive metastore.
+
+When making your decision about which of these tools to work with, decide with the end in mind. Are you going to want a continuous data pipeline that requires very little overhead? Do you need massive parallel data processing? How much customization will your data solution require?
