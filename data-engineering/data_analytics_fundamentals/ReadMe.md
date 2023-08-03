@@ -548,3 +548,289 @@ With Amazon Kinesis, you can perform real-time analytics on data that has been t
 
 #### Analyze IoT device data
 You can use Amazon Kinesis to process streaming data from IoT devices such as consumer appliances, embedded sensors, and TV set-top boxes. You can then use the data to send real-time alerts or take other actions programmatically when a sensor exceeds certain operating thresholds. Use our sample IoT analytics code to build your application. No need to start from scratch.
+
+
+## Variety – data structure and types
+
+When your business becomes overwhelmed by the sheer number of data sources to analyze and you cannot find systems to perform the analytics, you know you have a variety problem.
+
+### The problem of variety
+
+There are arguably as many different types of data as there are people. This wide variety quickly becomes a challenge for businesses that are looking for diversity in their analytics. Fortunately, data can generally be classified based on the storage types that are used.
+
+### Introduction to source data storage
+
+Every data analysis solution begins with data sources. A data source can be just about anything—a folder on a file server, database, web page, and even a wearable device can be considered a data source. In each of these data sources, data is stored in a specific way. Some data sources use a schema to organize content and indexes to improve performance. Others organize data in a more flexible way and are called schemaless. Schemaless data sources still use indexes to improve performance. 
+
+### Data source types
+
+#### Structured data
+**Structured data** is stored in a tabular format, often within a database management system (DBMS). This data is organized based on a relational data model, which defines and standardizes data elements and their relation to one another. Data is stored in rows, with each row representing a single instance of a thing (for example, a customer). These rows are well understood due to the table schema, which explains what each field in the table represents. This makes structured data easy to query.
+
+The downside to structured data is its lack of flexibility. Let’s say that you have decided you want to track the age of your customers. You must reconfigure the schema to allow for this new data, and you must account for all records that don’t have a value for this new field. It is not impossible, but it can be a very time-consuming process.
+
+Examples of structured data applications include Amazon RDS, Amazon Aurora, MySQL, MariaDB, PostgreSQL, Microsoft SQL Server, and Oracle.
+
+![Structured data](images/structured_data.png)
+
+#### Semistructured data
+**Semistructured data** is stored in the form of elements within a file. This data is organized based on elements and the attributes that define them. It doesn't conform to data models or schemas. Semistructured data is considered to have a self-describing structure. Each element is a single instance of a thing, such as a conversation. The attributes within an element define the characteristics of that conversation. Each conversation element can track different attributes. This makes semistructured data quite flexible and able to scale to meet the changing demands of a business much more rapidly than structured data.
+
+The trade-off is with analytics. It can be more difficult to analyze semistructured data when analysts cannot predict which attributes will be present in any given data set.
+
+Examples of semistructured data stores include CSV, XML, JSON, Amazon DynamoDB, Amazon Neptune, and Amazon ElastiCache.
+
+![Semistructured data](images/semistructured_data.png)
+
+#### Unstructured data
+**Unstructured data** is stored in the form of files. This data doesn't conform to a predefined data model and isn't organized in a predefined manner. Unstructured data can be text-heavy, photographs, audio recordings, or even videos. Unstructured data is full of irrelevant information, which means the files need to be preprocessed to perform meaningful analysis. This can be done in many ways. For example, services can add tags to the data based on rules defined for the types of files. The data can also be cataloged to make it available to query services.
+
+Examples of unstructured data include emails, photos, videos, clickstream data, Amazon S3, and Amazon Redshift Spectrum.
+
+![Unstructured data](images/unstructured_data.png)
+
+> Structured data is hot, immediately ready to be analyzed. 
+Semistructured data is lukewarm—some data will be ready to go and other data may need to be cleansed or preprocessed. Unstructured data is the frozen ocean—full of exactly what you need but separated by all kinds of stuff you don’t need.
+
+### Introduction to structured data stores
+
+Structured data is classified as data that is stored in a database or database management system (DBMS). A database is a structured set of data held in a computer—one that is accessible in various ways. A DBMS provides structure to the data, the ability to maintain the data throughout its lifecycle, and the ability to manage interactions with other processes and systems. Different database management systems manage data organization in different ways to achieve specific goals, such as complex analysis, rapid relationship navigation, or session state retrieval.
+
+#### Flat-file data
+
+Flat-file data generally resides in a worksheet or spreadsheet. This may not seem like a database, but it meets all of the basic requirements. This format provides a solid foundation for understanding some of the considerations when choosing a DBMS.
+
+#### Relational databases
+
+Flat-file storage may not fit your structured data storage needs. The next logical step is to move to a more robust solution: a relational database.
+
+A process known as normalization helps a business take flat-file data and turn it into a relational database. Normalization is a set of rules that work together to reduce redundancy, increase reliability, and improve the consistency of data storage.
+
+A relational database is built to store structured data so it can be collected, updated, and queried easily. Relational databases rely on a series of structures, called tables, to hold the collected data. These tables are navigated using the structured query language, or SQL.
+
+![Relation table](images/relational_table.png)
+
+Logically, relational database tables group data based on a person, place, thing, or event related to that data. These groupings are referred to as entities. Each entity is stored as a table. 
+
+A column, known as a field, is used to describe one attribute of the entity. A row, known as a record, in the table represents a single instance of an entity.
+
+Think of a spreadsheet, where each row has a cell for each column. Each cell can contain a value. Rules within the schema define if the attribute is required or optional.
+
+![Relationships](images/relationships.png)
+
+Relationships are created by first ensuring that every row in a table is unique. This is done by creating a primary key. This primary key value can then be used to create relationships between tables. A foreign key is a field that uses the values from a primary key in another table to define a record in the current table. This act is what builds the relationship. Some database engines can enforce this relationship to ensure that only values from the primary key can be used in the foreign key.
+
+#### Strengths
+- Provides ACID compliance
+- Data is easily stored, edited and retrieved using a common SQL language
+- The structure can be scaled up quickly
+
+#### Weaknesses
+
+- Struggle storing unstructured data
+- Querying can be slow due to complex join requirements
+- The schema can can make scaling out quite difficult
+
+### Types of information systems
+
+There are two main ways—known as information systems—of organizing data within a relational database. The data can be organized to focus on the storage of transactions or the process of analyzing transactions.
+
+Transactional databases are called online transaction processing (OLTP) databases. The data gathered by OLTP databases is often fed into another type of database that focuses on analyzing the transactional data. Online analytical processing (OLAP) databases gather data from OLTP systems for the purpose of organizing it for analytical operations.
+
+#### OLTP databases (operational databases)
+
+Online transaction processing (OLTP) databases, often called operational databases, logically organize data into tables with the primary focus being on the speed of data entry. These databases are characterized by a large number of insert, update, and delete operations.
+
+All decisions about the organization of data and storage of attributes is based on ensuring rapid data entry and updates. The effectiveness of an OLTP system is often measured by the number of transactions per second.
+
+#### OLAP databases (data warehouses)
+
+Online analytical processing (OLAP) databases, often called data warehouses, logically organize data into tables with the primary focus being the speed of data retrieval through queries. These databases are characterized by a relatively low number of write operations and the lack of update and delete operations.
+
+All decisions about the organization of data and storage of attributes are based on the types of queries and other analytics that will be performed using the data. The effectiveness of an OLAP system is often measured by the response time of query results.
+
+#### Comparing OLTP and OLAP
+
+![OLTP Vs OLAP](images/oltp_olap.png)
+
+### Row-based and columnar data indexing
+
+Data within a database should be indexed to allow a query to quickly find the data it needs to produce a result. Indexes control the way data is physically stored on disk. They physically group records into a predictable order based on the key values within the table. This plays a huge part in the speed and efficiency of queries.
+
+The following graphic shows an example of how having an index can increase query speed. Without an index, the query must scan 12,000 rows to find orders placed on the specified date. When the table is indexed by OrderDate, the query seeks or skips directly to the range of orders placed on the specified date. No other data is scanned.
+
+![Indexing](images/indexing.png)
+
+In an **OLTP system**, the most common queries are called lookup queries. These queries need to return several columns of data for each matching record. The filters on this data are generally based on the key columns in that table. In this type of system, you might query to get details for a specific order.
+
+In an **OLAP system**, the most common queries are aggregate queries. These queries take large numbers of rows and reduce them to a single row by aggregating the values in one or more columns. In this type of system, you might query to find out the total number of items sold on a specific date.
+
+Both OLTP and OLAP systems can use either indexing method. However, there are advantages to choosing the method that is best suited to the types of queries that will be run the majority of the time.
+
+The following table breaks down some of the characteristics of each index type.
+
+![Row Columnar Indexing](images/row_columnar_indexing.png)
+
+### AWS relational databases
+
+> **Business Challenge**: It can be a huge challenge to determine the right options when it comes to migrating on-premises databases into the cloud. You must carefully examine your options to determine what choice will be the best for your application.
+
+Within AWS, the Amazon Relational Database Service (Amazon RDS) provides the needs for many different relational database management systems. It supports the most popular database engines including Amazon Aurora, MySQL, PostgreSQL, MariaDB, Oracle, and SQL Server.
+
+Amazon RDS makes it easy to set up, operate, and scale a relational database in the cloud. The service provides cost-efficient and resizable capacity while automating time-consuming administration tasks, such as hardware provisioning, database setup, patching, and backups.
+
+Amazon RDS has anything you could need for a highly efficient OLTP database. The service implements row-based indexing to achieve the right performance for transactional workloads.
+
+![Amazon RDS](images/aws_rds.png)
+
+> **Business Challenge**: Analytical requests can quickly overload a transactional system. Remember that a transactional system is designed for the speed of data entry. When a large amount of queries are run against the database, it can dramatically slow down insert, update, and delete operations.
+
+Amazon Redshift is a fast, scalable data warehouse that makes it simple and cost effective to analyze all your data across your data warehouse and data lake. Amazon Redshift delivers 10 times faster performance than other data warehouses by using machine learning, massively parallel query processing, and columnar storage on high-performance disk. You can set up and deploy a new data warehouse in minutes and run queries across petabytes of data in your Amazon Redshift data warehouse and exabytes of data in your data lake built on Amazon S3.
+
+Amazon Redshift implements columnar indexing to achieve the the right performance for analytical workloads.
+
+#### Relational database pros and cons
+
+The primary benefit of a relational database using SQL is that it is proven technology that is widely adopted and understood. There is less risk involved with a relational database, especially due to ACID compliance and a large community of experts in the field. There is an expectation of very good transactional latency, especially on appropriately sized hardware, and relational databases are considered outstanding for OLTP for relatively small data sets.
+
+There are scalability concerns with a relational database. As data sets grow, the only way to maintain performance is to increase the hardware capacities of the servers that run the application. Another key issue is the fixed schema of relational databases. It is difficult to make non-disruptive changes to the underlying database architectures, which can affect development times for new functionality.
+
+#### Preparing relational data for data processing
+
+When working with a relational database, you must pay attention to how the data will be used within the data analysis solution. It is very common to perform multiple types of analytics on the same data. OLTP data may need to be transformed into a denormalized form and placed into a data warehouse or data mart. OLAP data may not require any transformation. There may even be opportunities to transform data into staging databases that can be used as a data source for other analytic processes.
+
+### Introduction to semistructured and unstructured data stores
+
+Semistructured and unstructured data are often stored in non-relational database systems, sometimes called NoSQL databases. This term can cause a bit of confusion. It is important to remember that SQL is a way of querying data. It implies precise structure. Non-relational or NoSQL does not mean the data stored cannot be queried using SQL. A better way to think of it is not only SQL.
+
+### Non-relational databases
+
+Non-relational databases are built to store semistructured and unstructured data in a way that provides for rapid collection and retrieval. There are several broad categories of non-relational databases, and data is stored in each to meet specific requirements.
+
+#### Document stores
+
+Document stores are a type of non-relational database that store semistructured and unstructured data in the form of files. These files range in form but include JSON, BSON, and XML. The files can be navigated using numerous languages including Python and Node.js.
+
+Logically, files contain data stored as a series of elements. Each element is an instance of a person, place, thing, or event. For instance, the document store may hold a series of log files from a set of servers. These log files can each contain the specifics for that system without concern for what the log files in other systems contain.
+
+**Strengths**:
+
+- Flexibility
+- No need to plan for a specific type of data when creating one
+- Easy to scale
+
+**Weaknesses**:
+
+- Sacrifice ACID compliance for flexibility
+- Cannot query across files
+
+#### Key-value stores
+
+Key-value databases are a type of non-relational database that store unstructured data in the form of key-value pairs.
+
+Logically, data is stored in a single table. Within the table, the values are associated with a specific key. The values are stored in the form of blob objects and do not require a predefined schema. The values can be of nearly any type.
+
+**Strengths**: 
+
+- Very flexible
+- Able to handle a wide variety of data types
+- Keys are linked directly to their values with no need for indexing or complex join operations
+- Content of a key can easily be copied to other systems without reprogramming the data
+
+**Weaknesses**: 
+
+- Impossible to query values because they are stored as a single blob
+- Updating or editing the content of a value is quite difficult
+- Not all objects are easily modeled as key-value pairs
+
+
+### Schema changes in relational and non-relational databases 
+
+To understand the powerful flexibility in non-relational databases, you need to understand what it takes to make changes to the organization of data between relational and non-relational database objects.
+
+#### Data schemas
+
+A relational database stores data in the form of tables that contain rows, as pictured on the left. In this example, each row represents a single product that can be sold. Each column stores an attribute of that product: the Product ID, Product Name, Supplier, Price, and Unit. Note that both products have an entry for every attribute.
+
+A non-relational database stores data in the form of files that contain bracketed groups of information, as pictured on the right. In this example, each group of information represents a single product—the same products that are in the example on the left.
+
+![Data schemas](images/data_schemas.png)
+
+#### Schema changes in a relational database
+
+The needs of the business have changed. You need to add a new column to track each product's rating. Not all products have a rating yet, so you need to allow the column to accept NULL values.
+
+To add a new column to the table, you must:
+
+1. Execute a SQL command to add the column.
+2. The table now contains an empty column.
+3. Populate the new column with a value for each existing record.
+
+![Relational Schema Change](images/relation_schema_change.png)
+
+#### Schema changes in a non relational database
+
+When the same requirement is placed on data in a non-relational database, the remedy is quite different. You simply add the data for that record.
+
+With a non-relational database, each record can have its own set of attributes. This flexibility is one of the greatest benefits of non-relational databases.
+
+![Non-relational schema change](images/non_relation_schema_change.png)
+
+### AWS non-relational databases
+
+> **Business challenge**: Many organizations are realizing the need for a database solution that can store vast amounts of data rapidly. One of the most common needs is for a databases that can rapidly gather shopping cart data and quickly eliminate data from abandoned carts.
+
+**Amazon DynamoDB** is a key-value and document database that delivers single-digit millisecond performance at any scale. It's a fully managed, multiregion, multimaster database with built-in security, backup and restore, and in-memory caching for internet-scale applications. DynamoDB can handle more than 10 trillion requests per day and support peaks of more than 20 million requests per second.
+
+More than 100,000 AWS customers have chosen DynamoDB as their key-value and document database for mobile, web, gaming, advertising technology (ad tech), IoT, and other applications that need low-latency data access at any scale. Create a new table for your application and let DynamoDB handle the rest.
+
+### Graph databases
+
+Graph databases are purpose-built to store any type of data: structured, semistructured, or unstructured. The purpose for organization in a graph database is to navigate relationships. Data within the database is queried using specific languages associated with the software tool you have implemented.
+
+Logically, data is stored as a node, and edges store information on the relationships between nodes. An edge always has a start node, end node, type, and direction, and an edge can describe parent-child relationships, actions, ownership, and the like. There is no limit to the number and kind of relationships a node can have.
+
+**Strengths**:
+
+- Allow simple, fast retrieval of complex hierarchical structures
+- Great for real-time big data mining
+- Can rapidly identify common data points between nodes
+- Great for making relevant recommendations and allowing for rapid querying of those relationships
+
+**Weaknesses**:
+
+- Cannot adequately store transactional data
+- Analysts must learn new languages to query the data
+- Performing analytics on the data may not be as efficient as with other database types
+
+![Graph databases](images/graph_databases.png)
+
+#### Understanding graph relationships
+
+Suppose you wanted to look at a product or social recommendation. In the graph below, notice Bill at the top right. The graph shows that Bill knows Mary and Amit. Graph databases, like all others, can store information on many different entities. Entities are called nodes in a graph database. Bill, Mary, and Amit represent customer nodes. You can also track purchase history by introducing product nodes. Three customers have purchased this product.
+
+You can go a step further and track the interests of the customers, such as a favorite sport. This graph provides analysts with an opportunity to answer many helpful questions. Myra as a customer may be interested in what products were purchased by other customers who like sports. Mary might be interested to know about the other customers that her friends know.
+
+![Graph relationships](images/graph_relationships.png)
+
+### AWS graph databases
+
+> Imagine a business that is working to develop an eCommerce app that specializes in fraud detection. The business needs a solution that can provide near real-time detection of patterns that are defined as suspicious.
+
+**Amazon Neptune** is a fast, reliable, fully managed graph database service that makes it easy to build and run applications that work with highly connected data sets.
+
+The core of Neptune is a purpose-built, high-performance graph database engine optimized for storing billions of relationships and querying the graph with milliseconds latency.
+
+### Non-relational database pros and cons
+
+Non-relational databases have the primary benefit of going beyond the limitations of relational databases, especially through dynamic schemas, which give DBAs the ability to update schemas on the fly. This leads to faster development cycles and less downtime. Also, because non-relational databases can be deployed on massively distributed commodity servers, these databases have an advantage in scaling and can handle much larger data sets.
+
+The massive distribution does have a downside, in the form of “eventual consistency,” which means that data is not instantaneously updated with every change and instead catches up as a background task. Although this is acceptable under many circumstances, it does make ACID compliance difficult to achieve. Note that DynamoDB does support ACID compliance.
+
+Another drawback is that non-relational databases do not perform as well as relational databases in applications that require extremely low transactional latency. Finally, although non-relational platforms are constantly evolving and growing, there isn’t nearly the same maturity as relational technologies or the same amount of field expertise.
+
+### Comparing relational and non-relational databases
+
+There are many factors that can help you determine which database type is best for a new project or program you are developing. Below are the key characteristics of all three database types we have covered.
+
+![relational and non-relational databases](images/relation_non_relational_dbs.png)
