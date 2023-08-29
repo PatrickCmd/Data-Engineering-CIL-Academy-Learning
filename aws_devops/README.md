@@ -166,3 +166,77 @@ Every DevOps team requires an efficient and reliable CI/CD pipeline. A CI/CD pip
 
 
 ## DevOps Tools
+DevOps practices require DevOps tools. Tools make processes easier, consistent, and predictable. 
+
+As you are learning about DevOps tools, it is important to realize that AWS's DevOps tools integrate with other third-party tools. AWS partners integrate with and extend AWS's offerings. This means that you can use tools such as GitHub and Jenkins to build your DevOps toolchain, which will support your teams and optimize their processes. Use your preferred third-party and open source tools with AWS to build your end-to-end solution.
+
+AWS provides services that help you practice DevOps at your company. For now, here are general categories of tools you might need to support your DevOps efforts.
+
+1. **Cloud**
+
+Development teams need to quickly innovate and deliver reliable and secure applications. Teams rely on cloud platform providers and cloud computing resources for an array of technologies to support application development efforts. Instead of buying, owning, and maintaining physical data centers and servers, teams provision environments on demand, using cloud providers like AWS.
+
+2. **Development**
+
+DevOps teams need to continuously collaborate with their team members. There are several tools that help teams develop and deliver faster. Integrated development environments (IDEs) help you write, run, and debug code for your applications. Software development kits (SDKs) are sets of tools that allow programmers to develop applications for a specific platform. Source code repositories, or version control systems, store the files of your project. 
+
+As needed, you can access your documents and code, see revision history, compare changes over time, or revert to previous versions.
+
+**Examples**: 
+
+- **IDEs**: AWS Cloud9, IntelliJ, Eclipse, Visual Studio Code
+- **SDKs**: AWS SDK for Java, iPhone SDK
+- **Source code repositories**: GitHub, AWS CodeCommit
+
+3. **CI/CD**
+
+Practices such as continuous testing, continuous integration (CI), and continuous delivery/deployment (CD) are supported by tools that bring seamless continuity in all the development phases. CI/CD tools automate continuously integrated code that teams develop, check compliance with standards, run testing more frequently, promote code to different test environments, and deploy products to the infrastructure, repeatedly and reliably. 
+
+CI/CD tools should help bring agility to the application development and deployment processes, while continuously providing feedback and alerting appropriate teams of any issues.
+
+**Examples:** 
+
+- Build tools: Jenkins, Travis CI, AWS CodeBuild
+- Source control tools, repositories: Git, AWS CodeCommit
+- Deployment tools: AWS CodeDeploy, AWS CloudFormation
+- Pipeline automation tools: AWS CodePipeline, Jenkins, GitLab, Github Actions
+
+4. **Infrastructure automation**
+
+Programmatically define your infrastructure, including constraints, to repeatedly and consistently provision your environments (development sandboxes, testing, staging, production). 
+
+Using templates, you can deploy compute services, permissions, dependencies, and more. You can configure rules and automate remediation.
+
+**Examples**: 
+
+- Infrastructure automation tools: AWS CloudFormation, Terraform, AWS Elastic Beanstalk
+- Configuration management tools: Chef, Puppet, AWS OpsWorks
+
+5. **Containers and Serverless**
+
+Containers and serverless compute services enable the developers to focus on applications, and not on the details of the host environment.
+
+- Containers package code, configuration settings, and dependencies needed to run the application. This way, the application is portable and can run on any server. Containers are similar to virtual machines, but more lightweight because they are virtualized at the operating system (OS) level. Containers run anything from microservices to legacy large applications. They streamline the way you build, test, and deploy applications to multiple environments.
+
+They make the deployed application more secure because security policies can be implemented at the container level. Containers however, require container orchestration for managing or scheduling the work of individual containers.
+
+- Serverless compute services are services that allow you to build and run code, and let the infrastructure overhead be managed by the service's cloud provider, like AWS. 
+
+**Examples**: 
+
+- Serverless services: AWS Lambda, AWS Fargate
+- Container services:
+    - Runtimes: Docker, Containerd
+    - Orchestration: Amazon Elastic Container Service (Amazon ECS), Kubernetes, Amazon Elastic Kubernetes Service (Amazon EKS)
+
+6. **Monitoring and observability**
+
+Monitoring and observability are key aspects of DevOps, helping you be proactive in preventing challenges before they occur. With tools, you can collect metrics on the health and performance of your application. You can capture deployment frequency, identify successful or failed deployments, application usage traffic, and more. 
+
+Tools can help you trace end-to-end request and transaction flows through a distributed system. With tools, you can visualize and analyze logs, metrics, and traces to uncover new insights on the health, performance, and availability of your system. With insight you can streamline your processes, improve system performance, and reduce downtime. 
+
+Examples: AWS X-Ray, Amazon CloudWatch, AWS Config, AWS CloudTrail
+
+As you decide on tools, it is important to use tools that work for your team. 
+
+## Amazon's DevOps Transformation
