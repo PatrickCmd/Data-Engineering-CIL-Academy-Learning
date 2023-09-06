@@ -109,3 +109,9 @@
 
 ## The Cloud Resume Challenge
 - [Cloud Resume Challenge](https://cloudresumechallenge.dev/)
+
+## System Design
+- [**Blogs -Linkedin**](https://www.linkedin.com/feed/update/urn:li:activity:7104080141818937344?utm_source=share&utm_medium=member_desktop)
+
+## API Courses
+- [**Linkedin Post**](https://www.linkedin.com/posts/brijpandeyji_if-youre-a-developer-software-engineer-activity-7103778381636218880-VQcc?utm_source=share&utm_medium=member_desktop)
