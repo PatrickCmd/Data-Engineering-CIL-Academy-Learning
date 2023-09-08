@@ -1,0 +1,6 @@
+#cloud-config
+packages:
+  - apache2
+runcmd:
+  - sudo systemctl start apache2
+  - sudo bash -c 'echo Terraform first web server > /var/www/html/index.html'
