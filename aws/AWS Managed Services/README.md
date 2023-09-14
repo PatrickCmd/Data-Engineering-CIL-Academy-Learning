@@ -48,4 +48,24 @@ With web traffic originating from the internet, Elastic Load Balancing, or ELB, 
 
 Traffic originating from your company's on-premises environment will be routed through either an AWS VPN or AWS Direct Connect. In both cases, they are routed into the AWS Transit Gateway to an ELB. The ELB will be on a private subnet in an Amazon VPC that exists inside one of your application accounts.
 
-!
+![ELB](images/elb_on_prem.png)
+
+### AMS resource access from on-premises
+
+If the user needs to access AWS resources in their account over Secure Shell or Remote Desktop Protocol (RDP), they will need to request appropriate access via an AMS request for change (RFC), and authenticate through a bastion host. This bastion host is accessed through the AWS VPN or AWS Direct Connect, and then routed through the AWS Transit Gateway.
+
+![AWS Access from on premises](images/access_from_on_prem.png)
+
+### Cross-VPC network traffic
+
+If traffic needs to flow between resources in different application accounts, it will also route through the AWS Transit Gateway. It is possible to isolate Amazon VPCs by using the AWS Transit Gateway and requesting a black-hole route among Amazon VPCs.
+
+![Cross VPC network traffic](images/cross_vpc_network_traffic.png)
+
+### AMS operator network access
+
+Authorized AMS operators access your environment using bastion hosts that are provisioned in the demilitarized-zone (DMZ) Amazon VPC that is located in the network account. These bastion hosts are on a public subnet that is only accessible from the Amazon network. Traffic from the bastion hosts is then routed through the AWS Transit Gateway to the requested resource.
+
+![AMS Operator Access](images/ams_operator_access.png)
+
+
