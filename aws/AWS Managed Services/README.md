@@ -68,4 +68,6 @@ Authorized AMS operators access your environment using bastion hosts that are pr
 
 ![AMS Operator Access](images/ams_operator_access.png)
 
+### Principle of least privilege
 
+The AMS accounts and networking are designed using the principle of least privilege. Access is granted through the use of bastion instances, thereby preventing direct access to any production resources. All of your applications and resources reside inside private subnets that are reachable through public load balancers. Public egress traffic flows through a NAT, an Internet Gateway, and then to the Internet.
