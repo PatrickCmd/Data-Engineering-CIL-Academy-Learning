@@ -3,6 +3,7 @@
 ## Resources / References
 - [**Redhat - What is CI/CD?**](https://www.redhat.com/en/topics/devops/what-is-ci-cd)
 - [**AWS - What is Continuous Integration?**](https://aws.amazon.com/devops/continuous-integration/)
+- [**Atlassian- Continuous integration vs. delivery vs. deployment**](https://www.atlassian.com/continuous-delivery/principles/continuous-integration-vs-delivery-vs-deployment)
 
 ## What is CI/CD?
 CI/CD is a method to frequently deliver **apps** to customers by introducing **automation** into the stages of **app development**. The main concepts attributed to CI/CD are **continuous integration**, **continuous delivery**, and **continuous deployment**. CI/CD is a solution to the problems integrating new code can cause for development and operations teams (AKA "integration hell").
