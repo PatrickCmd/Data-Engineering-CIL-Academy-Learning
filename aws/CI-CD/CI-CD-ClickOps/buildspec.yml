@@ -1,0 +1,22 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      java: latest
+  pre_build:
+    commands:
+      - echo Nothing to do in the pre_build phase, just clean up...
+      - mvn clean
+  build:
+    commands:
+      - echo AWS CodeBuild - Build started on `date`
+      - mvn install
+  post_build:
+    commands:
+      - echo AWS CodeBuild - Build completed on `date`
+artifacts:
+  files:
+    - target/messageUtil-1.0.jar
+    - appspec.yml
+  discard-paths: yes
