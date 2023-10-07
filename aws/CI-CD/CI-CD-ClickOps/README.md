@@ -682,9 +682,9 @@ To create an application, deployment group, and perform a deployment using AWS C
    - Configure deployment settings, such as deployment type, deployment configuration, and any required environment variables.
    - Review and create the deployment.
 
-![Edit Codebuild Artifacts to a zip](images/Edit-arrtifacts-codebuild.png)
+![Edit Codebuild Artifacts to a zip](images/Edit-artifacts-codebuild.png)
 ![Create deployment](images/Create-deployment-1.png)
-![Create deployment](images/Create-deployment-3.png)
+![Create deployment](images/Create-deployment-2.png)
 
 4. **Monitor the Deployment**:
 
@@ -701,7 +701,7 @@ By following these steps, you will have created an AWS CodeDeploy application, d
 
 ### CodePipeline
 
-![Codepipeline](images/CodePipeline)
+![Codepipeline](images/CodePipeline.png)
 
 To create an AWS CodePipeline with the following stages and actions:
 
