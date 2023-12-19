@@ -529,3 +529,127 @@ You can permanently delete individual versions of an object by invoking a DELETE
 If your DELETE request specifies only the object's key name, Amazon S3 inserts a delete marker that becomes the current version of the object. If you try to retrieve an object that has a delete marker, Amazon S3 returns a **404 NOT FOUND** error. You can recover the object by removing the delete marker from the current version of the object, making the object available for retrieval.
 
 ![Object deletions](images/Fundamentals/object-deletions-2.png)
+
+## Cloud Data Migration Services
+Data is a cornerstone of successful application deployments, analytics workflows, and machine learning innovations. When moving data to the cloud, you need to understand your different use cases, the types of data you are moving, and the network resources available. AWS offers a wide variety of services and partner tools to help you migrate your data sets, whether they are files, databases, machine images, block volumes, or even tape backups. 
+
+The portfolio of data transfer services provides the ideal solution for any data migration project. The level of online connectivity is a major factor in data migration, and AWS has offerings that can address your hybrid cloud storage, online data transfer, and offline data transfer needs.  In this lesson, we cover a high-level overview of the available migration tools.
+
+### Online data transfer services
+
+Online data transfer services are a group of offerings that allows you to move your data into and out of the AWS Cloud and Amazon S3 via online, internet based, connections.
+
+#### AWS DataSync
+AWS DataSync makes it simple and fast to move large amounts of data online between on-premises storage and Amazon S3. DataSync manages many of the tasks related to data transfers that can slow down migrations. You can also reduce the burden of your IT operations, including running your own instances, handling encryption, managing scripts, network optimization, and data integrity validation.
+
+DataSync can transfer hundreds of terabytes and millions of files at speeds up to 10 times faster than open-source tools. You can use it to migrate active data sets or archives to AWS, transfer data to the cloud for timely analysis and processing, or replicate data to AWS for business continuity. 
+
+For additional information on AWS Data Sync, select the following link:
+
+https://aws.amazon.com/datasync/?whats-new-cards.sort-by=item.additionalFields.postDateTime&whats-new-cards.sort-order=desc
+
+#### AWS Transfer Family
+The AWS Transfer Family provides fully managed support for file transfers directly into and out of Amazon S3. The AWS Transfer Family helps you seamlessly migrate your file transfer workflows to AWS by integrating with existing authentication systems, and providing DNS routing with Amazon Route 53 so nothing changes for your customers and partners, or their applications. With your data in Amazon S3, you can use it with AWS services for processing, analytics, machine learning, and archiving. 
+
+For additional information on AWS Transfer Family, select the following link:
+
+https://aws.amazon.com/aws-transfer-family/?whats-new-cards.sort-by=item.additionalFields.postDateTime&whats-new-cards.sort-order=desc 
+
+#### Amazon S3 Transfer Acceleration
+You can use Amazon S3 Transfer Acceleration for fast, easy, and secure transfers of files over long distances. It takes advantage of Amazon CloudFront globally distributed edge locations, routing data to Amazon S3 over an optimized network path.
+
+Transfer Acceleration is best suited for scenarios in which you want to transfer data to a central location from all over the world or transfer significant amounts of data across continents regularly. It can also help you use your available bandwidth when uploading to Amazon S3.
+
+For additional information on Amazon S3 Transfer Acceleration, select the following link:
+
+https://aws.amazon.com/s3/transfer-acceleration/
+
+#### Amazon Kinesis Data Firehose
+You can also stream data into Amazon S3 by using Amazon Kinesis Data Firehose, a fully managed streaming service. Because it captures and automatically loads streaming data in Amazon S3 and Amazon Redshift, you get near-real-time analytics with the business intelligence tools that you already use.
+
+For additional information on Amazon Kinesis Data Firehose select the following link:
+
+https://aws.amazon.com/kinesis/data-firehose/?kinesis-blogs.sort-by=item.additionalFields.createdDate&kinesis-blogs.sort-order=desc
+
+#### Amazon Kinesis Data Streams
+Amazon Kinesis Data Streams (KDS) enables you to build custom applications that process or analyze streaming data for specialized needs. Kinesis Data Streams can continuously capture and store terabytes of data per hour from hundreds of thousands of sources, such as website clickstreams, financial transactions, social media feeds, IT logs, and location -tracking events. You can also emit data from Kinesis Data Streams to other AWS services, such as Amazon S3, Amazon Redshift, Amazon EMR, and AWS Lambda.
+
+For additional information on Amazon Kinesis Data Streams, select the following link:
+
+For additional information on Amazon Kinesis Data Streams select the following link:
+
+https://aws.amazon.com/kinesis/data-streams/
+
+#### Amazon Partner Network
+You can use third-party connectors from the Amazon Partner Network for additional Amazon transfer service support. Amazon partners can help you move your data to the cloud. The simplest way to do that is through an embedded connection in your backup software. Using this approach, your backup catalog stays consistent so that you maintain visibility and controls across jobs that span disk, tape, and the cloud.
+
+For additional information on Amazon Partner Network select the following link:
+
+https://aws.amazon.com/partners/
+
+### Offline data transfer services
+
+Offline data transfer services use an alternate, physical storage method to move your data from remote locations to AWS. AWS Snowcone, AWS Snowball, and AWS Snowmobile are offline transfer services designed to transfer various quantities of data based on your business need.
+
+#### AWS Snowcone
+AWS Snowcone is the smallest member of the AWS Snow Family of edge computing, edge storage, and data transfer devices, weighing in at 4.5 pounds (2.1 kg) with 8 terabytes of usable storage. You can run compute applications at the edge, and ship the device with data to AWS for offline data transfer, or you can transfer data online with AWS DataSync from edge locations.
+
+Snowcone has multiple layers of security and encryption. You can use it to collect, process, and transfer data to Amazon S3. Snowcone is designed for data migration needs up to dozens of terabytes (with up to 8 terabytes per device) and from space-constrained environments where AWS Snowball devices will not fit.
+
+For additional information on AWS Snowcone select the following link:
+
+https://aws.amazon.com/snowcone
+
+#### AWS Snowball
+AWS Snowball is an edge computing, data migration, and edge storage device that comes in two options: Snowball Edge Storage Optimized and Snowball Edge Compute optimized.
+
+Snowball Edge Storage Optimized devices provides both block storage and Amazon S3-compatible object storage, along with 40 vCPUs. Snowball Edge Compute Optimized devices provide 52 vCPUs, block and object storage, and an optional GPU for use cases like advanced machine learning and full motion video analysis in disconnected environments.
+
+You can use these devices for data collection, machine learning and processing, and storage in environments with intermittent connectivity (like manufacturing, industrial, and transportation) or in extremely remote locations (like military or maritime operations) before shipping back to AWS. These devices may also be rack mounted and clustered together to build larger temporary installations.
+
+For additional information on AWS Snowball select the following link:
+
+https://aws.amazon.com/snowball/
+
+#### AWS Snowmobile
+AWS Snowmobile is an Exabyte-scale data transfer service used to move extremely large amounts of data to AWS. You can transfer up to 100PB per Snowmobile, a 45-foot long ruggedized shipping container, pulled by a semi-trailer truck. 
+
+Snowmobile uses multiple layers of security to help protect your data including dedicated security personnel, GPS tracking, alarm monitoring, 24/7 video surveillance, and an optional escort security vehicle while in transit. All data is encrypted with 256-bit encryption keys you manage through the AWS Key Management Service (KMS) and designed for security and full chain-of-custody of your data.
+
+For additional information on AWS Snowmobile select the following link:
+
+https://aws.amazon.com/snowmobile/
+
+### Hybrid cloud storage services
+
+If you want to take advantage of the benefits of cloud storage but have applications running on-premises that require low-latency access to their data, or you need rapid data transfer to the cloud; then you can use AWS hybrid cloud storage architectures. 
+
+A hybrid storage strategy allows you to connect your on-premises applications and systems to cloud storage. This helps you reduce costs, minimize management burden, and innovate with your data.
+
+#### AWS Direct Connect
+AWS Direct Connect is a dedicated network connection from your on-premise data center to AWS. It provides a dedicated connection for higher throughput and secure data transfer without passing through the internet. Using industry standard 802.1q VLANs, this dedicated connection can be partitioned into multiple virtual interfaces. 
+
+For additional information on AWS Direct Connect select the following link:
+
+https://aws.amazon.com/directconnect/
+
+#### AWS Storage Gateway
+You can use the AWS Storage Gateway, in File Gateway mode, to store your on premises data in an existing Amazon S3 bucket. You can deploy AWS Storage Gateway as a virtual appliance or purchase a hardware appliance version.
+
+AWS Storage Gateway configured as a File Gateway enables you to connect your Amazon S3 bucket using either the Network File System (NFS) or Server Message Block (SMB) protocol with local caching. You can transfer your data using an AWS File Storage Gateway over the internet or over an AWS Direct Connect connection.
+
+For additional information on AWS File Storage Gateway select the following link:
+
+https://aws.amazon.com/storagegateway/?whats-new-cards.sort-by=item.additionalFields.postDateTime&whats-new-cards.sort-order=desc
+
+### Unmanaged cloud data migration tools
+
+AWS also offers easy script or CLI tools to move data from your site into AWS cloud storage. 
+
+#### rsync and 3rd party tools
+Depending your needs, you have the option to use rsync, an open source tool, along with other third-party file system tools to copy data directly into Amazon S3 buckets.
+
+#### Amazon S3 and the AWS CLI
+You can use the Amazon S3 and the AWS CLI to write commands and scripts that help you to move data directly into Amazon S3 buckets.
+
+[**Cloud Data Migration**](https://aws.amazon.com/cloud-data-migration/)
