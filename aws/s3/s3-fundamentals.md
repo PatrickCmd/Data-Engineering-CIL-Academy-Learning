@@ -221,3 +221,311 @@ For the best compatibility, we recommend that you avoid using dots (.) in bucket
 For more information on virtual hosting or using buckets as a static website, follow the link listed below
 
 - [**Virtual hosting**](https://docs.aws.amazon.com/AmazonS3/latest/dev/VirtualHosting.html)
+
+## Interfacing with Amazon S3
+
+Once you have a bucket created, there are multiple ways to add, overwrite, or retrieve objects in your Amazon S3 bucket. The three primary tools for interacting with buckets are the AWS Console, the AWS Command Line Interface (CLI), and using the AWS Software Development Kit (SDK).  Each tool enables you to work with the data based on your role and preferences.
+
+### AWS Management Console
+The AWS Management Console provides a simple web interface to interact with AWS Services. You can log in using your AWS account name and password. If you’ve enabled AWS Multi-Factor Authentication, you will be prompted for your device’s authentication code. 
+
+Using the AWS Management Console for Amazon S3, you can view your buckets and objects, upload and download data, and manage permissions and security through the graphical user interface. You can also perform almost all bucket operations without having to write any code. 
+
+When uploading data via the AWS Management Console, the maximum file that you can upload is `160GB`. To upload a file larger than 160 GB, use the AWS CLI, AWS SDK, or Amazon S3 REST API. 
+
+### AWS CLI
+The AWS Command Line Interface (CLI) is a unified tool to manage your AWS services. The AWS CLI is used to manage your Amazon S3 data, buckets, and objects for users who prefer or require the functionality of the command line. You can manually upload, download, and manage your objects using the AWS CLI commands, or automate your processes using scripts.
+
+For more information on the AWS CLI follow this link:
+
+https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html
+
+### AWS SDK
+AWS SDK helps take the complexity out of coding by providing language specific groups of tools for building in AWS. You can simplify using Amazon S3 in your application with an API tailored to your programming language or platform. You can send authenticated requests to Amazon S3 either by using the AWS SDK or by making the REST API calls directly from your application. 
+
+ 
+
+You can easily develop applications on AWS in the programming language of your choice with familiar tools. There are a variety of SDKs to choose from to help you build solutions you need for your Amazon S3.
+
+For more information on available AWS SDKs, follow this link:
+
+https://aws.amazon.com/getting-started/tools-sdks/
+
+## Amazon S3 and REST API
+
+The REST API is an HTTP interface to Amazon S3. Using REST API, you use standard HTTP requests to create, fetch, and delete buckets and objects. You can use any toolkit that supports HTTP for use with the REST API. You can even use a browser to fetch objects, as long as they are anonymously readable.  
+
+Amazon S3 supports the REST API, which means that objects and buckets are resources, each with a URL that uniquely identifies the resource.
+
+Addressing models are URLs that define how to locate data within an S3 bucket. Amazon S3 supports two types of addressing models: `Path-style URLs` and `Virtual hosted style URLs`.
+
+### Path-style URLs
+
+With path-style URLs, the bucket name comes after the global or region-specific endpoint. In the image below, notice that the formatting of the URL: `https:/region-specific endpoint/bucket/object`.  The bucket is always a subdomain of `s3.amazonaws.com` and when DNS resolves this URL the endpoint will always be a subdomain of `s3.amazonaws.com`.
+
+In addition, with path-style URLs, multiple accounts for different companies and owners map to this single subdomain, s3.amazonaws.com. If you need a customized URL then you should choose virtual hosted URLs, which are discussed next.
+
+![path style urls](images/Fundamentals/path-style-urls.jpeg)
+
+> Path-style URLS are formatted as a /region-specific-endpoint/bucket/object. This style of URL is deprecated as of September 2020.
+
+### Amazon S3 path-style URL deprecation plan
+
+It is important to note that there is a deprecation plan in the works for path-style URLs on newly created buckets. Support will continue for any path-style URLs previously created; however, once this feature is deprecated you will no longer be able to create new path-style URLs.  This information is important for you to consider when planning for the future of your environment. 
+
+### Virtual hosted-style URLs
+
+Virtual hosting is the practice of serving multiple websites from a single web server. One way to differentiate sites is by using the host name (bucket name) of the request. In a virtual-hosted–style URL, the bucket name is part of the domain name in the URL, which makes the URL easier to read, and more end-user friendly.
+
+![virtual hosted-style urls](images/Fundamentals/virtual-hosted-style-urls.jpeg)
+
+> With Virtual hosted-style URLs the bucket name is listed first, creating a unique subdomain and making the URL easier to remember.
+
+Virtual hosting also has other benefits. You can completely customize the URL of your Amazon S3 resources by naming your bucket after your registered domain name and making that name a DNS alias for Amazon S3.
+
+For example, a customized URL for this Getting Started Course could look like: http://getting-started-with-s3.net/. Virtual hosting also allows you to publish to the "root directory" of your bucket's virtual server which is an important feature that allows applications to search for files in the standardized root directory location. 
+
+When using virtual hosted–style buckets with SSL, the SSL wild-card certificate only matches buckets that do not contain dots (.). To work around this, don't use dots (.) in bucket names, or use HTTP to write your own certificate verification logic.
+
+### How a DNS request is routed
+
+Amazon S3 uses the Domain Name System (DNS) to route requests to facilities that can process them. This system works effectively, but temporary routing errors can occur. If a request arrives at the wrong Amazon S3 location, it responds with a temporary redirect that tells the requester to resend the request to a new endpoint. If a request forms incorrectly, Amazon S3 uses permanent redirects to provide direction on how to perform the request correctly. 
+
+Take a moment to review the diagram below.  The client is making a request to retrieve the dolphins.jpg object, read each step to ensure you understand how to route a DNS request.
+
+#### DNS request step-by-step:
+
+![DNS request](images/Fundamentals/dns-request.jpeg)
+
+1. The client wants to view the `dolphins.jpg` object stored on Amazon S3. The client makes a DNS request to get the address of s3.amazonaws.com. 
+2. The client receives one or more IP addresses for facilities that can process the request. In this example, the IP address is for Facility B.
+3. The client makes a request to Amazon S3 Facility B.
+4. Facility B returns a copy of the dolphin.jpg object to the client.
+
+### DNS temporary redirects
+
+One of the design requirements of Amazon S3 is extremely high availability. One of the ways we meet this requirement is by updating the IP addresses associated with the Amazon S3 endpoint in DNS as needed.  
+
+Due to the distributed nature of Amazon S3, requests could temporarily route to the wrong Region. This is most likely to occur immediately after the creation or deletion of buckets. A temporary redirect is a type of error response that signals to the requester that they should resend the request to a different endpoint. 
+
+For example, if you create a new bucket and immediately make a request to the bucket, you might receive a temporary redirect, depending on the location constraint of the bucket. If you created the bucket in the US East (N. Virginia) AWS Region, you will not see the redirect because this is also the default Amazon S3 endpoint.
+
+However, if the created bucket is in any other AWS Region, any requests for the bucket go to the default endpoint while the bucket's DNS entry is propagated. The default endpoint redirects the request to the correct endpoint with an HTTP 302 response. Temporary redirects contain a URI to the correct Region, which you can immediately resend the request.
+
+Review the diagram below that illustrates a temporary request redirection and then review the steps to ensure you understand the process.
+
+#### Temporary request redirection steps
+
+![DNS temporary redirects](images/Fundamentals/dns-temporary-redirects.png)
+
+1. The client makes a DNS request to get the dolphin.jpg object stored on Amazon S3.
+2. The client receives an IP address for a Region that can process the request. In this example the IP that is returned is `192.168.7.52`.
+3. The client makes a request to Amazon S3 Region B, located at 192.168.7.52.
+4. Region B returns a redirect indicating the object is available from Location D, at `192.168.7.54`.
+5. The client resends the request to Region D, at 192.168.7.54.
+6. Region D returns a copy of the requested object.
+
+- [**DNS For S3**](https://docs.aws.amazon.com/AmazonS3/latest/userguide/UsingRouting.html)
+
+## Amazon S3 Data Management
+Amazon S3 gives you robust capabilities to manage access to your data.  In this lesson, the focus is on how to get data into and out of Amazon S3 from both the AWS Management Console and the CLI. It is important to become familiar with using both tools due to file upload limitations in the AWS Management Console. 
+
+The first topic to explore is the new Amazon S3 data consistency model used when adding or modifying data to an S3 bucket. 
+
+### S3 Strong data consistency model
+Amazon S3 now delivers strong read-after-write consistency for any storage request, without changes to performance or availability, without sacrificing regional isolation for applications, and at no additional cost.  Any request for S3 storage is now strongly consistent.
+
+After a successful write of a new object or overwrite of an existing object, any subsequent read request immediately receives the latest version of the object. Amazon S3 also provides strong consistency for list operations, so after a write, you can immediately perform a listing of the objects in a bucket with any changes reflected.
+
+Why is this important? Previously, the Amazon S3 consistency model was strongly consistent for new objects and eventually consistent for modified or recently queried objects.  However, with the increased usage of high process analytics engines, applications and users need to have access to update data immediately after written. The strong read-after-write consistency model addresses the needs of large data lakes and applications that require immediate access to changed data.
+
+There is no charge for this feature and it is available for all GET, PUT, LIST, HEAD requests, as well as Access Control Lists, object tags, and other metadata. For bucket operations such as reading a bucket policy or metadata, the consistency model remains eventually consistent.
+
+### AWS Management Console
+The AWS Management Console is a graphical user interface that allows you to enable or disable versioning, view access logs, permissions and encryption, and manage all aspects of your buckets and objects though a friendly user interface. It provides you a secure login and management capabilities using your AWS or AWS Identity and Access Management (Identity and Access Management) account credentials, and allows you to enable AWS Multi-Factor Authentication for additional security.
+
+You can personalize your AWS Management Console experience by creating shortcuts to the services you visit most often, like Amazon S3, by dragging and dropping the links onto the console’s top-level toolbar to create your shortcuts.
+
+In addition to this, any login session that is not closed automatically expires after 12 hours. The console supports the three latest versions of Google Chrome, Mozilla Firefox, Microsoft Edge, and Apple Safari, as well as, Microsoft Internet Explorer 11. The AWS Management Console has a mobile app as well. With the mobile app, you can easily view your existing buckets and objects. The app also allows you to perform operational tasks. 
+
+### Getting started with Amazon S3
+
+Learning Amazon S3 by using the console gives you the opportunity to visualize buckets and objects, and explore all of the configuration options available to you. You can manage and maintain most of your Amazon S3 storage via the console but some restrictions will prompt you to use the command line.
+
+For example, the largest file you can upload via the AWS Management Console is 160 GB. Any larger files will need to be uploaded programmatically either at the command line or from within your applications.
+
+![S3 bucket](images/Fundamentals/amazon-s3-bucket.jpeg)
+
+#### Versioning
+
+Versioning is a means of keeping multiple variants of an object in the same bucket. You can use versioning to preserve, retrieve, and restore every version of every object stored in your Amazon S3 bucket. With versioning, you can easily recover from both unintended user actions and application failures. If Amazon S3 receives multiple write requests for the same object simultaneously, and you enable versioning, it will store all of the object write requests.
+
+If you enable versioning for a bucket, Amazon S3 automatically generates a unique version ID for the object being stored. In one bucket, for example, you can have two objects with the same key, but different version IDs, such as dolphins.jpg (version 111111) and dolphins.jpg (version 222222). 
+
+Versioning-enabled buckets enable you to recover objects from accidental deletion or overwrite. For example:
+- If you delete an object, instead of removing it permanently, Amazon S3 inserts a delete marker, which becomes the current object version. You can always restore the previous version. 
+- If you overwrite an object, it results in a new object version in the bucket. You can always restore the previous version.
+
+### Using the command line
+
+In Amazon S3 there are two types of commands you can use from the CLI: high-level commands and low-level commands.  In this topic, you will cover both types of commands and resource links provided for additional reading material.
+
+#### High-level commands
+
+High-level commands simplify managing Amazon S3 objects from a command line. These commands enable you to manage the contents of Amazon S3 within itself and with local directories. You can identify the high-level commands because they begin with aws s3.
+
+#### Example of using high-level commands
+The following example uses the aws s3 command to make a bucket called demo-oceanlife, then the example shows how to copy a file called into the bucket, then list the Amazon S3 buckets available, and finally list the individual objects within the buckets.
+
+**Make a bucket**
+
+```sh
+aws s3 mb s3://demo-oceanlife-cmd
+```
+
+```
+make_bucket: demo-oceanlife-cmd
+```
+
+Here you use the aws `s3 mb` or make bucket command to make a bucket called "demo-oceanlife". 
+
+The output, listed on the second line, `make_bucket: demo-oceanlife` indicates a successful bucket creation.
+
+**Copy files to a bucket**
+
+```sh
+aws s3 cp ~/Downloads/whale.jpg s3://demo-oceanlife-cmd
+```
+
+In this command, you use the `aws s3 cp` command to copy the `whale.jpg` file from the client local machine in `~/Downloads` to the demo-oceanlife-cmd bucket. 
+
+The output on the second line, `upload: Downloads/whale.jpg to s3://demo-oceanlife-cmd/whale.jpg` appears while the file copies.
+
+**Viewing the list of Amazon S3 buckets**
+
+```sh
+aws s3 ls
+```
+
+```
+2023-12-19 16:25:21 demo-oceanlife-cmd
+```
+
+In order to list all of the buckets in your account, you use the `aws s3 ls` command. 
+
+The output on the second line lists the one bucket you created in the first step called `demo-oceanlife-cmd`. If you had more buckets in your account you would see all of the buckets listed here.
+
+**Viewing objects in the bucket**
+
+```sh
+aws s3 ls s3://demo-oceanlife-cmd
+```
+
+```
+2023-12-19 16:34:55 whale.jpg
+```
+
+Additionally, to view all objects in a specific bucket, in this case the `demo-oceanlife-cmd` bucket, you can use the `aws s3 ls *bucketname*` to see all of the files in the bucket.
+
+The output on the second line shows the one file, **whale.jpg**, that was uploaded.
+
+**Delete objects**
+
+```sh
+aws s3 rm s3://demo-oceanlife-cmd/whale.jpg
+```
+
+```
+delete: s3://demo-oceanlife-cmd/whale.jpg
+```
+
+The following example deletes `whale.jpg` from `s3://demo-oceanlife-cmd`. The output on the second line shows the one file, **whale.jpg**, that was deleted.
+
+**Delete buckets**
+
+```sh
+aws s3 rb s3://demo-oceanlife-cmd
+```
+
+```
+remove_bucket: demo-oceanlife-cmd
+```
+
+The following example removes the `s3://demo-oceanlife-cmd` bucket. The output on the second line shows that the bucket **demo-oceanlife-cmd** was removed.
+
+High-level commands allow you to functionally manage and work with your Amazon S3 buckets.
+
+- [**S3 High level commands**](https://docs.aws.amazon.com/cli/latest/userguide/cli-services-s3-commands.html)
+
+#### Low Level Commands
+Low-level commands use the s3api command-set and provide direct access to the Amazon S3 APIs, enabling operations not exposed in the high-level s3 commands. Most of the the s3api commands are generated from JSON models that directly imitate the APIs of other AWS services that provide API-level access.
+
+The **s3api list-objects** and **s3api make-bucket** commands share a similar operation name, input, and output as the corresponding operation in the Amazon S3 API. As a result, these commands allow a significantly more granular amount of control over your buckets when using the CLI. 
+
+- [**Amazon S3 documentation: Using s3api commands**](https://docs.aws.amazon.com/cli/latest/userguide/cli-services-s3-apicommands.html)
+- [**s3api**](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/s3api/index.html)
+
+### PUT operations
+
+Use the PUT request operation to add an object to a bucket. You must have **WRITE** permissions on a bucket in order to add an object. Amazon S3 never adds partial objects; if you receive a success response, you can be confident that the entire object was stored durably. 
+
+If the object already exists in the bucket, the new object overwrites the existing object. Amazon S3 orders all of the requests that it receives but it is possible that if you send two requests nearly simultaneously, the received requests will be in a different order than sent.
+
+The last request received is the one which is stored. This means that if multiple parties are simultaneously writing to the same object, they may all get a success response even though only the last write wins. This is because Amazon S3 is a distributed system and it may take a few moments for one part of the system to communicate that another part has received an object update. 
+
+#### Multipart Upload API
+You can upload or copy objects of up to **5 GB** in a single PUT operation. For objects, up to **5 TB** you must use the multipart upload API. The multipart upload API allows you to upload a single object as a set of parts. Each part is a contiguous portion of the object's data. You can upload these object parts independently and in any order.
+
+![multipart upload](images/Fundamentals/mutlipart-upload.png)
+
+If transmission of any part fails, you can re-transmit just that part without having to re-transmit all the parts. After all parts of your object upload, Amazon S3 assembles these pieces and creates the object. In general, when your object size reaches **100 MB**, you should consider using multipart uploads instead of uploading the object in a single operation. 
+
+Using multipart upload provides the following advantages:
+- Improved throughput - You can upload parts in parallel to improve throughput.
+- Quick recovery from any network issues - Smaller part size minimizes the impact of restarting a failed upload due to a network error.
+- Pause and resume object uploads - You can upload object parts over time. Once you initiate a multipart upload there is no expiry; you must explicitly complete or abort the multipart upload.
+- Begin an upload before you know the final object size - You can upload an object as you are creating it.
+
+[**Uploading and copying objects using multipart upload**](https://docs.aws.amazon.com/AmazonS3/latest/userguide/mpuoverview.html)
+
+#### Object lifecycle management
+
+When using multipart uploads, Amazon S3 retains all the parts on the server until you complete or discontinue the upload. To avoid unnecessary storage costs related to incomplete uploads, make sure to complete or discontinue an upload. Use lifecycle rules to clean up incomplete multipart uploads automatically.
+
+An Amazon S3 Lifecycle configuration is an XML file that consists of a set of rules with predefined actions that you want Amazon S3 to perform on objects during their lifetime. As a best practice, we recommend you configure a lifecycle rule using the **AbortIncompleteMultipartUpload** action to minimize your storage costs.
+
+It is recommended that you enable the ability to clean incomplete multipart uploads in the lifecycle settings even if you are not sure whether you are going to perform multipart uploads. Some applications default to multipart uploads when uploading files over a particular application-dependent size and failed or incomplete uploads will result in increased storage costs.
+
+[**Object Lifecycle**](https://docs.aws.amazon.com/AmazonS3/latest/userguide/mpu-abort-incomplete-mpu-lifecycle-config.html)
+
+### GET operations
+
+You can use the GET operation to retrieve a whole object or parts of an object directly from Amazon S3. 
+
+If you need to retrieve the object in parts, use the Range HTTP header in a GET request. Doing this allows you to retrieve a specific range of bytes from an object stored in Amazon S3. You can then resume fetching other parts of the object whenever you or your application is ready. This resumeable download is useful if you only need portions of your object data, in cases where network connectivity is poor, or if your application must process only subsets of object data.
+
+### Delete operations
+
+With a delete operation, you can delete either a single object or multiple objects in a single delete request. Multiple outcomes are possible when you issue a DELETE request, depending on whether you enable versioning or disable it on your bucket.
+
+The images listed below illustrate the delete operations on versioning enabled and non-versioning enabled buckets.
+
+![Delete operations](images/Fundamentals/delete-operations.png)
+
+#### Versioning not enabled
+
+If a bucket is not versioning-enabled, you can permanently delete an object by specifying the key name of the object. The DELETE request will permanently remove the object from the bucket, making it unrecoverable.
+
+#### Permanent deletes
+
+If a bucket is versioning-enabled, you can either permanently delete an object or have Amazon S3 create a delete marker for the object, which allows the object to be recoverable.
+
+You can permanently delete individual versions of an object by invoking a DELETE request with the object's key and version ID. To completely remove the object from your bucket, you must delete each individual version.
+
+![Object deletions](images/Fundamentals/object-deletions-1.png)
+
+#### Recoverable deletes
+
+If your DELETE request specifies only the object's key name, Amazon S3 inserts a delete marker that becomes the current version of the object. If you try to retrieve an object that has a delete marker, Amazon S3 returns a **404 NOT FOUND** error. You can recover the object by removing the delete marker from the current version of the object, making the object available for retrieval.
+
+![Object deletions](images/Fundamentals/object-deletions-2.png)
