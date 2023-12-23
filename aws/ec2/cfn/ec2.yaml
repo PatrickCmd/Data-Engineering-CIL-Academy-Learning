@@ -1,0 +1,42 @@
+# The following code block shows a CloudFormation template for creating an 
+# EC2 instance that resides in the VPC created from the vpc code block example.
+
+Parameters:
+  S3BucketName:
+    AllowedPattern: ^[0-9a-zA-Z]+([0-9a-zA-Z-.]*[0-9a-zA-Z])*$
+    Type: String
+    Default: nested-stack-bucket
+
+  AmiID:
+    Type: AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>
+    Description: 'The ID of the AMI.'
+    Default: /aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2
+
+  AvailabilityZones:
+    Type: List<AWS::EC2::AvailabilityZone::Name>
+    Description: The list of AZs to use for the subnets in the VPC. Select 2 AZs.
+
+  VPCName:
+    Type: String
+    Description: The name of the VPC.
+    Default: nested-stack-vpc
+
+Resources:
+  VpcStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Sub https://${S3BucketName}.s3.amazonaws.com/vpc.yaml
+      TimeoutInMinutes: 20
+      Parameters:
+        AvailabilityZones:
+          Fn::Join:
+            - ','
+            - !Ref AvailabilityZones
+        VPCName: !Ref VPCName
+  
+  WebServer:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t2.medium
+      ImageId: !Ref AmiID
+      SubnetId: !GetAtt VpcStack.Outputs.PublicSubnet1

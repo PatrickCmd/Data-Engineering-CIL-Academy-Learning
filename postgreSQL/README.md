@@ -750,3 +750,22 @@ PostgreSQL lays out many of its structures like a file system. Here we will cove
 #### User
 - Can be assigned across databases
 - Does not have physical structure (other than in catalogs)
+
+
+## References
+- [Managing PostgreSQL](https://explore.skillbuilder.aws/learn/course/7872/play/30773/managing-postgresql)
+- [PostgreSQL Security](https://explore.skillbuilder.aws/learn/course/7872/play/30774/postgresql-security)
+- [PostgreSQL Backups](https://explore.skillbuilder.aws/learn/course/7872/play/30775/postgresql-backups)
+- [Tutorial: Restore an Amazon RDS DB instance from a DB snapshot](https://explore.skillbuilder.aws/learn/course/7872/play/30775/postgresql-backups)
+- [Overview of backing up and restoring an Aurora DB cluster](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/Aurora.Managing.Backups.html)
+- [PostgreSQL Monitoring](https://explore.skillbuilder.aws/learn/course/7872/play/30776/postgresql-monitoring)
+- [PostgreSQL System Catalog](https://explore.skillbuilder.aws/learn/course/7872/play/30777/postgresql-system-cataloggit)
+- [PostgreSQL Maintenance](https://explore.skillbuilder.aws/learn/course/7872/play/30778/postgresql-maintenance)
+- [PostgreSQL Major Upgrades](https://explore.skillbuilder.aws/learn/course/7872/play/30779/postgresql-major-upgrades)
+  - [Automatic minor upgrades for Amazon Aurora PostgreSQL](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_UpgradeDBInstance.PostgreSQL.html#USER_UpgradeDBInstance.PostgreSQL.Minor)
+  - [Manual minor upgrades for Aurora PostgreSQL](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_UpgradeDBInstance.PostgreSQL.html#USER_UpgradeDBInstance.Upgrading.Manual)
+  - [Automatic minor upgrades for Amazon RDS PostgreSQL](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_UpgradeDBInstance.PostgreSQL.html#USER_UpgradeDBInstance.PostgreSQL.Minor)
+  - [Manual minor upgrades for Amazon RDS PostgreSQL](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_UpgradeDBInstance.Upgrading.html#USER_UpgradeDBInstance.Upgrading.Manual)
+- [PostgreSQL Scalability](https://explore.skillbuilder.aws/learn/course/7872/play/30780/postgresql-scalability)
+- [PostgreSQL Migration](https://explore.skillbuilder.aws/learn/course/7872/play/30781/postgresql-migration)
+

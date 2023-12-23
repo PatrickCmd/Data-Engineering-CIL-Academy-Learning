@@ -299,17 +299,56 @@ Sure, here's a step-by-step guide on how to create an EC2 instance using a t2.mi
 
 To access a copy of the user data script for the employee directory application, copy and paste from the code below.
 
+#### Amazon Linux 2 user data script:
+
 ```sh
 #!/bin/bash -ex
 wget https://aws-tc-largeobjects.s3-us-west-2.amazonaws.com/DEV-AWS-MO-GCNv2/FlaskApp.zip
 unzip FlaskApp.zip
 cd FlaskApp/
+yum -y update
 yum -y install python3 mysql
 pip3 install -r requirements.txt
 amazon-linux-extras install epel
 yum -y install stress
 export PHOTOS_BUCKET=${SUB_PHOTOS_BUCKET}
 export AWS_DEFAULT_REGION=<INSERT REGION HERE>
+export DYNAMO_MODE=on
+FLASK_APP=application.py /usr/local/bin/flask run --host=0.0.0.0 --port=80
+```
+
+#### Amazon Linux 2023 user data script:
+```sh
+#!/bin/bash -ex
+wget https://aws-tc-largeobjects.s3-us-west-2.amazonaws.com/DEV-AWS-MO-GCNv2/FlaskApp.zip
+unzip FlaskApp.zip
+cd FlaskApp/
+dnf -y update
+dnf -y install python3-pip
+pip install -r requirements.txt
+dnf -y install stress
+export PHOTOS_BUCKET=${SUB_PHOTOS_BUCKET}
+export AWS_DEFAULT_REGION=<INSERT REGION HERE>
+export DYNAMO_MODE=on
+FLASK_APP=application.py /usr/local/bin/flask run --host=0.0.0.0 --port=80 
+```
+
+Experincing the `Unable to remove the rpm due to error error: impossible to create transaction lock on /var/lib/rpm/.rpm.lock` with Amazon Linux 2023 use updated userdata below
+
+```sh
+#!/bin/bash -ex
+wget https://aws-tc-largeobjects.s3-us-west-2.amazonaws.com/DEV-AWS-MO-GCNv2/FlaskApp.zip
+unzip FlaskApp.zip
+cd FlaskApp/
+echo $(pwd)
+dnf -y update
+dnf -y install python3-pip
+pip install -r requirements.txt
+sudo dnf upgrade --refresh rpm glibc
+sudo rm /var/lib/rpm/.rpm.lock
+dnf -y install stress
+export PHOTOS_BUCKET=employee-directory-web-app
+export AWS_DEFAULT_REGION=us-east-1
 export DYNAMO_MODE=on
 FLASK_APP=application.py /usr/local/bin/flask run --host=0.0.0.0 --port=80
 ```

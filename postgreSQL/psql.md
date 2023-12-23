@@ -101,6 +101,14 @@ echo $CONNECTION_URL
 psql $CONNECTION_URL
 ```
 
+#### Connecting to PostgreSQL over SSL
+```sh
+export RDS_USERNAME=PrimaryUsername
+export RDS_ENDPOINT=rds-postgresql-sample.cyhiiz99ooer.us-east-1.rds.amazonaws.com
+psql -h $RDS_ENDPOINT -p 5432 \
+  "dbname=myDatabase user=${RDS_USERNAME} sslrootcert=postgreSQL/us-east-1-bundle.pem sslmode=verify-full"
+```
+
 #### psql client additional information
 
 Here are some more key points about psql client:
@@ -316,3 +324,11 @@ Scripts are a series of commands that can typically be run on the command line. 
 The following sample Bash script uses psql commands to accomplish tasks within the script.
 
 ![use scripts](images/use-scripts.jpeg)
+
+## Install PostgreSQL Ubuntu
+```sh
+curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc|sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/postgresql.gpg
+echo "deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main" | sudo tee  /etc/apt/sources.list.d/pgdg.list
+sudo apt update
+sudo apt install -y postgresql-client-15 libpq-dev
+```
